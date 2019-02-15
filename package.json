@@ -1,0 +1,29 @@
+{
+  "name": "binder",
+  "version": "1.0.0",
+  "description": "A tiny library for binding data on a web page and storing locally",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangbangsoftware/binder.git"
+  },
+  "keywords": [
+    "js",
+    "data-binding",
+    "tiny",
+    "fast"
+  ],
+  "author": "Mick Carter",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/bangbangsoftware/binder/issues"
+  },
+  "homepage": "https://github.com/bangbangsoftware/binder#readme",
+  "dependencies": {
+    "live-server": "^1.2.1"
+  }
+}
