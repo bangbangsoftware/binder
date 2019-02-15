@@ -4,8 +4,14 @@ console.log("TESTER");
 
 reg(["one", "two", "three", "four", "five"]);
 
-const b = document.getElementById("one");
-b.addEventListener("click", () => {
-  b.innerText = document.getElementById("five").innerText;
-  put(b);
+const four = document.getElementById("four");
+four.addEventListener("click", () => {
+  four.innerText = document.getElementById("one").innerText;
+  put(four);
+});
+
+const one = document.getElementById("one");
+one.addEventListener("click", () => {
+  one.innerText = document.getElementById("four").innerText;
+  put(one);
 });
