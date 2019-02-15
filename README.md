@@ -5,7 +5,7 @@
 
 ## Installing / Getting started
 
-This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/)
+This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/index.html)
 A quick introduction of the minimal setup you need to get a hello world up &
 running.
 
