@@ -18,6 +18,19 @@ export function clear() {
   for (const field in registerMap) delete registerMap[field];
 }
 
+const check = element => {
+  if (element.name) {
+    start(element);
+  }
+  for (var i = 0, max = element.childNodes.length; i < max; i++) {
+    check(element.childNodes[i]);
+  }
+};
+
+export function bagItAndTagIt() {
+  doc.querySelectorAll("*").forEach(element => check(element));
+}
+
 export function reg(ids) {
   if (Object.keys(registerMap).length === 0) {
     setup(storage);
@@ -25,48 +38,48 @@ export function reg(ids) {
 
   ids.forEach(id => {
     const element = doc.getElementById(id);
-    if (!element){
-      console.error(id+" does not exist");
+    if (!element) {
+      console.error(id + " does not exist");
       return;
     }
     start(element);
   });
 }
 
-const swapClicked = (e,otherElement) =>{
-    const el = e.target;
-    const key = getKey(el.id);
-    const otherKey = getKey(otherElement);
-    const value = storage.getItem(key+"-"+otherKey);
-    if (!value){
-      el.classList.add("swap-selected");
-      storage.setItem(key+"-"+otherKey, el[key]);      
-      return;
-    }
-    el.classList.remove("swap-selected");
-    otherElement.classList.remove("swap-selected");
-    storage.removeItem(key+"-"+otherKey);      
-    if (value === el[key]){
-      return;
-    }
-    
-    const swapValue = el[key]+"";
-    otherElement[otherKey] = swapValue+"";
-    el[key] = value;
-    put(el);
-    put(otherElement);
-}
+const swapClicked = (e, otherElement) => {
+  const el = e.target;
+  const key = getKey(el.id);
+  const otherKey = getKey(otherElement);
+  const value = storage.getItem(key + "-" + otherKey);
+  if (!value) {
+    el.classList.add("swap-selected");
+    storage.setItem(key + "-" + otherKey, el[key]);
+    return;
+  }
+  el.classList.remove("swap-selected");
+  otherElement.classList.remove("swap-selected");
+  storage.removeItem(key + "-" + otherKey);
+  if (value === el[key]) {
+    return;
+  }
+
+  const swapValue = el[key] + "";
+  otherElement[otherKey] = swapValue + "";
+  el[key] = value;
+  put(el);
+  put(otherElement);
+};
 
 // @TODO needs work... need to hold first click state.....
-export function swap(id1,id2){
+export function swap(id1, id2) {
   const element1 = document.getElementById(id1);
   const element2 = document.getElementById(id2);
-  if (element1.name === element2.name){
+  if (element1.name === element2.name) {
     console.error("what are you doing swap with itself???!");
     return;
   }
-  element1.addEventListener("click", e => swapClicked(e,element2)); 
-  element2.addEventListener("click", e => swapClicked(e, element1)); 
+  element1.addEventListener("click", e => swapClicked(e, element2));
+  element2.addEventListener("click", e => swapClicked(e, element1));
 }
 
 export function put(element) {
@@ -131,6 +144,7 @@ const listen = (field, fn) => {
   //    }
   //  });
   field.addEventListener("onpaste", e => changed(e));
+  field.addEventListener("keyup", e => changed(e));
   field.addEventListener("oninput", e => changed(e));
 };
 

@@ -1,8 +1,9 @@
-import { reg, swap } from "./index.js";
+import { swap, bagItAndTagIt } from "./index.js";
 
 console.log("TESTER");
 
-reg(["one", "two", "three", "four", "five"]);
+//reg(["one", "two", "three", "four", "five"]);
+bagItAndTagIt();
 
 swap("one","four");
 /** 
