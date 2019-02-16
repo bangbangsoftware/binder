@@ -25,6 +25,10 @@ export function reg(ids) {
 
   ids.forEach(id => {
     const element = doc.getElementById(id);
+    if (!element){
+      console.error(id+" does not exist");
+      return;
+    }
     start(element);
   });
 }
