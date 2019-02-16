@@ -29,6 +29,42 @@ export function reg(ids) {
   });
 }
 
+const swapClicked = (e,otherElement) =>{
+    const el = e.target;
+    const key = getKey(el.id);
+    const otherKey = getKey(otherElement);
+    const value = storage.getItem(key+"-"+otherKey);
+    if (!value){
+      el.classList.add("swap-selected");
+      storage.setItem(key+"-"+otherKey, el[key]);      
+      return;
+    }
+    el.classList.remove("swap-selected");
+    otherElement.classList.remove("swap-selected");
+    storage.removeItem(key+"-"+otherKey);      
+    if (value === el[key]){
+      return;
+    }
+    
+    const swapValue = el[key]+"";
+    otherElement[otherKey] = swapValue+"";
+    el[key] = value;
+    put(el);
+    put(otherElement);
+}
+
+// @TODO needs work... need to hold first click state.....
+export function swap(id1,id2){
+  const element1 = document.getElementById(id1);
+  const element2 = document.getElementById(id2);
+  if (element1.name === element2.name){
+    console.error("what are you doing swap with itself???!");
+    return;
+  }
+  element1.addEventListener("click", e => swapClicked(e,element2)); 
+  element2.addEventListener("click", e => swapClicked(e, element1)); 
+}
+
 export function put(element) {
   const fieldname = element.name;
   const key = getKey(element);

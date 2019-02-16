@@ -1,9 +1,11 @@
-import { reg, put } from "./index.js";
+import { reg, swap } from "./index.js";
 
 console.log("TESTER");
 
 reg(["one", "two", "three", "four", "five"]);
 
+swap("one","four");
+/** 
 const four = document.getElementById("four");
 four.addEventListener("click", () => {
   four.innerText = document.getElementById("one").innerText;
@@ -15,3 +17,4 @@ one.addEventListener("click", () => {
   one.innerText = document.getElementById("four").innerText;
   put(one);
 });
+**/
