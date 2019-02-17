@@ -1,7 +1,7 @@
-import {  bagItAndTagIt } from "./index.js";
+import { bagItAndTagIt } from "./index.js";
+import { switchPlugin } from "./switcherPlugin.js";
 
 console.log("TESTER");
 
-bagItAndTagIt();
+bagItAndTagIt([switchPlugin]);
 //swap("one","four");
-

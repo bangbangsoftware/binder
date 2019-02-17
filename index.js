@@ -11,144 +11,34 @@ export function setDocument(d) {
   doc = d;
 }
 
-const registerMap = {};
-
+const registry = {};
 export function clear() {
   storage.setItem("reg", "");
-  for (const field in registerMap) delete registerMap[field];
+  for (const field in registry) delete registry[field];
+}
+
+let plugins = [];
+export function bagItAndTagIt(plugs) {
+  plugins = plugs;
+  doc.querySelectorAll("*").forEach(element => check(element));
 }
 
 const check = element => {
   if (element.name) {
     start(element);
-    switchPlugin(element);
+    const tools = { put, get, getKey };
+    plugins.forEach(setup => {
+      const plugin = setup(tools);
+      plugin(element);
+    });
   }
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     check(element.childNodes[i]);
   }
 };
 
-const switchPlugin = element => {
-  const groupName = element.getAttribute("swapper");
-  if (!groupName) {
-    return;
-  }
-  element.addEventListener("click", e => swap(element));
-};
-
-const swap = element => {
-  const groupName = element.getAttribute("swapper");
-  const idSelected = storage.getItem("swap-" + groupName);
-  if (!idSelected) {
-    element.classList.add("swap-selected");
-    storage.setItem("swap-" + groupName, element.id);
-    return;
-  }
-  storage.removeItem("swap-"+groupName);
-  const selected = document.getElementById(idSelected);
-  selected.classList.remove("swap-selected");
-  if (idSelected === element.id) {
-    console.error("what are you doing swap with itself???!");
-  }
-
-  const selectKey = getKey(selected);
-  const key = getKey(element);
-  const swapValue = selected[selectKey] + "";
-  const value = element[key];
-
-  if (value === swapValue) {
-    return;
-  }
-  element[key] = swapValue + "";
-  selected[selectKey] = value;
-  put(element);
-  put(selected);
-};
-
-export function bagItAndTagIt() {
-  doc.querySelectorAll("*").forEach(element => check(element));
-}
-
-export function reg(ids) {
-  if (Object.keys(registerMap).length === 0) {
-    setup(storage);
-  }
-
-  ids.forEach(id => {
-    const element = doc.getElementById(id);
-    if (!element) {
-      console.error(id + " does not exist");
-      return;
-    }
-    start(element);
-  });
-}
-
-const swapClicked = (e, otherElement) => {
-  const el = e.target;
-  const key = getKey(el.id);
-  const otherKey = getKey(otherElement);
-  const value = storage.getItem(key + "-" + otherKey);
-  if (!value) {
-    el.classList.add("swap-selected");
-    storage.setItem(key + "-" + otherKey, el[key]);
-    return;
-  }
-  el.classList.remove("swap-selected");
-  otherElement.classList.remove("swap-selected");
-  storage.removeItem(key + "-" + otherKey);
-  if (value === el[key]) {
-    return;
-  }
-
-  const swapValue = el[key] + "";
-  otherElement[otherKey] = swapValue + "";
-  el[key] = value;
-  put(el);
-  put(otherElement);
-};
-
-// @TODO needs work... need to hold first click state.....
-export function swapOLD(id1, id2) {
-  const element1 = document.getElementById(id1);
-  const element2 = document.getElementById(id2);
-  if (element1.name === element2.name) {
-    console.error("what are you doing swap with itself???!");
-    return;
-  }
-  element1.addEventListener("click", e => swapClicked(e, element2));
-  element2.addEventListener("click", e => swapClicked(e, element1));
-}
-
-export function put(element) {
-  const fieldname = element.name;
-  const key = getKey(element);
-  const newValue = element[key];
-  const data = registry.get(fieldname);
-  if (!data) {
-    const elementsValue = {
-      currentValue: element.innerText,
-      elements: [element]
-    };
-    registry.put(fieldname, elementsValue);
-    return element.innerText;
-  }
-
-  data.elements = data.elements.map(el => {
-    el[getKey(el)] = newValue;
-    return el;
-  });
-  const haveitAlready = data.elements.some(el => el.id === element.id);
-  if (!haveitAlready) {
-    data.elements.push(element);
-  }
-  data.currentValue = element[key];
-  registry.put(fieldname, data);
-  return data.currentValue;
-}
-
 const isInput = element => element.localName === "input";
-const getKey = element => (isInput(element) ? "value" : "innerText");
+export const getKey = element => (isInput(element) ? "value" : "innerText");
 
 const start = element => {
   const fieldname = element.name;
@@ -160,17 +50,43 @@ const start = element => {
   }
 };
 
+export function put(element) {
+  const fieldname = element.name;
+  const key = getKey(element);
+  const stored = get(fieldname);
+  const data = stored
+    ? stored
+    : { currentValue: element[key], elements: [element] };
+  data.currentValue = element[key];
+  data.elements = data.elements.map( element =>{
+    const elementKey = getKey(element);
+    element[elementKey] = data.currentValue;
+    return element;
+  });
+  registry[fieldname] = data;
+  const keyvalue = {};
+  Object.keys(registry).forEach(key => {
+    keyvalue[key] = registry[key].currentValue;
+  });
+  const reg = JSON.stringify(keyvalue);
+  storage.setItem("reg", reg);
+}
+
+export function get(key) {
+  return registry[key];
+}
+
 const set = (element, fieldname, key) => {
-  const data = registry.get(fieldname);
+  const data = get(fieldname);
 
   const elements = data ? data.elements : [];
   elements.push(element);
   const currentValue = data ? data.currentValue : element[key];
   element[key] = currentValue;
   const newData = { elements, currentValue };
-  registry.put(fieldname, newData);
+  put(element);
 
-  return registerMap;
+  return registry;
 };
 
 const listen = (field, fn) => {
@@ -184,39 +100,4 @@ const listen = (field, fn) => {
   field.addEventListener("onpaste", e => changed(e));
   field.addEventListener("keyup", e => changed(e));
   field.addEventListener("oninput", e => changed(e));
-};
-
-const none = w => {
-  if (w === undefined) {
-    return true;
-  }
-  if (!w) {
-    return true;
-  }
-
-  if (w === null) {
-    return true;
-  }
-  return false;
-};
-
-const setup = () => {
-  const regString = storage.getItem("reg");
-  const newReg = none(regString) ? [] : JSON.parse(regString);
-  for (const field in registerMap) delete registerMap[field];
-  for (const field in newReg)
-    registerMap[field] = { currentValue: newReg[field], elements: [] };
-};
-
-const registry = {
-  get: key => registerMap[key],
-  put: (key, elementsValue) => {
-    registerMap[key] = elementsValue;
-    const keyvalue = {};
-    Object.keys(registerMap).forEach(key => {
-      keyvalue[key] = registerMap[key].currentValue;
-    });
-    const reg = JSON.stringify(keyvalue);
-    storage.setItem("reg", reg);
-  }
 };
