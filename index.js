@@ -21,10 +21,48 @@ export function clear() {
 const check = element => {
   if (element.name) {
     start(element);
+    switchPlugin(element);
   }
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     check(element.childNodes[i]);
   }
+};
+
+const switchPlugin = element => {
+  const groupName = element.getAttribute("swapper");
+  if (!groupName) {
+    return;
+  }
+  element.addEventListener("click", e => swap(element));
+};
+
+const swap = element => {
+  const groupName = element.getAttribute("swapper");
+  const idSelected = storage.getItem("swap-" + groupName);
+  if (!idSelected) {
+    element.classList.add("swap-selected");
+    storage.setItem("swap-" + groupName, element.id);
+    return;
+  }
+  storage.removeItem("swap-"+groupName);
+  const selected = document.getElementById(idSelected);
+  selected.classList.remove("swap-selected");
+  if (idSelected === element.id) {
+    console.error("what are you doing swap with itself???!");
+  }
+
+  const selectKey = getKey(selected);
+  const key = getKey(element);
+  const swapValue = selected[selectKey] + "";
+  const value = element[key];
+
+  if (value === swapValue) {
+    return;
+  }
+  element[key] = swapValue + "";
+  selected[selectKey] = value;
+  put(element);
+  put(selected);
 };
 
 export function bagItAndTagIt() {
@@ -71,7 +109,7 @@ const swapClicked = (e, otherElement) => {
 };
 
 // @TODO needs work... need to hold first click state.....
-export function swap(id1, id2) {
+export function swapOLD(id1, id2) {
   const element1 = document.getElementById(id1);
   const element2 = document.getElementById(id2);
   if (element1.name === element2.name) {

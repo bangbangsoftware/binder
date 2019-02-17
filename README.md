@@ -60,7 +60,9 @@ npm run build
 * [ ] Documentation 
 * [ ] Swapper 
 * [ ] Jest
-* [ ] Put on github pages
+* [x] Put on github pages
+* [ ] Improve test page
+* [ ] Typescript
 
 ## Versioning
 
