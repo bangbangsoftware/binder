@@ -18,14 +18,27 @@ export function clear() {
 }
 
 let plugins = [];
+const done = [];
 export function bagItAndTagIt(plugs) {
   plugins = plugs;
   doc.querySelectorAll("*").forEach(element => check(element));
 }
 
+const getName = element => {
+    if (element.name){
+      return element.name;
+    }
+    if (!element.getAttribute){
+      return false;
+    }
+    return element.getAttribute("name");
+}
+
 const check = element => {
-  if (element.name) {
-    start(element);
+  const name = getName(element);
+  if (name && done.indexOf(element.id) === -1) {
+    done.push(element.id);
+    start(element, name);
     const tools = { put, get, getKey };
     plugins.forEach(setup => {
       const plugin = setup(tools);
@@ -40,8 +53,7 @@ const check = element => {
 const isInput = element => element.localName === "input";
 export const getKey = element => (isInput(element) ? "value" : "innerText");
 
-const start = element => {
-  const fieldname = element.name;
+const start = (element, fieldname) => {
   const input = isInput(element);
   const key = getKey(element);
   set(element, fieldname, key);
@@ -51,7 +63,7 @@ const start = element => {
 };
 
 export function put(element) {
-  const fieldname = element.name;
+  const fieldname = getName(element);
   const key = getKey(element);
   const stored = get(fieldname);
   const data = stored

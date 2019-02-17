@@ -12,6 +12,7 @@ export function setDocument(d) {
 }
 
 let binder;
+
 export const switchPlugin = tools => {
   binder = tools;
   return element => {

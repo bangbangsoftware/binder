@@ -4,13 +4,16 @@
   </head>
   <body>
 
-    <button swapper="group1" name="first" id="one">Reactive</button>
-    <button name="first" id="two"></button>
-    <input name="first" id="three" value=""></input>
+    <div class="title">The Binder......</div>
+    <div class="main">
+      <button class="linked" swapper="group1" name="first" id="one">Reactive</button>
+      <button name="first" id="two"></button>
+      <input name="first" id="three" value=""></input>
 
-    <button swapper="group1" name="second" id="four">LINKED</button>
-    <input name="second" id="five" value=""></input>
-
+      <button class="linked" swapper="group1" name="second" id="four">LINKED</button>
+      <input name="second" id="five" value=""></input>
+      <div name="second" id="six">dd</div>
+    </div>
   </body>
   <script type="module" src="./tester.js"></script>
 

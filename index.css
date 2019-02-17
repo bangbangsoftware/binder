@@ -1,3 +1,29 @@
 .swap-selected {
     color: red
 }
+
+.title {
+    text-align: left;
+    font-size:120px;
+    font-weight: bolder;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+}
+
+button  {    
+    font-size: 100px;
+}
+
+.linked {
+    border: orange;
+    border-style: solid;
+}
+
+input {
+    font-size: 50px;
+}
+
