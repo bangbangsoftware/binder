@@ -20,31 +20,35 @@ export function clear() {
 let plugins = [];
 const done = [];
 export function bagItAndTagIt(plugs) {
-  //clear();
+  doc.getElementsByTagName("BODY")[0].style.display = "none";
   for (const field in registry) delete registry[field];
   setup();
   plugins = plugs;
   doc.querySelectorAll("*").forEach(element => check(element));
+  doc.getElementsByTagName("BODY")[0].style.display = "block";
+  
 }
 
-const setup = ()=> {
+const setup = () => {
   const regString = storage.getItem("reg");
-  if (!regString){
+  if (!regString) {
     return;
   }
   const reg = JSON.parse(regString);
-  Object.keys(reg).forEach(key => registry[key] = {currentValue:reg[key], elements:[]});
-}
+  Object.keys(reg).forEach(
+    key => (registry[key] = { currentValue: reg[key], elements: [] })
+  );
+};
 
 const getName = element => {
-    if (element.name){
-      return element.name;
-    }
-    if (!element.getAttribute){
-      return false;
-    }
-    return element.getAttribute("name");
-}
+  if (element.name) {
+    return element.name;
+  }
+  if (!element.getAttribute) {
+    return false;
+  }
+  return element.getAttribute("name");
+};
 
 const check = element => {
   const name = getName(element);
@@ -82,7 +86,7 @@ export function put(element) {
     ? stored
     : { currentValue: element[key], elements: [element] };
   data.currentValue = element[key];
-  data.elements = data.elements.map( element =>{
+  data.elements = data.elements.map(element => {
     const elementKey = getKey(element);
     element[elementKey] = data.currentValue;
     return element;
