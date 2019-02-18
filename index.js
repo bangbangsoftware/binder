@@ -13,15 +13,27 @@ export function setDocument(d) {
 
 const registry = {};
 export function clear() {
-  storage.setItem("reg", "");
+  storage.setItem("reg", "{}");
   for (const field in registry) delete registry[field];
 }
 
 let plugins = [];
 const done = [];
 export function bagItAndTagIt(plugs) {
+  //clear();
+  for (const field in registry) delete registry[field];
+  setup();
   plugins = plugs;
   doc.querySelectorAll("*").forEach(element => check(element));
+}
+
+const setup = ()=> {
+  const regString = storage.getItem("reg");
+  if (!regString){
+    return;
+  }
+  const reg = JSON.parse(regString);
+  Object.keys(reg).forEach(key => registry[key] = {currentValue:reg[key], elements:[]});
 }
 
 const getName = element => {

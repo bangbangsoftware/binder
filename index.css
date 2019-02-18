@@ -1,5 +1,8 @@
 .swap-selected {
-    color: red
+    color: red;
+    font-weight: bolder;
+    border: red;
+    border-style: solid;
 }
 
 .title {
@@ -27,3 +30,22 @@ input {
     font-size: 50px;
 }
 
+.plain {
+    font-size: 33px;
+    font-style: italic;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.pitch {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 10px;
+}
+
+.bench {
+    display: grid;
+    grid-template-columns: 100px auto auto auto auto;
+    grid-template-rows: 100px;
+    grid-gap: 10px;
+}
