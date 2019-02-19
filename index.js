@@ -67,7 +67,7 @@ const check = element => {
 };
 
 const isInput = element => element.localName === "input";
-export const getKey = element => (isInput(element) ? "value" : "innerText");
+const getKey = element => (isInput(element) ? "value" : "innerText");
 
 const start = (element, fieldname) => {
   const input = isInput(element);
