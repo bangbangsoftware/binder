@@ -25,5 +25,9 @@
   "homepage": "https://github.com/bangbangsoftware/binder#readme",
   "dependencies": {
     "live-server": "^1.2.1"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0"
   }
 }

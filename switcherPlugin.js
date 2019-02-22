@@ -1,14 +1,8 @@
 let storage = window.localStorage;
-let doc = document;
 
 // Just for testing....
 export function setStorage(s) {
   storage = s;
-}
-
-// Just for testing....
-export function setDocument(d) {
-  doc = d;
 }
 
 let binder;

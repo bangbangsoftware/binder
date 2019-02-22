@@ -26,7 +26,6 @@ export function bagItAndTagIt(plugs) {
   plugins = plugs;
   doc.querySelectorAll("*").forEach(element => check(element));
   doc.getElementsByTagName("BODY")[0].style.display = "block";
-  
 }
 
 const setup = () => {
@@ -50,24 +49,40 @@ const getName = element => {
   return element.getAttribute("name");
 };
 
-const check = element => {
+const isInput = element => element.localName === "input";
+const getKey = element => (isInput(element) ? "value" : "innerText");
+const tools = { put, get, getKey };
+
+
+const register = element => {
   const name = getName(element);
-  if (name && done.indexOf(element.id) === -1) {
-    done.push(element.id);
-    start(element, name);
-    const tools = { put, get, getKey };
-    plugins.forEach(setup => {
-      const plugin = setup(tools);
-      plugin(element);
-    });
+  if (!name) {
+    return;
   }
+  if (!element.id) {
+    console.error("This needs a id to get registered", element);
+    return;
+  }
+  if (done.indexOf(element.id) > -1) {
+    return;
+  }
+
+  done.push(element.id);
+  start(element, name);
+
+  plugins.forEach(setup => {
+    const plugin = setup(tools);
+    plugin(element);
+  });
+};
+
+const check = element => {
+  register(element);
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     check(element.childNodes[i]);
   }
 };
 
-const isInput = element => element.localName === "input";
-const getKey = element => (isInput(element) ? "value" : "innerText");
 
 const start = (element, fieldname) => {
   const input = isInput(element);
