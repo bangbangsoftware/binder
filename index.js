@@ -1,3 +1,7 @@
+import { switchPlugin } from "./switcherPlugin.js";
+import { togglePlugin } from "./togglePlugin.js";
+export {togglePlugin, switchPlugin};
+
 let storage = window.localStorage;
 let doc = document;
 

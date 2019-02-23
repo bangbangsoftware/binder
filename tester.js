@@ -1,6 +1,4 @@
-import { bagItAndTagIt, put } from "./index.js";
-import { switchPlugin } from "./switcherPlugin.js";
-import { togglePlugin } from "./togglePlugin.js";
+import { bagItAndTagIt, put, switchPlugin, togglePlugin } from "./index.js";
 
 console.log("TESTER");
 
