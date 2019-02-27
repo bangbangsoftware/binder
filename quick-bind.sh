@@ -7,6 +7,10 @@ npm i live-server
 npm i https://github.com/bangbangsoftware/binder -D
 echo "<html>"  > index.html
 echo "      <style>"  >> index.html
+echo "            .source { " >> index.html
+echo "                 background-color: #131212;" >> index.html
+echo "                 color: #27ec27;" >> index.html
+echo "            } " >> index.html
 echo "            .swap-selected { " >> index.html
 echo "                 background-color:red;" >> index.html
 echo "            } " >> index.html
@@ -15,7 +19,7 @@ echo "              font-family: monospace;" >> index.html
 echo "            } " >> index.html
 echo "            .main { " >> index.html
 echo "                 display: grid;" >> index.html
-echo "                 grid-template-columns: auto auto" >> index.html
+echo "                 grid-template-columns: 50% 50%" >> index.html
 echo "            } " >> index.html
 echo "            button { " >> index.html
 echo "                 width: 100px;" >> index.html
@@ -63,7 +67,7 @@ echo "         </div>" >> index.html
 echo "         <script type='module' src='../node_modules/binder/go.js'></script>" >> index.html
 echo "      </div>" >> index.html
 echo "      </div>" >> index.html
-echo "      <div>" >> index.html
+echo "      <div class='source'>" >> index.html
 echo "      <xmp>" >> index.html
 cp index.html pre
 cat pre >> index.html
