@@ -1,13 +1,51 @@
-![Logo of the project](./icon.svg)
+    ![Logo of the project](./icon.svg)
 
 #  The Binder 
 > A tiny library for binding data on a web page and storing locally 
 
 ## Installing / Getting started
 
-This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/index.html)
+### Install...
 
-You can run the bash script quick-bind.sh and this will do a quick project....
+```shell
+npm i https://github.com/bangbangsoftware/binder -D
+```
+
+### Basic use...
+
+So add it to your page, most basically like....
+
+```shell
+<script type='module' src='./node_modules/binder/go.js'></script>
+```
+
+This will register any element on the page with a name and id attribute, eg. 
+
+```shell
+<html>
+    
+    <head><h1> The BINDER </h1></head>
+    
+    <body>
+        <input placeholder='go on type in here' name='sport' id='sport-input' autofocus></input>
+        <div name='sport' id='sport-display'></div>
+    </body>
+    
+    <script type='module' src='../node_modules/binder/go.js'></script>
+</html>
+```
+
+So the above two elements: input and div are binded to the same data named "sport".
+
+This will be stored in localstorage under key "reg". 
+The value will be a map, where "sport" is mapped to whatever is typed in 
+
+![Stored in local storage](./localredux.png)
+
+### What can i just copy and paste to get started ???
+
+You can run the bash script quick-bind.sh, which started out doing a quick project below, 
+but then I got carried away and it's a little bigger now, showing off plugins as well.
 
 ```shell
 mkdir ../what-a-bind && cd ../what-a-bind
@@ -20,11 +58,15 @@ for i in `seq 1 25`;
 do
     echo "      <div name='name' id='label$i'></div>" >> index.html
 done
-echo "      <div name='storage' id='slabel'>Look in local storage!</div>" >> index.html
+echo "      <div name='storage' id='slabel'>Press refresh (F5), Look in local storage!</div>" >> index.html
 echo "      <script type='module' src='../node_modules/binder/go.js'></script>" >> index.html
 echo "</html>" >> index.html
 node ./node_modules/.bin/live-server
 ```
+
+## Live demo...
+
+This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/index.html)
 
 ## Security
 
@@ -98,5 +140,3 @@ See JSON in local storage
 ## Licensing
 
 GNU General Public License v3.0
-
-
