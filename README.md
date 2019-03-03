@@ -126,31 +126,35 @@ Nothing, just pure JS.
 Nothing, no back end, no babel... just go.
 
 ### Plugins
-So plugins need to be registered with binder through bagItAndTagIt function
+Plugins need to be registered with binder through bagItAndTagIt function
 it accepts an array of plugins. 
 
 eg.
-> import { switchPlugin, togglePlugin, bagItAndTagIt } from "binder";
+```shell
+import { switchPlugin, togglePlugin, bagItAndTagIt } from "binder";
 bagItAndTagIt([togglePlugin, switchPlugin])
+```
 
 The plugin should be a function that accepts an object and return a function 
 that accepts a HTML element. The object it accepts consists of the binder 
-tools (put, get and getKey functions). 
+tools (put, get and getKey functions). It should filter out any HTML the 
+plugin is not interested in. 
 
 eg.
-> let binder;
-> 
-> export const myPlugin = tools => {
->   binder = tools;
->   return element => {
->     const name = element.getAttribute("myPluginAttribute");
->     if (!name) {
->       return; // this element is not for me.....
->     }
->     element.addEventListener("click", e => doSomeStuff(element));
->   };
-> };
-
+```shell
+ let binder;
+ 
+ export const myPlugin = tools => {
+   binder = tools;
+   return element => {
+     const name = element.getAttribute("myPluginAttribute");
+     if (!name) {
+       return; // this element is not for me.....
+     }
+     element.addEventListener("click", e => doSomeStuff(element));
+   };
+};
+```
 
 ### Building, Deploying / Publishing
 
