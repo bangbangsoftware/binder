@@ -123,7 +123,8 @@ npm test
 Nothing, just pure JS.
 
 ### Prerequisites
-Nothing, no back end, no babel... just go.
+Nothing, no back end, no babel... just go. Actually, a little lie, babel
+is needed for the jests tests....
 
 ### Plugins
 Plugins need to be registered with binder through bagItAndTagIt function
