@@ -93,8 +93,10 @@ const register = element => {
     return;
   }
   if (!element.id) {
-    console.error("No id so, generating one", element);
-    element.id = name+"-"+Object.keys(registry).length;
+    //console.error("No id so, generating one", element);
+    //element.id = name+"-"+Object.keys(registry).length;
+    console.error("No id so cannot register", element);
+    return;
   }
   if (done.indexOf(element.id) > -1) {
     return;
