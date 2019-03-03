@@ -156,6 +156,13 @@ eg.
    };
 };
 ```
+which is run by binder like...
+```shell
+  plugins.forEach(setup => {
+    const plugin = setup(tools);
+    plugin(element);
+  });
+```
 
 ### Building, Deploying / Publishing
 

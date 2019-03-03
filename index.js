@@ -36,6 +36,48 @@ export function bagItAndTagIt(plugs = []) {
   doc.getElementsByTagName("BODY")[0].style.display = "block";
 }
 
+const setup = () => {
+  const regString = storage.getItem("reg");
+  if (!regString) {
+    return;
+  }
+  const reg = JSON.parse(regString);
+  Object.keys(reg).forEach(
+    key => (registry[key] = { currentValue: reg[key], elements: [] })
+  );
+};
+
+const check = element => {
+  register(element);
+  for (var i = 0, max = element.childNodes.length; i < max; i++) {
+    check(element.childNodes[i]);
+  }
+};
+
+const register = element => {
+  const name = getName(element);
+  if (!name) {
+    return;
+  }
+  if (!element.id) {
+    //console.error("No id so, generating one", element);
+    //element.id = name+"-"+Object.keys(registry).length;
+    console.error("No id so cannot register", element);
+    return;
+  }
+  if (done.indexOf(element.id) > -1) {
+    return;
+  }
+
+  done.push(element.id);
+  start(element, name);
+
+  plugins.forEach(setup => {
+    const plugin = setup(tools);
+    plugin(element);
+  });
+};
+
 export function put(element) {
   const fieldname = getName(element);
   const key = getKey(element);
@@ -66,16 +108,6 @@ const isInput = element => element.localName === "input";
 const getKey = element => (isInput(element) ? "value" : "innerText");
 const tools = { put, get, getKey };
 
-const setup = () => {
-  const regString = storage.getItem("reg");
-  if (!regString) {
-    return;
-  }
-  const reg = JSON.parse(regString);
-  Object.keys(reg).forEach(
-    key => (registry[key] = { currentValue: reg[key], elements: [] })
-  );
-};
 
 const getName = element => {
   if (element.name) {
@@ -87,36 +119,6 @@ const getName = element => {
   return element.getAttribute("name");
 };
 
-const register = element => {
-  const name = getName(element);
-  if (!name) {
-    return;
-  }
-  if (!element.id) {
-    //console.error("No id so, generating one", element);
-    //element.id = name+"-"+Object.keys(registry).length;
-    console.error("No id so cannot register", element);
-    return;
-  }
-  if (done.indexOf(element.id) > -1) {
-    return;
-  }
-
-  done.push(element.id);
-  start(element, name);
-
-  plugins.forEach(setup => {
-    const plugin = setup(tools);
-    plugin(element);
-  });
-};
-
-const check = element => {
-  register(element);
-  for (var i = 0, max = element.childNodes.length; i < max; i++) {
-    check(element.childNodes[i]);
-  }
-};
 
 const start = (element, fieldname) => {
   const input = isInput(element);
