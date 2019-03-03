@@ -1,7 +1,26 @@
     ![Logo of the project](./icon.svg)
 
 #  The Binder 
-> A tiny library for binding data on a web page and storing locally 
+> A tiny library for binding data on a web page and storing locally, 
+It's local data, for local people. If you want to get an app up *quickly*
+that doesn't need to share data, but need to persist data, then binder 
+can do it. 
+
+It came about when I wanted to write an app to help keep tally of my son's
+[five-a-side football scores](//github.com/bangbangsoftware/footswell/). I was going to use the mighty [vue](https://vuejs.org/), 
+but got too caught up in setup and besides I wanted to try my hand at
+pure js. 
+
+### Yes, but could it be used for multiple users ??
+Well, no - not out the box, not if you wanted to share data across users.
+However I was thinking of developing a light weight couchdb like system
+using postgres notify, websockets and some simple localstorage syncing
+code...
+
+### More techno bable
+It's a *simple fit* to straight forward use case, using localstorage 
+as a sort of redux store. Don't know how the performance is, but yes it
+has a plugin system, where you can add features in a decoupled way.
 
 ## Installing / Getting started
 
@@ -27,7 +46,7 @@ This will register any element on the page with a name and id attribute, eg.
     <head><h1> The BINDER </h1></head>
     
     <body>
-        <input placeholder='go on type in here' name='sport' id='sport-input' autofocus></input>
+        <input name='sport' id='sport-input' autofocus></input>
         <div name='sport' id='sport-display'></div>
     </body>
     
@@ -116,6 +135,7 @@ npm run build
 
 * [ ] Documentation 
 * [x] Swapper 
+* [ ] Auto generate ids
 * [ ] Jest
 * [x] Put on github pages
 * [ ] Improve test page

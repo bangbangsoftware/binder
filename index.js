@@ -1,5 +1,5 @@
-import { switchPlugin } from "./switcherPlugin.js";
-import { togglePlugin } from "./togglePlugin.js";
+import { switchPlugin } from "./plugins/switcherPlugin.js";
+import { togglePlugin } from "./plugins/togglePlugin.js";
 export { togglePlugin, switchPlugin };
 
 let storage = window.localStorage;
@@ -93,8 +93,8 @@ const register = element => {
     return;
   }
   if (!element.id) {
-    console.error("This needs a id to get registered", element);
-    return;
+    console.error("No id so, generating one", element);
+    element.id = name+"-"+Object.keys(registry).length;
   }
   if (done.indexOf(element.id) > -1) {
     return;
