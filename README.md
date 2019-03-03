@@ -155,8 +155,11 @@ There is zero configuration as of yet apart from setting up the inital team
 ## FAQ
 
 > How performant is it?
+
 Don't know.
+
 > Is it linked to a browser?
+
 Yes, it binds to the browsers local storage for the domain where it's hosted.
 
 ## Style guide
