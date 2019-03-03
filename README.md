@@ -1,4 +1,4 @@
-    ![Logo of the project](./icon.svg)
+    [Logo of the project](./icon.svg)
 
 #  The Binder 
 > A tiny library for binding data on a web page and storing locally, 
