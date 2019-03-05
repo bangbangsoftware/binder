@@ -4,7 +4,8 @@
   "description": "A tiny library for binding data on a web page and storing locally",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
+    "watch": "jest --watch",
     "start": "live-server ./example/."
   },
   "repository": {

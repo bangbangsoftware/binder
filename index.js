@@ -7,6 +7,9 @@ let doc = document;
 let plugins = [];
 const done = [];
 const registry = {};
+const isInput = element => element.localName === "input";
+const getKey = element => (isInput(element) ? "value" : "innerText");
+const tools = { put, get, getKey };
 
 // Just for testing....
 export function setStorage(s) {
@@ -16,6 +19,32 @@ export function setStorage(s) {
 // Just for testing....
 export function setDocument(d) {
   doc = d;
+}
+
+export function put(element) {
+  const fieldname = getName(element);
+  const key = getKey(element);
+  const stored = get(fieldname);
+  const data = stored
+    ? stored
+    : { currentValue: element[key], elements: [element] };
+  data.currentValue = element[key];
+  data.elements = data.elements.map(element => {
+    const elementKey = getKey(element);
+    element[elementKey] = data.currentValue;
+    return element;
+  });
+  registry[fieldname] = data;
+  const keyvalue = {};
+  Object.keys(registry).forEach(key => {
+    keyvalue[key] = registry[key].currentValue;
+  });
+  const reg = JSON.stringify(keyvalue);
+  storage.setItem("reg", reg);
+}
+
+export function get(key) {
+  return registry[key];
 }
 
 export function clear() {
@@ -78,36 +107,14 @@ const register = element => {
   });
 };
 
-export function put(element) {
-  const fieldname = getName(element);
+const start = (element, fieldname) => {
+  const input = isInput(element);
   const key = getKey(element);
-  const stored = get(fieldname);
-  const data = stored
-    ? stored
-    : { currentValue: element[key], elements: [element] };
-  data.currentValue = element[key];
-  data.elements = data.elements.map(element => {
-    const elementKey = getKey(element);
-    element[elementKey] = data.currentValue;
-    return element;
-  });
-  registry[fieldname] = data;
-  const keyvalue = {};
-  Object.keys(registry).forEach(key => {
-    keyvalue[key] = registry[key].currentValue;
-  });
-  const reg = JSON.stringify(keyvalue);
-  storage.setItem("reg", reg);
-}
-
-export function get(key) {
-  return registry[key];
-}
-
-const isInput = element => element.localName === "input";
-const getKey = element => (isInput(element) ? "value" : "innerText");
-const tools = { put, get, getKey };
-
+  set(element, fieldname, key);
+  if (input) {
+    listen(element, e => put(e.target));
+  }
+};
 
 const getName = element => {
   if (element.name) {
@@ -117,16 +124,6 @@ const getName = element => {
     return false;
   }
   return element.getAttribute("name");
-};
-
-
-const start = (element, fieldname) => {
-  const input = isInput(element);
-  const key = getKey(element);
-  set(element, fieldname, key);
-  if (input) {
-    listen(element, e => put(e.target));
-  }
 };
 
 const set = (element, fieldname, key) => {

@@ -24,7 +24,7 @@ const mocDoc = {
 };
 const store = {};
 const mockStore = {
-  putItem: (k, v) => {
+  setItem: (k, v) => {
     store[k] = v;
   },
   getItem: k => store[k]
@@ -38,5 +38,12 @@ describe("The binder", () => {
 
   test("start up", () => {
     bagItAndTagIt();
+  });
+
+  test("Putting values into the reg", () =>{
+    const mockElement = {};
+    put(mockElement);
+    const reg = get();
+    expect(store).toBe("sjkdhfkj");
   });
 });
