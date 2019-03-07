@@ -1,5 +1,5 @@
-import { switchPlugin } from "./plugins/switcherPlugin";
-import { togglePlugin } from "./plugins/togglePlugin";
+import { switchPlugin } from "./plugins/switcherPlugin.js";
+import { togglePlugin } from "./plugins/togglePlugin.js";
 export { togglePlugin, switchPlugin };
 const isInput = (element) => element.localName === "input";
 const getKey = (element) => (isInput(element) ? "value" : "innerText");

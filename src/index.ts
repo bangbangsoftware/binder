@@ -1,6 +1,6 @@
-import { switchPlugin } from "./plugins/switcherPlugin";
-import { togglePlugin } from "./plugins/togglePlugin";
-import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes";
+import { switchPlugin } from "./plugins/switcherPlugin.js";
+import { togglePlugin } from "./plugins/togglePlugin.js";
+import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes.js";
 export { togglePlugin, switchPlugin };
 
 const isInput = (element: Element) => element.localName === "input";
