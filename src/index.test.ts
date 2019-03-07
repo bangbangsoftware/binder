@@ -7,7 +7,19 @@ import {
   get
 } from "./index";
 
-let testElements = [];
+const mockElement: HTMLElement = document.createElement("div");
+mockElement.innerText = "bivouac";
+mockElement.setAttribute("name", "placeToStay");
+mockElement.setAttribute("id", "place1");
+
+const mockElement2: HTMLElement = document.createElement("input");
+mockElement2.setAttribute("value", "tunnel");
+mockElement2.setAttribute("name", "placeToStay");
+mockElement2.setAttribute("id", "place2");
+
+mockElement.appendChild(mockElement2);
+
+const testElements = [mockElement];
 const mocDoc = {
   getElementsByTagName: tagName => {
     if (tagName === "BODY") {
@@ -24,10 +36,10 @@ const mocDoc = {
 };
 const store = { reg: { bingo: "no" } };
 const mockStore = {
-  setItem: (k, v) => {
+  setItem: (k:string, v) => {
     store[k] = v;
   },
-  getItem: k => JSON.stringify(store[k])
+  getItem: (k:string) => JSON.stringify(store[k])
 };
 
 describe("The binder", () => {
@@ -41,12 +53,25 @@ describe("The binder", () => {
   });
 
   test("Putting values into the reg", () => {
-    const mockElement: HTMLElement = document.createElement("div");
-    mockElement.innerText = "house";
-    mockElement.setAttribute("name", "bingo");
-    put(mockElement);
-    const what = get("bingo");
+    const mockElement3: HTMLElement = document.createElement("div");
+    mockElement3.innerText = "house";
+    mockElement3.setAttribute("name", "placeToStay");
+    mockElement3.setAttribute("id", "place3");
+    put(mockElement3);
+    
+    const mockElement4: HTMLElement = document.createElement("input");
+    mockElement4.setAttribute("value", "caravan");
+    mockElement4.setAttribute("name", "placeToStay");
+    mockElement4.setAttribute("id", "place4");
+    put(mockElement4);
+
+    const what = get("placeToStay");
     console.log(what.currentValue);
-    expect(what.currentValue).toBe("house");
+    expect(what.currentValue).toBe("caravan");
+    expect(mockElement.innerText).toBe("caravan");
+
+    clear();
+    const andNow = get("placeToStay");
+    expect(andNow).toBeUndefined();
   });
 });
