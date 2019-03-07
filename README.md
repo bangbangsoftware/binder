@@ -39,7 +39,7 @@ npm i https://github.com/bangbangsoftware/binder -D
 So add it to your page, most basically like....
 
 ```shell
-<script type='module' src='./node_modules/binder/go.js'></script>
+<script type='module' src='./node_modules/binder/dist/go.js'></script>
 ```
 
 This will register any element on the page with a name and id attribute, eg. 
@@ -54,7 +54,7 @@ This will register any element on the page with a name and id attribute, eg.
         <div name='sport' id='sport-display'></div>
     </body>
     
-    <script type='module' src='../node_modules/binder/go.js'></script>
+    <script type='module' src='../node_modules/binder/dist/go.js'></script>
 </html>
 ```
 
@@ -82,7 +82,7 @@ do
     echo "      <div name='name' id='label$i'></div>" >> index.html
 done
 echo "      <div name='storage' id='slabel'>Press refresh (F5), Look in local storage!</div>" >> index.html
-echo "      <script type='module' src='../node_modules/binder/go.js'></script>" >> index.html
+echo "      <script type='module' src='../node_modules/binder/dist/go.js'></script>" >> index.html
 echo "</html>" >> index.html
 node ./node_modules/.bin/live-server
 ```
@@ -182,7 +182,7 @@ npm run build
 * [ ] Jest
 * [x] Put on github pages
 * [ ] Improve test page
-* [ ] Typescript
+* [X] Typescript
 
 ## Versioning
 

@@ -1,4 +1,4 @@
-import { setStorage, setDocument, bagItAndTagIt, put, get } from "./index";
+import { setStorage, setDocument, bagItAndTagIt, put } from "./index";
 let testElements = [];
 const mocDoc = {
     getElementsByTagName: tagName => {
@@ -30,9 +30,8 @@ describe("The binder", () => {
         bagItAndTagIt();
     });
     test("Putting values into the reg", () => {
-        const mockElement = {};
+        const mockElement = new Element();
         put(mockElement);
-        const reg = get();
         expect(store).toBe("sjkdhfkj");
     });
 });

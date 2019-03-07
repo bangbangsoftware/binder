@@ -64,7 +64,7 @@ echo "         <div>" >> index.html
 echo "              <H3>Toggler</H3>" >> index.html
 echo "              <button toggle='BANG,SLIP,TEETH,WALLPAPER' name='jumping' id='jumping'>BANG</button>" >> index.html
 echo "         </div>" >> index.html
-echo "         <script type='module' src='../node_modules/binder/go.js'></script>" >> index.html
+echo "         <script type='module' src='../node_modules/binder/dist/go.js'></script>" >> index.html
 echo "      </div>" >> index.html
 echo "      </div>" >> index.html
 echo "      <div class='source'>" >> index.html

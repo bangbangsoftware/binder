@@ -1,5 +1,5 @@
-import { switchPlugin } from "./plugins/switcherPlugin.js";
-import { togglePlugin } from "./plugins/togglePlugin.js";
+import { switchPlugin } from "./plugins/switcherPlugin";
+import { togglePlugin } from "./plugins/togglePlugin";
 export { togglePlugin, switchPlugin };
 const isInput = (element) => element.localName === "input";
 const getKey = (element) => (isInput(element) ? "value" : "innerText");
@@ -10,6 +10,7 @@ let doc = document;
 let plugins = Array();
 const done = new Array();
 const registry = {};
+export const get = (key) => registry[key];
 const tools = { put, get, getKey };
 export function put(element) {
     const fieldname = getName(element);
@@ -18,9 +19,11 @@ export function put(element) {
     }
     const key = getKey(element);
     const stored = get(fieldname);
-    const data = stored
-        ? stored
-        : { currentValue: element[key], elements: [element] };
+    const regEntry = {
+        currentValue: element[key],
+        elements: [element]
+    };
+    const data = stored ? stored : regEntry;
     data.currentValue = element[key];
     data.elements = data.elements.map(element => {
         const elementKey = getKey(element);
@@ -35,17 +38,12 @@ export function put(element) {
     const reg = JSON.stringify(keyvalue);
     storage.setItem("reg", reg);
 }
-export function get(key) {
-    return registry[key];
-}
 export function clear() {
     storage.setItem("reg", "{}");
     for (const field in registry)
         delete registry[field];
 }
-export function go(plugs = [togglePlugin, switchPlugin]) {
-    bagItAndTagIt(plugs);
-}
+export const go = (plugs = [togglePlugin, switchPlugin]) => bagItAndTagIt(plugs);
 export function bagItAndTagIt(plugs = Array()) {
     hide(doc.getElementsByTagName("BODY")[0]);
     for (const field in registry)
@@ -56,13 +54,8 @@ export function bagItAndTagIt(plugs = Array()) {
     show(doc.getElementsByTagName("BODY")[0]);
 }
 // Just for testing....
-export function setStorage(s) {
-    storage = s;
-}
-// Just for testing....
-export function setDocument(d) {
-    doc = d;
-}
+export const setStorage = s => (storage = s);
+export const setDocument = d => (doc = d);
 const setup = () => {
     const regString = storage.getItem("reg");
     if (!regString) {
@@ -109,19 +102,16 @@ const start = (element, fieldname) => {
     const key = getKey(element);
     set(element, fieldname, key);
     if (input) {
-        listen(element, e => put(e.target));
+        listen(element, (e) => put(e.target));
     }
 };
-const getName = (element) => {
-    return element.getAttribute("name") || "";
-};
+const getName = (element) => element.getAttribute("name") || "";
 const set = (element, fieldname, key) => {
     const data = get(fieldname);
     const elements = data ? data.elements : [];
     elements.push(element);
     const currentValue = data ? data.currentValue : element[key];
     element[key] = currentValue;
-    const newData = { elements, currentValue };
     put(element);
     return registry;
 };
