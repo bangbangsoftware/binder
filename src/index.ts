@@ -1,7 +1,4 @@
-import { switchPlugin } from "./plugins/switcherPlugin";
-import { togglePlugin } from "./plugins/togglePlugin";
 import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes";
-export { togglePlugin, switchPlugin };
 
 const isInput = (element: Element) => element.localName === "input";
 const getKey = (element: Element) => (isInput(element) ? "value" : "innerText");
@@ -50,8 +47,7 @@ export function clear() {
   for (const field in registry) delete registry[field];
 }
 
-export const go = (plugs = [togglePlugin, switchPlugin]) =>
-  bagItAndTagIt(plugs);
+export const go = plugs => bagItAndTagIt(plugs);
 
 export function bagItAndTagIt(plugs = Array<BinderPlugin>()) {
   hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
