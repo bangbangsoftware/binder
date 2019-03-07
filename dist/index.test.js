@@ -19,7 +19,7 @@ const mockStore = {
     setItem: (k, v) => {
         store[k] = v;
     },
-    getItem: k => store[k]
+    getItem: k => JSON.stringify(store[k])
 };
 describe("The binder", () => {
     beforeAll(() => {

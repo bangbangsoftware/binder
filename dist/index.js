@@ -1,6 +1,3 @@
-import { switchPlugin } from "./plugins/switcherPlugin";
-import { togglePlugin } from "./plugins/togglePlugin";
-export { togglePlugin, switchPlugin };
 const isInput = (element) => element.localName === "input";
 const getKey = (element) => (isInput(element) ? "value" : "innerText");
 const hide = (element) => (element.style.display = "none");
@@ -43,7 +40,7 @@ export function clear() {
     for (const field in registry)
         delete registry[field];
 }
-export const go = (plugs = [togglePlugin, switchPlugin]) => bagItAndTagIt(plugs);
+export const go = plugs => bagItAndTagIt(plugs);
 export function bagItAndTagIt(plugs = Array()) {
     hide(doc.getElementsByTagName("BODY")[0]);
     for (const field in registry)
@@ -61,8 +58,15 @@ const setup = () => {
     if (!regString) {
         return;
     }
-    const reg = JSON.parse(regString);
-    Object.keys(reg).forEach(key => (registry[key] = { currentValue: reg[key], elements: [] }));
+    try {
+        const reg = JSON.parse(regString);
+        Object.keys(reg).forEach(key => (registry[key] = { currentValue: reg[key], elements: [] }));
+    }
+    catch (er) {
+        console.error("cannot parse", regString);
+        console.error(typeof regString);
+        console.error(er);
+    }
 };
 const check = (element) => {
     if (element == null) {
