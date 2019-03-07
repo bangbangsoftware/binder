@@ -1,33 +1,35 @@
-import { switchPlugin } from "./plugins/switcherPlugin.js";
-import { togglePlugin } from "./plugins/togglePlugin.js";
+import { switchPlugin } from "./plugins/switcherPlugin";
+import { togglePlugin } from "./plugins/togglePlugin";
+import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes";
 export { togglePlugin, switchPlugin };
+
+const isInput = (element: Element) => element.localName === "input";
+const getKey = (element: Element) => (isInput(element) ? "value" : "innerText");
+const hide = (element: HTMLElement) => (element.style.display = "none");
+const show = (element: HTMLElement) => (element.style.display = "block");
 
 let storage = window.localStorage;
 let doc = document;
-let plugins = [];
-const done = [];
-const registry = {};
-const isInput = element => element.localName === "input";
-const getKey = element => (isInput(element) ? "value" : "innerText");
-const tools = { put, get, getKey };
+let plugins = Array<BinderPlugin>();
 
-// Just for testing....
-export function setStorage(s) {
-  storage = s;
-}
+const done = new Array<string>();
+const registry: { [key: string]: RegEntry } = {};
+export const get = (key: string): RegEntry => registry[key];
 
-// Just for testing....
-export function setDocument(d) {
-  doc = d;
-}
+const tools: BinderTools = { put, get, getKey };
 
-export function put(element) {
+export function put(element: Element) {
   const fieldname = getName(element);
+  if (fieldname === "") {
+    console.error("NO name in element !!!!? ", element);
+  }
   const key = getKey(element);
   const stored = get(fieldname);
-  const data = stored
-    ? stored
-    : { currentValue: element[key], elements: [element] };
+  const regEntry: RegEntry = {
+    currentValue: element[key],
+    elements: [element]
+  };
+  const data = stored ? stored : regEntry;
   data.currentValue = element[key];
   data.elements = data.elements.map(element => {
     const elementKey = getKey(element);
@@ -43,27 +45,26 @@ export function put(element) {
   storage.setItem("reg", reg);
 }
 
-export function get(key) {
-  return registry[key];
-}
-
 export function clear() {
   storage.setItem("reg", "{}");
   for (const field in registry) delete registry[field];
 }
 
-export function go(plugs = [togglePlugin, switchPlugin]){
+export const go = (plugs = [togglePlugin, switchPlugin]) =>
   bagItAndTagIt(plugs);
-}
 
-export function bagItAndTagIt(plugs = []) {
-  doc.getElementsByTagName("BODY")[0].style.display = "none";
+export function bagItAndTagIt(plugs = Array<BinderPlugin>()) {
+  hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
   for (const field in registry) delete registry[field];
   setup();
   plugins = plugs;
   doc.querySelectorAll("*").forEach(element => check(element));
-  doc.getElementsByTagName("BODY")[0].style.display = "block";
+  show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
 }
+
+// Just for testing....
+export const setStorage = s => (storage = s);
+export const setDocument = d => (doc = d);
 
 const setup = () => {
   const regString = storage.getItem("reg");
@@ -76,14 +77,20 @@ const setup = () => {
   );
 };
 
-const check = element => {
+const check = (element: Element) => {
+  if (element == null) {
+    return;
+  }
   register(element);
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
-    check(element.childNodes[i]);
+    const node = element.childNodes[i];
+    if (node instanceof Element) {
+      check(node);
+    }
   }
 };
 
-const register = element => {
+const register = (element: Element) => {
   const name = getName(element);
   if (!name) {
     return;
@@ -94,7 +101,7 @@ const register = element => {
     console.error("No id so cannot register", element);
     return;
   }
-  if (done.indexOf(element.id) > -1) {
+  if (done.find(d => d === element.id)) {
     return;
   }
 
@@ -107,39 +114,31 @@ const register = element => {
   });
 };
 
-const start = (element, fieldname) => {
+const start = (element: Element, fieldname: string) => {
   const input = isInput(element);
   const key = getKey(element);
   set(element, fieldname, key);
   if (input) {
-    listen(element, e => put(e.target));
+    listen(element, (e) => put(e.target));
   }
 };
 
-const getName = element => {
-  if (element.name) {
-    return element.name;
-  }
-  if (!element.getAttribute) {
-    return false;
-  }
-  return element.getAttribute("name");
-};
+const getName = (element: Element): string =>
+  element.getAttribute("name") || "";
 
-const set = (element, fieldname, key) => {
+const set = (element: Element, fieldname: string, key: string) => {
   const data = get(fieldname);
 
   const elements = data ? data.elements : [];
   elements.push(element);
   const currentValue = data ? data.currentValue : element[key];
   element[key] = currentValue;
-  const newData = { elements, currentValue };
   put(element);
 
   return registry;
 };
 
-const listen = (field, fn) => {
+const listen = (field: Element, fn: Function) => {
   const changed = e => fn(e);
   field.addEventListener("change", e => changed(e));
   //  field.addEventListener("keypress", e => {

@@ -1,3 +1,5 @@
+import { BinderPlugin } from "../binderTypes";
+
 let storage = window.localStorage;
 
 // Just for testing....
@@ -7,9 +9,9 @@ export function setStorage(s) {
 
 let binder;
 
-export const switchPlugin = tools => {
+export const switchPlugin:BinderPlugin = tools => {
   binder = tools;
-  return element => {
+  return (element: Element) => {
     const groupName = element.getAttribute("swapper");
     if (!groupName) {
       return;
@@ -18,7 +20,7 @@ export const switchPlugin = tools => {
   };
 };
 
-const swap = element => {
+const swap = (element:Element) => {
   const groupName = element.getAttribute("swapper");
   const idSelected = storage.getItem("swap-" + groupName);
   if (!idSelected) {
@@ -28,9 +30,14 @@ const swap = element => {
   }
   storage.removeItem("swap-" + groupName);
   const selected = document.getElementById(idSelected);
+  if (selected == null){
+    console.error(idSelected+ " is missing ???!");
+    return
+  }
   selected.classList.remove("swap-selected");
   if (idSelected === element.id) {
     console.error("what are you doing swap with itself???!");
+    return;
   }
 
   const selectKey = binder.getKey(selected);

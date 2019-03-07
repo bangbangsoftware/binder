@@ -2,11 +2,12 @@
   "name": "binder",
   "version": "1.0.0",
   "description": "A tiny library for binding data on a web page and storing locally",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest --coverage",
     "watch": "jest --watch",
-    "start": "live-server ./example/."
+    "start": "tsc -p . && live-server ./example/.",
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,10 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.3.4",
+    "@types/jest": "^24.0.9",
     "babel-jest": "^24.1.0",
-    "jest": "^24.1.0"
+    "jest": "^24.1.0",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333"
   }
 }
