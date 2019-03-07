@@ -30,7 +30,7 @@ describe("The binder", () => {
         bagItAndTagIt();
     });
     test("Putting values into the reg", () => {
-        const mockElement = new Element();
+        const mockElement = document.createElement("div");
         put(mockElement);
         expect(store).toBe("sjkdhfkj");
     });

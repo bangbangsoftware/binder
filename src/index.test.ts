@@ -41,7 +41,7 @@ describe("The binder", () => {
   });
 
   test("Putting values into the reg", () =>{
-    const mockElement:Element = new Element();
+    const mockElement:Element = document.createElement("div");
     put(mockElement);
     expect(store).toBe("sjkdhfkj");
   });

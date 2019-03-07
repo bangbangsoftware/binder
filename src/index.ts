@@ -1,6 +1,6 @@
-import { switchPlugin } from "./plugins/switcherPlugin.js";
-import { togglePlugin } from "./plugins/togglePlugin.js";
-import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes.js";
+import { switchPlugin } from "./plugins/switcherPlugin";
+import { togglePlugin } from "./plugins/togglePlugin";
+import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes";
 export { togglePlugin, switchPlugin };
 
 const isInput = (element: Element) => element.localName === "input";
@@ -128,13 +128,11 @@ const getName = (element: Element): string =>
 
 const set = (element: Element, fieldname: string, key: string) => {
   const data = get(fieldname);
-
   const elements = data ? data.elements : [];
   elements.push(element);
   const currentValue = data ? data.currentValue : element[key];
   element[key] = currentValue;
   put(element);
-
   return registry;
 };
 
