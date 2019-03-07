@@ -18,16 +18,16 @@ const mocDoc = {
       ];
     }
   },
-  querySelectorAll: () =>{
-      return testElements;
+  querySelectorAll: () => {
+    return testElements;
   }
 };
-const store = {};
+const store = { reg: { bingo: "no" } };
 const mockStore = {
   setItem: (k, v) => {
     store[k] = v;
   },
-  getItem: k => store[k]
+  getItem: k => JSON.stringify(store[k])
 };
 
 describe("The binder", () => {
@@ -40,9 +40,13 @@ describe("The binder", () => {
     bagItAndTagIt();
   });
 
-  test("Putting values into the reg", () =>{
-    const mockElement:Element = document.createElement("div");
+  test("Putting values into the reg", () => {
+    const mockElement: HTMLElement = document.createElement("div");
+    mockElement.innerText = "house";
+    mockElement.setAttribute("name", "bingo");
     put(mockElement);
-    expect(store).toBe("sjkdhfkj");
+    const what = get("bingo");
+    console.log(what.currentValue);
+    expect(what.currentValue).toBe("house");
   });
 });

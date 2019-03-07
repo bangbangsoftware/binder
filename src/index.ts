@@ -71,10 +71,16 @@ const setup = () => {
   if (!regString) {
     return;
   }
+  try {
   const reg = JSON.parse(regString);
   Object.keys(reg).forEach(
     key => (registry[key] = { currentValue: reg[key], elements: [] })
   );
+  } catch (er){
+    console.error("cannot parse",regString);
+    console.error(typeof regString);
+    console.error(er);
+  }
 };
 
 const check = (element: Element) => {
