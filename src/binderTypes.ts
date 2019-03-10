@@ -6,14 +6,19 @@ export interface ToolPut {
   (element: Element);
 }
 
-export interface ToolGetKey {
-  (element: Element);
+export interface ToolGetValue {
+  (element: Element):string| null;
+}
+
+export interface ToolSetValue {
+  (element: Element, value: String);
 }
 
 export interface BinderTools {
   put: ToolPut;
   get: ToolGet;
-  getKey: ToolGetKey;
+  getValue: ToolGetValue;
+  setValue: ToolSetValue;
 }
 
 export interface BinderProcessor {

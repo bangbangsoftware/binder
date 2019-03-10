@@ -138,7 +138,7 @@ bagItAndTagIt([togglePlugin, switchPlugin])
 
 The plugin should be a function that accepts an object and return a function 
 that accepts a HTML element. The object it accepts consists of the binder 
-tools (put, get and getKey functions). It should filter out any HTML the 
+tools (put, get, putValue, getValue functions). It should filter out any HTML the 
 plugin is not interested in. 
 
 eg.
@@ -179,9 +179,9 @@ npm run build
 * [ ] Documentation 
 * [x] Swapper 
 * [ ] Auto generate ids
-* [ ] Jest
+* [X] Jest
 * [x] Put on github pages
-* [ ] Improve test page
+* [X] Improve test page
 * [X] Typescript
 
 ## Versioning

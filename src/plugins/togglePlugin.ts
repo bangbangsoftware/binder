@@ -1,8 +1,10 @@
-let binder;
+import { BinderTools } from "../binderTypes";
 
-export const togglePlugin = tools => {
+let binder: BinderTools;
+
+export const togglePlugin = (tools: BinderTools) => {
   binder = tools;
-  return element => {
+  return (element: Element) => {
     const groupName = element.getAttribute("toggle");
     if (!groupName) {
       return;
@@ -11,16 +13,25 @@ export const togglePlugin = tools => {
   };
 };
 
-const swap = element => {
-  const listString = element.getAttribute("toggle");
-  const list = listString.split(/,/);
-  const key = binder.getKey(element);
-  const value = element[key];
-  const index = list.map((l,index) => {
-    const v = l.trim();
-    return (v === value)? index: false;
-  }).find(k => k !== false);
+const swap = (element: Element) => {
+  const listString = element.getAttribute("toggle") || "";
+  const list = listString.split(/,/).map(t => t.trim());
+  const value = binder.getValue(element);
+  const index = <number>list
+    .map(
+      (l: string, index: number): number | boolean => {
+        const v = l.trim();
+        return v === value ? index : false;
+      }
+    )
+    .find((k: number | boolean) => k !== false);
+  if (index === undefined) {
+    console.error("Cannot find element with value '" + value + "'");
+    binder.setValue(element, list[0]);
+    binder.put(element);
+    return;
+  }
   const newIndex = list.length > index + 1 ? index + 1 : 0;
-  element[key] = list[newIndex];
+  binder.setValue(element, list[newIndex]);
   binder.put(element);
 };

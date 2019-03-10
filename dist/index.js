@@ -1,32 +1,43 @@
+const done = new Array();
 const isInput = (element) => element.localName === "input";
-const getKey = (element) => (isInput(element) ? "value" : "innerText");
 const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
 let storage = window.localStorage;
 let doc = document;
 let plugins = Array();
-const done = new Array();
-const registry = {};
+export const registry = {};
 export const get = (key) => registry[key];
-const tools = { put, get, getKey };
+export const getValue = (element) => {
+    if (isInput(element)) {
+        return element.getAttribute("value") || "";
+    }
+    return element.innerText;
+};
+export const setValue = (element, value) => {
+    if (isInput(element)) {
+        element.setAttribute("value", value);
+    }
+    element.innerText = value;
+};
 export function put(element) {
     const fieldname = getName(element);
     if (fieldname === "") {
         console.error("NO name in element !!!!? ", element);
     }
-    const key = getKey(element);
     const stored = get(fieldname);
     const regEntry = {
-        currentValue: element[key],
+        currentValue: getValue(element),
         elements: [element]
     };
     const data = stored ? stored : regEntry;
-    data.currentValue = element[key];
-    data.elements = data.elements.map(element => {
-        const elementKey = getKey(element);
-        element[elementKey] = data.currentValue;
+    data.currentValue = getValue(element);
+    data.elements = data.elements.map((element) => {
+        setValue(element, data.currentValue);
         return element;
     });
+    if (!data.elements.find(e => e.id === element.id)) {
+        data.elements.push(element);
+    }
     registry[fieldname] = data;
     const keyvalue = {};
     Object.keys(registry).forEach(key => {
@@ -41,13 +52,14 @@ export function clear() {
         delete registry[field];
 }
 export const go = plugs => bagItAndTagIt(plugs);
+const tools = { put, get, getValue, setValue };
 export function bagItAndTagIt(plugs = Array()) {
     hide(doc.getElementsByTagName("BODY")[0]);
     for (const field in registry)
         delete registry[field];
     setup();
     plugins = plugs;
-    doc.querySelectorAll("*").forEach(element => check(element));
+    doc.querySelectorAll("*").forEach((element) => check(element));
     show(doc.getElementsByTagName("BODY")[0]);
 }
 // Just for testing....
@@ -75,7 +87,7 @@ const check = (element) => {
     register(element);
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
         const node = element.childNodes[i];
-        if (node instanceof Element) {
+        if (node instanceof HTMLElement) {
             check(node);
         }
     }
@@ -103,21 +115,19 @@ const register = (element) => {
 };
 const start = (element, fieldname) => {
     const input = isInput(element);
-    const key = getKey(element);
-    set(element, fieldname, key);
+    set(element, fieldname);
     if (input) {
-        listen(element, (e) => put(e.target));
+        listen(element, e => put(e.target));
     }
 };
 const getName = (element) => element.getAttribute("name") || "";
-const set = (element, fieldname, key) => {
+const set = (element, fieldname) => {
     const data = get(fieldname);
     const elements = data ? data.elements : [];
     elements.push(element);
-    const currentValue = data ? data.currentValue : element[key];
-    element[key] = currentValue;
+    const currentValue = data ? data.currentValue : getValue(element);
+    setValue(element, currentValue);
     put(element);
-    return registry;
 };
 const listen = (field, fn) => {
     const changed = e => fn(e);

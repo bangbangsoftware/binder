@@ -1,7 +1,7 @@
 import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes";
 
+const done = new Array<string>();
 const isInput = (element: Element) => element.localName === "input";
-const getKey = (element: Element) => (isInput(element) ? "value" : "innerText");
 const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
@@ -9,30 +9,41 @@ let storage = window.localStorage;
 let doc = document;
 let plugins = Array<BinderPlugin>();
 
-const done = new Array<string>();
-const registry: { [key: string]: RegEntry } = {};
+export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
+export const getValue = (element: HTMLElement): string => {
+  if (isInput(element)) {
+    return element.getAttribute("value") || "";
+  }
+  return element.innerText;
+};
+export const setValue = (element: HTMLElement, value: string) => {
+  if (isInput(element)) {
+    element.setAttribute("value", value);
+  }
+  element.innerText = value;
+};
 
-const tools: BinderTools = { put, get, getKey };
 
-export function put(element: Element) {
+export function put(element: HTMLElement) {
   const fieldname = getName(element);
   if (fieldname === "") {
     console.error("NO name in element !!!!? ", element);
   }
-  const key = getKey(element);
   const stored = get(fieldname);
   const regEntry: RegEntry = {
-    currentValue: element[key],
+    currentValue: getValue(element),
     elements: [element]
   };
   const data = stored ? stored : regEntry;
-  data.currentValue = element[key];
-  data.elements = data.elements.map(element => {
-    const elementKey = getKey(element);
-    element[elementKey] = data.currentValue;
+  data.currentValue = getValue(element);
+  data.elements = data.elements.map((element: HTMLElement) => {
+    setValue(element, data.currentValue);
     return element;
   });
+  if (!data.elements.find(e => e.id === element.id)) {
+    data.elements.push(element);
+  }
   registry[fieldname] = data;
   const keyvalue = {};
   Object.keys(registry).forEach(key => {
@@ -48,13 +59,14 @@ export function clear() {
 }
 
 export const go = plugs => bagItAndTagIt(plugs);
+const tools: BinderTools = { put, get, getValue, setValue };
 
 export function bagItAndTagIt(plugs = Array<BinderPlugin>()) {
   hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
   for (const field in registry) delete registry[field];
   setup();
   plugins = plugs;
-  doc.querySelectorAll("*").forEach(element => check(element));
+  doc.querySelectorAll("*").forEach((element: HTMLElement) => check(element));
   show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
 }
 
@@ -68,31 +80,31 @@ const setup = () => {
     return;
   }
   try {
-  const reg = JSON.parse(regString);
-  Object.keys(reg).forEach(
-    key => (registry[key] = { currentValue: reg[key], elements: [] })
-  );
-  } catch (er){
-    console.error("cannot parse",regString);
+    const reg = JSON.parse(regString);
+    Object.keys(reg).forEach(
+      key => (registry[key] = { currentValue: reg[key], elements: [] })
+    );
+  } catch (er) {
+    console.error("cannot parse", regString);
     console.error(typeof regString);
     console.error(er);
   }
 };
 
-const check = (element: Element) => {
+const check = (element: HTMLElement) => {
   if (element == null) {
     return;
   }
   register(element);
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     const node = element.childNodes[i];
-    if (node instanceof Element) {
+    if (node instanceof HTMLElement) {
       check(node);
     }
   }
 };
 
-const register = (element: Element) => {
+const register = (element: HTMLElement) => {
   const name = getName(element);
   if (!name) {
     return;
@@ -116,26 +128,24 @@ const register = (element: Element) => {
   });
 };
 
-const start = (element: Element, fieldname: string) => {
+const start = (element: HTMLElement, fieldname: string) => {
   const input = isInput(element);
-  const key = getKey(element);
-  set(element, fieldname, key);
+  set(element, fieldname);
   if (input) {
-    listen(element, (e) => put(e.target));
+    listen(element, e => put(e.target));
   }
 };
 
 const getName = (element: Element): string =>
   element.getAttribute("name") || "";
 
-const set = (element: Element, fieldname: string, key: string) => {
+const set = (element: HTMLElement, fieldname: string) => {
   const data = get(fieldname);
   const elements = data ? data.elements : [];
   elements.push(element);
-  const currentValue = data ? data.currentValue : element[key];
-  element[key] = currentValue;
+  const currentValue = data ? data.currentValue : getValue(element);
+  setValue(element, currentValue);
   put(element);
-  return registry;
 };
 
 const listen = (field: Element, fn: Function) => {

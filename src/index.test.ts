@@ -4,7 +4,9 @@ import {
   clear,
   bagItAndTagIt,
   put,
-  get
+  get,
+  registry,
+  getValue
 } from "./index";
 
 const mockElement: HTMLElement = document.createElement("div");
@@ -36,10 +38,10 @@ const mocDoc = {
 };
 const store = { reg: { bingo: "no" } };
 const mockStore = {
-  setItem: (k:string, v) => {
+  setItem: (k: string, v) => {
     store[k] = v;
   },
-  getItem: (k:string) => JSON.stringify(store[k])
+  getItem: (k: string) => JSON.stringify(store[k])
 };
 
 describe("The binder", () => {
@@ -58,7 +60,7 @@ describe("The binder", () => {
     mockElement3.setAttribute("name", "placeToStay");
     mockElement3.setAttribute("id", "place3");
     put(mockElement3);
-    
+
     const mockElement4: HTMLElement = document.createElement("input");
     mockElement4.setAttribute("value", "caravan");
     mockElement4.setAttribute("name", "placeToStay");
@@ -66,9 +68,13 @@ describe("The binder", () => {
     put(mockElement4);
 
     const what = get("placeToStay");
-    console.log(what.currentValue);
+    console.log("current Value", what.currentValue);
+
     expect(what.currentValue).toBe("caravan");
     expect(mockElement.innerText).toBe("caravan");
+    expect(mockElement2.getAttribute("value")).toBe("caravan");
+    expect(mockElement3.innerText).toBe("caravan");
+    expect(mockElement4.getAttribute("value")).toBe("caravan");
 
     clear();
     const andNow = get("placeToStay");

@@ -1,15 +1,22 @@
 import { BinderPlugin } from "../binderTypes";
 
 let storage = window.localStorage;
+let doc = document;
 
 // Just for testing....
 export function setStorage(s) {
   storage = s;
 }
 
+// Just for testing....
+export function setDocument(d) {
+  doc = d;
+}
+
+
 let binder;
 
-export const switchPlugin:BinderPlugin = tools => {
+export const swapperPlugin:BinderPlugin = tools => {
   binder = tools;
   return (element: Element) => {
     const groupName = element.getAttribute("swapper");
@@ -29,7 +36,7 @@ const swap = (element:Element) => {
     return;
   }
   storage.removeItem("swap-" + groupName);
-  const selected = document.getElementById(idSelected);
+  const selected = doc.getElementById(idSelected);
   if (selected == null){
     console.error(idSelected+ " is missing ???!");
     return
@@ -40,17 +47,15 @@ const swap = (element:Element) => {
     return;
   }
 
-  const selectKey = binder.getKey(selected);
-  const key = binder.getKey(element);
-  const swapValue = selected[selectKey] + "";
-  const value = element[key];
+  const swapValue = binder.getValue(selected) + "";
+  const value = binder.getValue(element);
 
   if (value === swapValue) {
+    console.log("Don't swap to itself '"+value+"'");
     return;
   }
-  element[key] = swapValue + "";
-  selected[selectKey] = value;
-
+  binder.setValue(element, swapValue + "");
+  binder.setValue(selected, value+ "");
   binder.put(element);
   binder.put(selected);
 };
