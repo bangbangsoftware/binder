@@ -31,19 +31,19 @@ const doc = {
   }
 };
 setDocument(doc);
+const binder: BinderTools = {
+  getValue: el => doc.getElementById(el.id).innerText,
+  put: () => {},
+  get: (k: string): RegEntry => {
+    const blank = { currentValue: "", elements: Array<Element>() };
+    return blank;
+  },
+  setValue: (el: Element, value: string) => {
+    doc.getElementById(el.id).innerText = value;
+  }
+};
 
-describe("switcherPlugin.test", () => {
-  const binder: BinderTools = {
-    getValue: el => doc.getElementById(el.id).innerText,
-    put: () => {},
-    get: (k: string): RegEntry => {
-      const blank = { currentValue: "", elements: Array<Element>() };
-      return blank;
-    },
-    setValue: (el: Element, value: string) => {
-      doc.getElementById(el.id).innerText = value;
-    }
-  };
+describe("swapperPlugin.test", () => {
   let plugin;
 
   test("Plugin can be set up", () => {
