@@ -40,7 +40,6 @@ export function put(element: HTMLElement) {
   };
   const data = stored ? stored : regEntry;
   data.currentValue = getValue(element);
-  console.log("putting...",element, data);
   data.elements = data.elements.map((element: HTMLElement) => {
     setValue(element, data.currentValue);
     return element;
