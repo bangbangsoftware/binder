@@ -11,7 +11,7 @@ export const togglePlugin = (tools) => {
 };
 const swap = (element) => {
     const listString = element.getAttribute("toggle") || "";
-    const list = listString.split(/,/);
+    const list = listString.split(/,/).map(t => t.trim());
     const value = binder.getValue(element);
     const index = list
         .map((l, index) => {
@@ -21,6 +21,8 @@ const swap = (element) => {
         .find((k) => k !== false);
     if (index === undefined) {
         console.error("Cannot find element with value '" + value + "'");
+        binder.setValue(element, list[0]);
+        binder.put(element);
         return;
     }
     const newIndex = list.length > index + 1 ? index + 1 : 0;

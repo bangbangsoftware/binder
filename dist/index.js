@@ -9,13 +9,15 @@ export const registry = {};
 export const get = (key) => registry[key];
 export const getValue = (element) => {
     if (isInput(element)) {
-        return element.getAttribute("value") || "";
+        const input = element;
+        return input.value;
     }
     return element.innerText;
 };
 export const setValue = (element, value) => {
     if (isInput(element)) {
-        element.setAttribute("value", value);
+        const input = element;
+        input.value = value;
     }
     element.innerText = value;
 };
@@ -31,6 +33,7 @@ export function put(element) {
     };
     const data = stored ? stored : regEntry;
     data.currentValue = getValue(element);
+    console.log("putting...", element, data);
     data.elements = data.elements.map((element) => {
         setValue(element, data.currentValue);
         return element;
@@ -95,6 +98,7 @@ const check = (element) => {
 const register = (element) => {
     const name = getName(element);
     if (!name) {
+        console.error("No name so cannot register", element);
         return;
     }
     if (!element.id) {

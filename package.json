@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest --coverage",
     "watch": "jest --watch",
-    "start": "tsc -p . && live-server ./example/.",
-    "build": "tsc -p ."
+    "start": "rm -r dist/* && tsc -p . && live-server ./example/.",
+    "build": "rm -r dist/* && tsc -p ."
   },
   "repository": {
     "type": "git",

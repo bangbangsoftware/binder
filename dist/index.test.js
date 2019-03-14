@@ -1,4 +1,4 @@
-import { setStorage, setDocument, clear, bagItAndTagIt, put, get, registry, getValue } from "./index";
+import { setStorage, setDocument, clear, bagItAndTagIt, put, get } from "./index";
 const mockElement = document.createElement("div");
 mockElement.innerText = "bivouac";
 mockElement.setAttribute("name", "placeToStay");
@@ -38,17 +38,6 @@ describe("The binder", () => {
     test("start up", () => {
         bagItAndTagIt();
     });
-    const dump = () => {
-        console.log("*************");
-        registry.placeToStay.elements.forEach((e) => {
-            const value = getValue(e);
-            console.log("DUMP", e.id, value);
-        });
-        console.log("==============");
-    };
-    const findElement = (id) => {
-        return registry.placeToStay.elements.find(e => e.id == id);
-    };
     test("Putting values into the reg", () => {
         const mockElement3 = document.createElement("div");
         mockElement3.innerText = "house";

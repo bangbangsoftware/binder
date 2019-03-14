@@ -1,10 +1,11 @@
 import { bagItAndTagIt, put } from "./dist/index.js";
-import { switchPlugin } from './dist/plugins/switcherPlugin.js'
+import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
 import { togglePlugin } from './dist/plugins/togglePlugin.js'
+import { showHidePlugin } from './dist/plugins/showhidePlugin.js'
 
 console.log("TESTER");
 
-bagItAndTagIt([switchPlugin, togglePlugin]);
+bagItAndTagIt([swapperPlugin, togglePlugin, showHidePlugin]);
 
 const incrementSeconds = (minutes, seconds) => {
   seconds.innerText = 0;

@@ -13,7 +13,6 @@ export function setDocument(d) {
   doc = d;
 }
 
-
 let binder;
 
 export const swapperPlugin:BinderPlugin = tools => {

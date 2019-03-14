@@ -13,19 +13,22 @@ export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
 export const getValue = (element: HTMLElement): string => {
   if (isInput(element)) {
-    return element.getAttribute("value") || "";
+    const input = <HTMLInputElement> element;
+    return input.value;
   }
   return element.innerText;
 };
 export const setValue = (element: HTMLElement, value: string) => {
   if (isInput(element)) {
-    element.setAttribute("value", value);
+    const input = <HTMLInputElement> element;
+    input.value = value;
   }
   element.innerText = value;
 };
 
 
 export function put(element: HTMLElement) {
+  
   const fieldname = getName(element);
   if (fieldname === "") {
     console.error("NO name in element !!!!? ", element);
@@ -37,6 +40,7 @@ export function put(element: HTMLElement) {
   };
   const data = stored ? stored : regEntry;
   data.currentValue = getValue(element);
+  console.log("putting...",element, data);
   data.elements = data.elements.map((element: HTMLElement) => {
     setValue(element, data.currentValue);
     return element;
@@ -107,6 +111,7 @@ const check = (element: HTMLElement) => {
 const register = (element: HTMLElement) => {
   const name = getName(element);
   if (!name) {
+    console.error("No name so cannot register", element);
     return;
   }
   if (!element.id) {
