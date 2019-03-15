@@ -10,8 +10,6 @@ export const showHidePlugin = () => {
         if (!name) {
             return;
         }
-        console.log("FOUND " + name + " trigger");
-        console.log(element);
         element.addEventListener("click", () => {
             console.log("BOOM");
             const list = elementsGroups[name];
