@@ -53,15 +53,13 @@ export function clear() {
     for (const field in registry)
         delete registry[field];
 }
-export const go = plugs => bagItAndTagIt(plugs);
-const tools = { put, get, getValue, setValue };
 export function bagItAndTagIt(plugs = Array()) {
     hide(doc.getElementsByTagName("BODY")[0]);
     for (const field in registry)
         delete registry[field];
     setup();
     plugins = plugs;
-    doc.querySelectorAll("*").forEach((element) => check(element));
+    doc.querySelectorAll("*").forEach((element) => registerAll(element));
     show(doc.getElementsByTagName("BODY")[0]);
 }
 // Just for testing....
@@ -82,7 +80,7 @@ const setup = () => {
         console.error(er);
     }
 };
-const check = (element) => {
+const registerAll = (element) => {
     if (element == null) {
         return;
     }
@@ -90,14 +88,19 @@ const check = (element) => {
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
         const node = element.childNodes[i];
         if (node instanceof HTMLElement) {
-            check(node);
+            registerAll(node);
         }
     }
 };
+export const go = plugs => bagItAndTagIt(plugs);
+const tools = { put, get, getValue, setValue, registerAll };
 const register = (element) => {
     const name = getName(element);
+    if (element.getAttribute("name") === "OVER") {
+        console.log(name, "checking ", element);
+    }
     if (!name) {
-        console.error("No name so cannot register", element);
+        //console.error("No name so cannot register", element);
         return;
     }
     if (!element.id) {
@@ -108,6 +111,9 @@ const register = (element) => {
     }
     if (done.find(d => d === element.id)) {
         return;
+    }
+    if (element.getAttribute("name") === "OVER") {
+        console.log("checking.................... ", element);
     }
     done.push(element.id);
     start(element, name);

@@ -14,11 +14,16 @@ export interface ToolSetValue {
   (element: Element, value: String);
 }
 
+export interface Checker {
+  (element: HTMLElement)
+}
+
 export interface BinderTools {
   put: ToolPut;
   get: ToolGet;
   getValue: ToolGetValue;
   setValue: ToolSetValue;
+  registerAll: Checker; 
 }
 
 export interface BinderProcessor {

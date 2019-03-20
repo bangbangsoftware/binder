@@ -15,7 +15,8 @@ describe("togglePlugin.test", () => {
       const blank = { currentValue: "", elements: Array<Element>() };
       return blank;
     },
-    setValue:(el:Element,value:string) => {mockElement.innerText = value;}
+    setValue:(el:Element,value:string) => {mockElement.innerText = value;},
+    registerAll: (el:Element) =>{}
   };
   let plugin;
 

@@ -7,8 +7,8 @@ body {
   border-style: solid;
 }
 
-.hide {
-  display: none;
+.next {
+  text-align: right;
 }
 
 .title {

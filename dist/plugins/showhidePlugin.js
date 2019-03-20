@@ -1,5 +1,11 @@
+// Just for testing....
+let doc = document;
+export function setDocument(d) {
+    doc = d;
+}
 const elementsGroups = {};
 export const showHidePlugin = () => {
+    addHide();
     return (element) => {
         const groupName = element.getAttribute("showhide");
         if (groupName) {
@@ -23,6 +29,12 @@ const storeElement = (groupName, element) => {
     const list = group === undefined ? [] : group;
     list.push(element);
     elementsGroups[groupName] = list;
+};
+const addHide = () => {
+    var style = doc.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = '.hide { display: none; } ';
+    doc.getElementsByTagName('head')[0].appendChild(style);
 };
 const swap = (element) => {
     if (element.classList.contains("hide")) {

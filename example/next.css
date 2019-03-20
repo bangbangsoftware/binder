@@ -1,0 +1,33 @@
+body {
+  background-color: lightgoldenrodyellow;
+}
+.swap-selected {
+  font-weight: bolder;
+  border: red;
+  border-style: solid;
+}
+
+.back {
+  text-align: right;
+}
+
+
+.title {
+  text-align: left;
+  font-size: 40px;
+  font-weight: bolder;
+}
+
+.pitch {
+  display: grid;
+  grid-template-columns: 115px 115px 115px 115px 115px 115px 115px 115px 115px 115px 115px 115px 115px 115px 115px;
+  grid-template-rows: 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px;
+  grid-gap: 10px;
+  background-color: green;
+}
+
+.posInput {
+  margin: 10px;
+  background-color: green;
+  width: 100%;
+}

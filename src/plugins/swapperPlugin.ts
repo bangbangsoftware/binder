@@ -1,14 +1,13 @@
 import { BinderPlugin } from "../binderTypes";
 
-let storage = window.localStorage;
-let doc = document;
-
 // Just for testing....
+let storage = window.localStorage;
 export function setStorage(s) {
   storage = s;
 }
 
 // Just for testing....
+let doc = document;
 export function setDocument(d) {
   doc = d;
 }
