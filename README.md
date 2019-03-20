@@ -24,7 +24,9 @@ code...
 It's a *simple fit* to straight forward use case, using localStorage 
 as a sort of redux store. It has a plugin system, where you can add 
 features in a decoupled way. It is small, in fact these docs are most
-likely bigger than the code.
+likely bigger than the code. So if you want to use routes, just get
+the webserver to serve another file, the state will still be there as
+it's in local storage.
 
 ## Installing / Getting started
 
