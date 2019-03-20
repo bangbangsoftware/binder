@@ -91,7 +91,7 @@ node ./node_modules/.bin/live-server
 
 ## Live demo...
 
-This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/index.html)
+This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/example/)
 
 ## Security
 
