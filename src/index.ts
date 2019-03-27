@@ -74,8 +74,10 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>()) {
 export const setStorage = s => (storage = s);
 export const setDocument = d => (doc = d);
 
+const listeners = new Map<string,Function>();
 const setup = () => {
   const regString = storage.getItem("reg");
+  setupListener();
   if (!regString) {
     return;
   }
@@ -90,6 +92,20 @@ const setup = () => {
     console.error(er);
   }
 };
+
+const setupListener = () => {
+  const changed = e => {
+    const id = e.target.id;
+    const fn = listeners.get(id);
+    if (fn != null){
+      fn(e);
+    }
+  };
+  doc.addEventListener("change", e => changed(e));
+  doc.addEventListener("onpaste", e => changed(e));
+  doc.addEventListener("keyup", e => changed(e));
+  doc.addEventListener("oninput", e => changed(e));
+}
 
 const registerAll = (element: HTMLElement) => {
   if (element == null) {
@@ -161,13 +177,5 @@ const set = (element: HTMLElement, fieldname: string) => {
 
 const listen = (field: Element, fn: Function) => {
   const changed = e => fn(e);
-  field.addEventListener("change", e => changed(e));
-  //  field.addEventListener("keypress", e => {
-  //    if (event.which == 13 || event.keyCode == 13) {
-  //      adder(holder, name, id, row, takeBut);
-  //    }
-  //  });
-  field.addEventListener("onpaste", e => changed(e));
-  field.addEventListener("keyup", e => changed(e));
-  field.addEventListener("oninput", e => changed(e));
+  listeners.set(field.id,changed);
 };
