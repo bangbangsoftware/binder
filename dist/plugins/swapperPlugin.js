@@ -16,7 +16,7 @@ export const swapperPlugin = tools => {
         if (!groupName) {
             return;
         }
-        element.addEventListener("click", e => swap(element));
+        tools.clickListener(element, (e) => swap(element));
     };
 };
 const swap = (element) => {

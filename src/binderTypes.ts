@@ -14,6 +14,10 @@ export interface ToolSetValue {
   (element: Element, value: String);
 }
 
+export interface ClickListener {
+  (element: Element, fn: Function);
+}
+
 export interface Checker {
   (element: HTMLElement)
 }
@@ -23,7 +27,8 @@ export interface BinderTools {
   get: ToolGet;
   getValue: ToolGetValue;
   setValue: ToolSetValue;
-  registerAll: Checker; 
+  registerAll: Checker;
+  clickListener: ClickListener; 
 }
 
 export interface BinderProcessor {

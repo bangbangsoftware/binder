@@ -41,7 +41,9 @@ const binder: BinderTools = {
   setValue: (el: Element, value: string) => {
     doc.getElementById(el.id).innerText = value;
   },
-  registerAll: (el:Element) =>{}
+  registerAll: (el:Element) =>{},
+  clickListener: (element: Element, fn: Function) => {}
+ 
 };
 
 describe("swapperPlugin.test", () => {

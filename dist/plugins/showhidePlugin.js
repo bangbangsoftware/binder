@@ -4,7 +4,7 @@ export function setDocument(d) {
     doc = d;
 }
 const elementsGroups = {};
-export const showHidePlugin = () => {
+export const showHidePlugin = tools => {
     addHide();
     return (element) => {
         const groupName = element.getAttribute("showhide");
@@ -16,10 +16,8 @@ export const showHidePlugin = () => {
         if (!name) {
             return;
         }
-        element.addEventListener("click", () => {
-            console.log("BOOM");
+        tools.clickListener(element, () => {
             const list = elementsGroups[name];
-            console.log(list);
             list.forEach(element => swap(element));
         });
     };

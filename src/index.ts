@@ -75,6 +75,8 @@ export const setStorage = s => (storage = s);
 export const setDocument = d => (doc = d);
 
 const listeners = new Map<string,Function>();
+const clickers = new Map<string,Function>();
+
 const setup = () => {
   const regString = storage.getItem("reg");
   setupListener();
@@ -93,18 +95,34 @@ const setup = () => {
   }
 };
 
+const react = (e:Event, mapper:Map<string,Function>)  => {
+  if (e.target == null){
+    return;
+  }
+  const element = <Element> e.target;
+  const id = element.id;
+  const fn = mapper.get(id);
+  if (fn != null){
+    fn(e);
+  }
+};
+
+const listen = (field: Element, fn: Function) => {
+  const changed = (e:Event) => fn(e);
+  listeners.set(field.id,changed);
+};
+
 const setupListener = () => {
-  const changed = e => {
-    const id = e.target.id;
-    const fn = listeners.get(id);
-    if (fn != null){
-      fn(e);
-    }
-  };
-  doc.addEventListener("change", e => changed(e));
-  doc.addEventListener("onpaste", e => changed(e));
-  doc.addEventListener("keyup", e => changed(e));
-  doc.addEventListener("oninput", e => changed(e));
+  doc.addEventListener("change", e => react(e, listeners));
+  doc.addEventListener("onpaste", e => react(e, listeners));
+  doc.addEventListener("keyup", e => react(e, listeners));
+  doc.addEventListener("oninput", e => react(e, listeners));
+  doc.addEventListener("click", e => react(e, clickers));
+}
+
+const clickListener = (e: Element, fn: Function) => {
+  const changed = e => fn(e);
+  clickers.set(e.id,changed);
 }
 
 const registerAll = (element: HTMLElement) => {
@@ -122,7 +140,7 @@ const registerAll = (element: HTMLElement) => {
 };
 
 export const go = plugs => bagItAndTagIt(plugs);
-const tools: BinderTools = { put, get, getValue, setValue, registerAll };
+const tools: BinderTools = { put, get, getValue, setValue, registerAll, clickListener };
 
 const register = (element: HTMLElement) => {
   const name = getName(element);
@@ -173,9 +191,4 @@ const set = (element: HTMLElement, fieldname: string) => {
   const currentValue = data ? data.currentValue : getValue(element);
   setValue(element, currentValue);
   put(element);
-};
-
-const listen = (field: Element, fn: Function) => {
-  const changed = e => fn(e);
-  listeners.set(field.id,changed);
 };

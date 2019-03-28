@@ -16,7 +16,8 @@ describe("togglePlugin.test", () => {
       return blank;
     },
     setValue:(el:Element,value:string) => {mockElement.innerText = value;},
-    registerAll: (el:Element) =>{}
+    registerAll: (el:Element) =>{},
+    clickListener: (element: Element, fn: Function) => {}
   };
   let plugin;
 

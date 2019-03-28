@@ -21,7 +21,7 @@ export const swapperPlugin:BinderPlugin = tools => {
     if (!groupName) {
       return;
     }
-    element.addEventListener("click", e => swap(element));
+    tools.clickListener(element, (e:Event) => swap(element));
   };
 };
 

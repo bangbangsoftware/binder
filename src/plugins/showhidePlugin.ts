@@ -7,7 +7,7 @@ export function setDocument(d) {
 }
 
 const elementsGroups = {};
-export const showHidePlugin: BinderPlugin = () => {
+export const showHidePlugin: BinderPlugin = tools => {
   addHide();
   return (element: HTMLElement) => {
     const groupName = element.getAttribute("showhide");
@@ -19,10 +19,8 @@ export const showHidePlugin: BinderPlugin = () => {
     if (!name) {
       return;
     }
-    element.addEventListener("click", () => {
-      console.log("BOOM");
+    tools.clickListener(element, () => {
       const list = elementsGroups[name];
-      console.log(list);
       list.forEach(element => swap(element));
     });
   };

@@ -66,6 +66,7 @@ export function bagItAndTagIt(plugs = Array()) {
 export const setStorage = s => (storage = s);
 export const setDocument = d => (doc = d);
 const listeners = new Map();
+const clickers = new Map();
 const setup = () => {
     const regString = storage.getItem("reg");
     setupListener();
@@ -82,18 +83,31 @@ const setup = () => {
         console.error(er);
     }
 };
+const react = (e, mapper) => {
+    if (e.target == null) {
+        return;
+    }
+    const element = e.target;
+    const id = element.id;
+    const fn = mapper.get(id);
+    if (fn != null) {
+        fn(e);
+    }
+};
+const listen = (field, fn) => {
+    const changed = (e) => fn(e);
+    listeners.set(field.id, changed);
+};
 const setupListener = () => {
-    const changed = e => {
-        const id = e.target.id;
-        const fn = listeners.get(id);
-        if (fn != null) {
-            fn(e);
-        }
-    };
-    doc.addEventListener("change", e => changed(e));
-    doc.addEventListener("onpaste", e => changed(e));
-    doc.addEventListener("keyup", e => changed(e));
-    doc.addEventListener("oninput", e => changed(e));
+    doc.addEventListener("change", e => react(e, listeners));
+    doc.addEventListener("onpaste", e => react(e, listeners));
+    doc.addEventListener("keyup", e => react(e, listeners));
+    doc.addEventListener("oninput", e => react(e, listeners));
+    doc.addEventListener("click", e => react(e, clickers));
+};
+const clickListener = (e, fn) => {
+    const changed = e => fn(e);
+    clickers.set(e.id, changed);
 };
 const registerAll = (element) => {
     if (element == null) {
@@ -108,7 +122,7 @@ const registerAll = (element) => {
     }
 };
 export const go = plugs => bagItAndTagIt(plugs);
-const tools = { put, get, getValue, setValue, registerAll };
+const tools = { put, get, getValue, setValue, registerAll, clickListener };
 const register = (element) => {
     const name = getName(element);
     if (element.getAttribute("name") === "OVER") {
@@ -152,9 +166,5 @@ const set = (element, fieldname) => {
     const currentValue = data ? data.currentValue : getValue(element);
     setValue(element, currentValue);
     put(element);
-};
-const listen = (field, fn) => {
-    const changed = e => fn(e);
-    listeners.set(field.id, changed);
 };
 //# sourceMappingURL=index.js.map

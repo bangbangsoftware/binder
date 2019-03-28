@@ -37,7 +37,8 @@ const binder = {
     setValue: (el, value) => {
         doc.getElementById(el.id).innerText = value;
     },
-    registerAll: (el) => { }
+    registerAll: (el) => { },
+    clickListener: (element, fn) => { }
 };
 describe("swapperPlugin.test", () => {
     let plugin;
