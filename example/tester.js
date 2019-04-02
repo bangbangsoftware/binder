@@ -100,7 +100,9 @@ concede.addEventListener("click", e => {
 
 for (let n = 1; n < 17; n++) {
   const el = document.getElementById("position" + n);
-  el.addEventListener("click", e => playerScored(e));
+  if (el){
+    el.addEventListener("click", e => playerScored(e));    
+  }
 }
 
 const playerScored = e => {

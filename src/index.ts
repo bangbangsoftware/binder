@@ -151,19 +151,15 @@ const register = (element: HTMLElement) => {
     //console.error("No name so cannot register", element);
     return;
   }
-  if (!element.id) {
-    //console.error("No id so, generating one", element);
-    //element.id = name+"-"+Object.keys(registry).length;
-    console.error("No id so cannot register", element);
+  if (!element.id || element.id === undefined) {
+    element.id = name+"-"+done.length;
+    console.error("No id so, generating one", element);
+    //console.error("No id so cannot register", element);
+    //return;
+  }
+  if (done.some(d => d === element.id)) {
     return;
   }
-  if (done.find(d => d === element.id)) {
-    return;
-  }
-  if (element.getAttribute("name") === "OVER"){
-    console.log("checking.................... ",element);
-  }
- 
   done.push(element.id);
   start(element, name);
 

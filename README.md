@@ -44,7 +44,7 @@ So add it to your page, most basically like....
 <script type='module' src='./node_modules/binder/dist/go.js'></script>
 ```
 
-This will register any element on the page with a name and id attribute, eg. 
+This will register any element on the page with a name attribute, eg. 
 
 ```shell
 <html>
@@ -52,8 +52,8 @@ This will register any element on the page with a name and id attribute, eg.
     <head><h1> The BINDER </h1></head>
     
     <body>
-        <input name='sport' id='sport-input' autofocus></input>
-        <div name='sport' id='sport-display'></div>
+        <input name='sport' autofocus></input>
+        <div name='sport' ></div>
     </body>
     
     <script type='module' src='../node_modules/binder/dist/go.js'></script>
@@ -179,12 +179,15 @@ npm run build
 ## To Do
 
 * [ ] Documentation 
-* [x] Swapper 
-* [ ] Auto generate ids
+* [X] Swapper 
+* [X] Auto generate ids
 * [X] Jest
 * [x] Put on github pages
 * [X] Improve test page
 * [X] Typescript
+* [X] Event delegation
+* [ ] Loop plugin, pass in data and  it will look for that name
+* [ ] Mustache syntax plugin, turning it into names
 
 ## Versioning
 
