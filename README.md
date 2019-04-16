@@ -122,11 +122,10 @@ npm test
 ```
 
 ### Built with
-Nothing, just pure JS.
+Typescript and jest
 
 ### Prerequisites
-Nothing, no back end, no babel... just go. Actually, a little lie, babel
-is needed for the jests tests....
+Nothing, no back end.
 
 ### Plugins
 Plugins need to be registered with binder through bagItAndTagIt function
@@ -140,8 +139,8 @@ bagItAndTagIt([togglePlugin, switchPlugin])
 
 The plugin should be a function that accepts an object and return a function 
 that accepts a HTML element. The object it accepts consists of the binder 
-tools (put, get, putValue, getValue functions). It should filter out any HTML the 
-plugin is not interested in. 
+tools (put, get, putValue, getValue, registerAll, clickListener functions). 
+It should filter out any HTML the plugin is not interested in. 
 
 eg.
 ```shell
@@ -154,7 +153,7 @@ eg.
      if (!name) {
        return; // this element is not for me.....
      }
-     element.addEventListener("click", e => doSomeStuff(element));
+     tools.clickListener(element, e => doSomeStuff(element));
    };
 };
 ```

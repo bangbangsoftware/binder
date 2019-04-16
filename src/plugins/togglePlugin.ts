@@ -4,16 +4,13 @@ let binder: BinderTools;
 
 export const togglePlugin = (tools: BinderTools) => {
   binder = tools;
-  return (element: Element) => {
-    const groupName = element.getAttribute("toggle");
-    if (!groupName) {
-      return;
-    }
-    tools.clickListener(element, (e:Event) => swap(element));
-  };
+  return {attributes:["toggle"], process:(element: Element, name: string):boolean => {
+    tools.clickListener(element, (e:Event) => click(element));
+    return true;
+  }};
 };
 
-const swap = (element: Element) => {
+export const click = (element: Element) => {
   const listString = element.getAttribute("toggle") || "";
   const list = listString.split(/,/).map(t => t.trim());
   const value = binder.getValue(element);

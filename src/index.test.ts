@@ -14,7 +14,7 @@ mockElement.innerText = "bivouac";
 mockElement.setAttribute("name", "placeToStay");
 mockElement.setAttribute("id", "place1");
 
-const mockElement2: HTMLElement = document.createElement("input");
+const mockElement2: HTMLInputElement = document.createElement("input");
 mockElement2.setAttribute("value", "tunnel");
 mockElement2.setAttribute("name", "placeToStay");
 mockElement2.setAttribute("id", "place2");
@@ -31,6 +31,10 @@ const mocDoc = {
         }
       ];
     }
+  },
+  addEventListener: (eventName:string, fn:Function) => {
+    //console.log("event:"+name);
+    //console.log(fn);
   },
   querySelectorAll: () => {
     return testElements;
@@ -54,25 +58,28 @@ describe("The binder", () => {
     bagItAndTagIt();
   });
 
-  test("Putting values into the reg", () => {
+  test("Putting values into the reg", () => 
+  {
     const mockElement3: HTMLElement = document.createElement("div");
     mockElement3.innerText = "house";
     mockElement3.setAttribute("name", "placeToStay");
     mockElement3.setAttribute("id", "place3");
-    put(mockElement3);
+    const reg = put(mockElement3);
+    console.log("reg",reg);
 
     const mockElement4: HTMLElement = document.createElement("input");
     mockElement4.setAttribute("value", "caravan");
     mockElement4.setAttribute("name", "placeToStay");
     mockElement4.setAttribute("id", "place4");
-    put(mockElement4);
+    const reg2 = put(mockElement4);
+    console.log("reg2",reg2);
 
     const what = get("placeToStay");
     console.log("current Value", what.currentValue);
 
     expect(what.currentValue).toBe("caravan");
     expect(mockElement.innerText).toBe("caravan");
-    expect(mockElement2.getAttribute("value")).toBe("caravan");
+    expect(mockElement2.value).toBe("caravan");
     expect(mockElement3.innerText).toBe("caravan");
     expect(mockElement4.getAttribute("value")).toBe("caravan");
 

@@ -16,16 +16,13 @@ let binder;
 
 export const swapperPlugin:BinderPlugin = tools => {
   binder = tools;
-  return (element: Element) => {
-    const groupName = element.getAttribute("swapper");
-    if (!groupName) {
-      return;
-    }
-    tools.clickListener(element, (e:Event) => swap(element));
-  };
+  return {attributes:["swapper"], process:(element: Element):boolean => {
+    tools.clickListener(element, (e:Event) => click(element));
+    return true;
+  }};
 };
 
-const swap = (element:Element) => {
+export const click = (element:Element) => {
   const groupName = element.getAttribute("swapper");
   const idSelected = storage.getItem("swap-" + groupName);
   if (!idSelected) {

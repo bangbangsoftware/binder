@@ -19,6 +19,10 @@ const mocDoc = {
             ];
         }
     },
+    addEventListener: (eventName, fn) => {
+        //console.log("event:"+name);
+        //console.log(fn);
+    },
     querySelectorAll: () => {
         return testElements;
     }
@@ -43,17 +47,19 @@ describe("The binder", () => {
         mockElement3.innerText = "house";
         mockElement3.setAttribute("name", "placeToStay");
         mockElement3.setAttribute("id", "place3");
-        put(mockElement3);
+        const reg = put(mockElement3);
+        console.log("reg", reg);
         const mockElement4 = document.createElement("input");
         mockElement4.setAttribute("value", "caravan");
         mockElement4.setAttribute("name", "placeToStay");
         mockElement4.setAttribute("id", "place4");
-        put(mockElement4);
+        const reg2 = put(mockElement4);
+        console.log("reg2", reg2);
         const what = get("placeToStay");
         console.log("current Value", what.currentValue);
         expect(what.currentValue).toBe("caravan");
         expect(mockElement.innerText).toBe("caravan");
-        expect(mockElement2.getAttribute("value")).toBe("caravan");
+        expect(mockElement2.value).toBe("caravan");
         expect(mockElement3.innerText).toBe("caravan");
         expect(mockElement4.getAttribute("value")).toBe("caravan");
         clear();

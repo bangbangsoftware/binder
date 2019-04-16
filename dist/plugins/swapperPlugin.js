@@ -11,15 +11,12 @@ export function setDocument(d) {
 let binder;
 export const swapperPlugin = tools => {
     binder = tools;
-    return (element) => {
-        const groupName = element.getAttribute("swapper");
-        if (!groupName) {
-            return;
-        }
-        tools.clickListener(element, (e) => swap(element));
-    };
+    return { attributes: ["swapper"], process: (element) => {
+            tools.clickListener(element, (e) => click(element));
+            return true;
+        } };
 };
-const swap = (element) => {
+export const click = (element) => {
     const groupName = element.getAttribute("swapper");
     const idSelected = storage.getItem("swap-" + groupName);
     if (!idSelected) {

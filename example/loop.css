@@ -1,0 +1,8 @@
+.data {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+};
+
+.bolder {
+    font-weight: 900;
+}

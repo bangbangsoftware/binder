@@ -1,4 +1,4 @@
-import { togglePlugin } from "./togglePlugin";
+import { togglePlugin, click } from "./togglePlugin";
 import { BinderTools, RegEntry } from "../binderTypes";
 
 const mockElement: HTMLElement = document.createElement("div");
@@ -16,7 +16,6 @@ describe("togglePlugin.test", () => {
       return blank;
     },
     setValue:(el:Element,value:string) => {mockElement.innerText = value;},
-    registerAll: (el:Element) =>{},
     clickListener: (element: Element, fn: Function) => {}
   };
   let plugin;
@@ -26,20 +25,20 @@ describe("togglePlugin.test", () => {
   });
 
   test("Can register ", () =>{
-    plugin(mockElement);
+    plugin.process(mockElement);
     expect(mockElement.innerText).toBe('rugby');
 
-    mockElement.click();
+    click(mockElement);
     expect(mockElement.innerText).toBe('long jump');
 
-    mockElement.click();
+    click(mockElement);
     expect(mockElement.innerText).toBe('crime');
 
-    mockElement.click();
+    click(mockElement);
     expect(mockElement.innerText).toBe('rugby');
 
     mockElement.innerText = "wrongone";
-    mockElement.click();
+    click(mockElement);
     expect(mockElement.innerText).toBe('rugby');
   })
 });

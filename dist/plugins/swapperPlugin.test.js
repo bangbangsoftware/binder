@@ -1,4 +1,4 @@
-import { swapperPlugin, setStorage, setDocument } from "./swapperPlugin";
+import { swapperPlugin, setStorage, setDocument, click } from "./swapperPlugin";
 const mockElement = document.createElement("div");
 mockElement.innerText = "rugby";
 mockElement.setAttribute("name", "sports");
@@ -37,7 +37,6 @@ const binder = {
     setValue: (el, value) => {
         doc.getElementById(el.id).innerText = value;
     },
-    registerAll: (el) => { },
     clickListener: (element, fn) => { }
 };
 describe("swapperPlugin.test", () => {
@@ -46,17 +45,17 @@ describe("swapperPlugin.test", () => {
         plugin = swapperPlugin(binder);
     });
     test("Can register ", () => {
-        plugin(mockElement);
-        plugin(mockElement2);
+        plugin.process(mockElement);
+        plugin.process(mockElement2);
         expect(mockElement.innerText).toBe("rugby");
-        mockElement.click();
-        mockElement2.click();
+        click(mockElement);
+        click(mockElement2);
         expect(mockElement.innerText).toBe("100 meters");
-        mockElement.click();
-        mockElement2.click();
+        click(mockElement);
+        click(mockElement2);
         expect(mockElement.innerText).toBe("rugby");
-        mockElement.click();
-        mockElement.click();
+        click(mockElement);
+        click(mockElement);
         expect(mockElement.innerText).toBe("rugby");
     });
 });

@@ -1,15 +1,12 @@
 let binder;
 export const togglePlugin = (tools) => {
     binder = tools;
-    return (element) => {
-        const groupName = element.getAttribute("toggle");
-        if (!groupName) {
-            return;
-        }
-        tools.clickListener(element, (e) => swap(element));
-    };
+    return { attributes: ["toggle"], process: (element, name) => {
+            tools.clickListener(element, (e) => click(element));
+            return true;
+        } };
 };
-const swap = (element) => {
+export const click = (element) => {
     const listString = element.getAttribute("toggle") || "";
     const list = listString.split(/,/).map(t => t.trim());
     const value = binder.getValue(element);

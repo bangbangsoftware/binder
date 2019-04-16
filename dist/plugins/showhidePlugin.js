@@ -6,21 +6,18 @@ export function setDocument(d) {
 const elementsGroups = {};
 export const showHidePlugin = tools => {
     addHide();
-    return (element) => {
-        const groupName = element.getAttribute("showhide");
-        if (groupName) {
-            storeElement(groupName, element);
-            return;
-        }
-        const name = element.getAttribute("showhide-trigger");
-        if (!name) {
-            return;
-        }
-        tools.clickListener(element, () => {
-            const list = elementsGroups[name];
-            list.forEach(element => swap(element));
-        });
-    };
+    return { attributes: ["showhide", "showhide-trigger"], process: (element, name) => {
+            const groupName = element.getAttribute("showhide");
+            if (groupName) {
+                storeElement(groupName, element);
+                return true;
+            }
+            tools.clickListener(element, () => {
+                const list = elementsGroups[name];
+                list.forEach(element => swap(element));
+            });
+            return true;
+        } };
 };
 const storeElement = (groupName, element) => {
     const group = elementsGroups[groupName];

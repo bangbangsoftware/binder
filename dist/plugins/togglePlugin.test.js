@@ -1,4 +1,4 @@
-import { togglePlugin } from "./togglePlugin";
+import { togglePlugin, click } from "./togglePlugin";
 const mockElement = document.createElement("div");
 mockElement.innerText = "rugby";
 mockElement.setAttribute("name", "sports");
@@ -13,7 +13,6 @@ describe("togglePlugin.test", () => {
             return blank;
         },
         setValue: (el, value) => { mockElement.innerText = value; },
-        registerAll: (el) => { },
         clickListener: (element, fn) => { }
     };
     let plugin;
@@ -21,16 +20,16 @@ describe("togglePlugin.test", () => {
         plugin = togglePlugin(binder);
     });
     test("Can register ", () => {
-        plugin(mockElement);
+        plugin.process(mockElement);
         expect(mockElement.innerText).toBe('rugby');
-        mockElement.click();
+        click(mockElement);
         expect(mockElement.innerText).toBe('long jump');
-        mockElement.click();
+        click(mockElement);
         expect(mockElement.innerText).toBe('crime');
-        mockElement.click();
+        click(mockElement);
         expect(mockElement.innerText).toBe('rugby');
         mockElement.innerText = "wrongone";
-        mockElement.click();
+        click(mockElement);
         expect(mockElement.innerText).toBe('rugby');
     });
 });

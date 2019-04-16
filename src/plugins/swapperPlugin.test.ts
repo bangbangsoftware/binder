@@ -1,4 +1,4 @@
-import { swapperPlugin, setStorage, setDocument } from "./swapperPlugin";
+import { swapperPlugin, setStorage, setDocument, click } from "./swapperPlugin";
 import { BinderTools, RegEntry } from "../binderTypes";
 
 const mockElement: HTMLElement = document.createElement("div");
@@ -41,7 +41,6 @@ const binder: BinderTools = {
   setValue: (el: Element, value: string) => {
     doc.getElementById(el.id).innerText = value;
   },
-  registerAll: (el:Element) =>{},
   clickListener: (element: Element, fn: Function) => {}
  
 };
@@ -54,20 +53,20 @@ describe("swapperPlugin.test", () => {
   });
 
   test("Can register ", () => {
-    plugin(mockElement);
-    plugin(mockElement2);
+    plugin.process(mockElement);
+    plugin.process(mockElement2);
     expect(mockElement.innerText).toBe("rugby");
 
-    mockElement.click();
-    mockElement2.click();
+    click(mockElement);
+    click(mockElement2);
     expect(mockElement.innerText).toBe("100 meters");
 
-    mockElement.click();
-    mockElement2.click();
+    click(mockElement);
+    click(mockElement2);
     expect(mockElement.innerText).toBe("rugby");
 
-    mockElement.click();
-    mockElement.click();
+    click(mockElement);
+    click(mockElement);
     expect(mockElement.innerText).toBe("rugby");
    
   });

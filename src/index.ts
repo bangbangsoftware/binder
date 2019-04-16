@@ -1,13 +1,14 @@
-import { BinderPlugin, RegEntry, BinderTools } from "./binderTypes";
+import { BinderPlugin, BinderPluginProcessor, RegEntry, BinderTools, BinderPluginLogic } from "./binderTypes";
 
-const done = new Array<string>();
+const namesDone = new Array<string>();
+const pluginsDone = new Array<string>();
+
 const isInput = (element: Element) => element.localName === "input";
 const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
 let storage = window.localStorage;
 let doc = document;
-let plugins = Array<BinderPlugin>();
 
 export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
@@ -26,12 +27,14 @@ export const setValue = (element: HTMLElement, value: string) => {
   element.innerText = value;
 };
 
+const getName = (element: Element): string =>
+  element.getAttribute("name") || "";
 
-export function put(element: HTMLElement) {
-  
+export function put(element: HTMLElement):{ [key: string]: RegEntry } {
   const fieldname = getName(element);
   if (fieldname === "") {
     console.error("NO name in element !!!!? ", element);
+    return registry;
   }
   const stored = get(fieldname);
   const regEntry: RegEntry = {
@@ -54,6 +57,7 @@ export function put(element: HTMLElement) {
   });
   const reg = JSON.stringify(keyvalue);
   storage.setItem("reg", reg);
+  return registry;
 }
 
 export function clear() {
@@ -65,9 +69,19 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>()) {
   hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
   for (const field in registry) delete registry[field];
   setup();
-  plugins = plugs;
-  doc.querySelectorAll("*").forEach((element: HTMLElement) => registerAll(element));
+  const plugins = plugs.map(setup => setup(tools));
+  const everything = doc.querySelectorAll("*");
+  let results = {};
+  everything.forEach((element: HTMLElement) => {
+    results = registerAll(element, plugins, results);
+  });
+  console.log("Detected.....");
+  Object.keys(results).forEach(k =>{
+    console.log(k+" - "+results[k]);
+  })
+  console.log(".............");
   show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
+
 }
 
 // Just for testing....
@@ -125,62 +139,87 @@ const clickListener = (e: Element, fn: Function) => {
   clickers.set(e.id,changed);
 }
 
-const registerAll = (element: HTMLElement) => {
+const registerAll = (element: HTMLElement,
+                     plugins = Array<BinderPluginLogic>(), 
+                     usage: { [key:string]:number; }):  { [key:string]:number; } => {
   if (element == null) {
-    return;
+    return usage;
   }
   
-  register(element);
+  const name = register(element, plugins);
+  const key = (name)? name: "total";
+  const count = usage[key] | 0;
+  usage[key] = count + 1;
+
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     const node = element.childNodes[i];
     if (node instanceof HTMLElement) {
-      registerAll(node);
+      return registerAll(node, plugins, usage);
     }
   }
+  return usage;
 };
 
 export const go = plugs => bagItAndTagIt(plugs);
-const tools: BinderTools = { put, get, getValue, setValue, registerAll, clickListener };
+const tools: BinderTools = { put, get, getValue, setValue, clickListener };
 
-const register = (element: HTMLElement) => {
-  const name = getName(element);
-  if (element.getAttribute("name") === "OVER"){
-    console.log(name, "checking ",element);
-  }
-  if (!name) {
-    //console.error("No name so cannot register", element);
-    return;
-  }
+const fixID = (element:HTMLElement, name: string):HTMLElement => {
   if (!element.id || element.id === undefined) {
-    element.id = name+"-"+done.length;
+    element.id = name+"-"+namesDone.length;
     console.error("No id so, generating one", element);
-    //console.error("No id so cannot register", element);
-    //return;
   }
-  if (done.some(d => d === element.id)) {
-    return;
-  }
-  done.push(element.id);
-  start(element, name);
+  return element;
+}
 
-  plugins.forEach(setup => {
-    const plugin = setup(tools);
-    plugin(element);
-  });
+const hasAttribute = (plug: BinderPluginLogic, element: Element): boolean => {
+  const attribute = plug.attributes.find(attr => element.hasAttribute(attr));
+  return (attribute !== undefined); 
+}
+
+const getPlugin = (plugins: Array<BinderPluginLogic>, element: Element): BinderPluginLogic | undefined =>{
+  return plugins.find(plugin => hasAttribute(plugin,element));
+}
+
+const register = (element: HTMLElement, plugins = Array<BinderPluginLogic>()):string| null => {
+  const name = getName(element);
+  if (name) {
+    fixID(element, name);
+    registerState(element, name);
+  }
+  const plugin = getPlugin(plugins, element);
+  if (plugin != undefined){
+    const value = plugin.attributes.map(attr => element.getAttribute(attr))
+                                  .find(v => v != undefined) || "";
+    const pluginName = (value)? value: plugin.attributes[0];                             
+    fixID(element, pluginName);    
+    registerPlugin(element,plugin,pluginName);
+  }
+  return null;
 };
 
-const start = (element: HTMLElement, fieldname: string) => {
-  const input = isInput(element);
-  set(element, fieldname);
-  if (input) {
+const registerPlugin = (element: HTMLElement, plugin: BinderPluginLogic, value: string): boolean =>  {
+  if (pluginsDone.some(d => d === element.id)) {
+    return false;
+  }
+  pluginsDone.push(element.id);
+  return plugin.process(element, value);
+};
+
+
+const registerState = (element: HTMLElement, fieldname: string): boolean =>  {
+  if (namesDone.some(d => d === element.id)) {
+    return false;
+  }
+  namesDone.push(element.id);
+
+  addToRegister(element, fieldname);
+  if (isInput(element)) {
     listen(element, e => put(e.target));
   }
+  return true;
 };
 
-const getName = (element: Element): string =>
-  element.getAttribute("name") || "";
-
-const set = (element: HTMLElement, fieldname: string) => {
+const addToRegister = (element: HTMLElement, fieldname: string) => {
   const data = get(fieldname);
   const elements = data ? data.elements : [];
   elements.push(element);

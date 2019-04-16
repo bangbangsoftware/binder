@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="./loop.css" />
+  </head>
+  <body>
+    <div class="title">
+      The BINDER
+      <a href="nextPage.html"><button class="back">back</button></a>
+    </div>
+    <div class="data" >
+      <div repeater="headers" class="bolder" place></div>
+    </div>
+    <div class="data" repeater="flights">
+      <div place="$index"></div>
+      <div place="from"></div>
+      <div place="to"></div>
+      <div place="depart"></div>
+      <div place="arrive"></div>
+      <div place="length"></div>
+    </div>
+  </body>
+  <script type="module" src="looptest.js"></script>
+</html>

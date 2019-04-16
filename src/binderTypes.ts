@@ -27,16 +27,20 @@ export interface BinderTools {
   get: ToolGet;
   getValue: ToolGetValue;
   setValue: ToolSetValue;
-  registerAll: Checker;
   clickListener: ClickListener; 
 }
 
-export interface BinderProcessor {
-  (element: Element);
+export interface BinderPlugin {
+  (tools: BinderTools): BinderPluginLogic;
 }
 
-export interface BinderPlugin {
-  (tools: BinderTools): BinderProcessor;
+export interface BinderPluginLogic {
+  attributes: Array<string>, 
+  process: BinderPluginProcessor
+}
+
+export interface BinderPluginProcessor {
+  (element: Element, name: string): boolean;
 }
 
 export interface RegEntry {
