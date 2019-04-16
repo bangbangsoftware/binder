@@ -10,6 +10,8 @@ const show = (element: HTMLElement) => (element.style.display = "block");
 let storage = window.localStorage;
 let doc = document;
 
+let dataKey = "reg";
+
 export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
 export const getValue = (element: HTMLElement): string => {
@@ -56,20 +58,21 @@ export function put(element: HTMLElement):{ [key: string]: RegEntry } {
     keyvalue[key] = registry[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
-  storage.setItem("reg", reg);
+  storage.setItem(dataKey, reg);
   return registry;
 }
 
 export function clear() {
-  storage.setItem("reg", "{}");
+  storage.setItem(dataKey, "{}");
   for (const field in registry) delete registry[field];
 }
 
-export function bagItAndTagIt(plugs = Array<BinderPlugin>()) {
+export function bagItAndTagIt(plugs = Array<BinderPlugin>(), key = "reg") {
+  dataKey = key;
   hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
   for (const field in registry) delete registry[field];
   setup();
-  const plugins = plugs.map(setup => setup(tools));
+  const plugins = plugs.map(setupPlugin => setupPlugin(tools));
   const everything = doc.querySelectorAll("*");
   let results = {};
   everything.forEach((element: HTMLElement) => {
@@ -92,7 +95,8 @@ const listeners = new Map<string,Function>();
 const clickers = new Map<string,Function>();
 
 const setup = () => {
-  const regString = storage.getItem("reg");
+  console.log("Binder getting data from '"+dataKey+"' in local storage");
+  const regString = storage.getItem(dataKey);
   setupListener();
   if (!regString) {
     return;

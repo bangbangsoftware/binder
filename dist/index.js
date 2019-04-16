@@ -5,6 +5,7 @@ const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
 let storage = window.localStorage;
 let doc = document;
+let dataKey = "reg";
 export const registry = {};
 export const get = (key) => registry[key];
 export const getValue = (element) => {
@@ -48,20 +49,21 @@ export function put(element) {
         keyvalue[key] = registry[key].currentValue;
     });
     const reg = JSON.stringify(keyvalue);
-    storage.setItem("reg", reg);
+    storage.setItem(dataKey, reg);
     return registry;
 }
 export function clear() {
-    storage.setItem("reg", "{}");
+    storage.setItem(dataKey, "{}");
     for (const field in registry)
         delete registry[field];
 }
-export function bagItAndTagIt(plugs = Array()) {
+export function bagItAndTagIt(plugs = Array(), key = "reg") {
+    dataKey = key;
     hide(doc.getElementsByTagName("BODY")[0]);
     for (const field in registry)
         delete registry[field];
     setup();
-    const plugins = plugs.map(setup => setup(tools));
+    const plugins = plugs.map(setupPlugin => setupPlugin(tools));
     const everything = doc.querySelectorAll("*");
     let results = {};
     everything.forEach((element) => {
@@ -80,7 +82,8 @@ export const setDocument = d => (doc = d);
 const listeners = new Map();
 const clickers = new Map();
 const setup = () => {
-    const regString = storage.getItem("reg");
+    console.log("Binder getting data from '" + dataKey + "' in local storage");
+    const regString = storage.getItem(dataKey);
     setupListener();
     if (!regString) {
         return;
