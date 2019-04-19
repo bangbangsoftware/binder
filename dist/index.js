@@ -145,7 +145,7 @@ const tools = { put, get, getValue, setValue, clickListener };
 const fixID = (element, name) => {
     if (!element.id || element.id === undefined) {
         element.id = name + "-" + namesDone.length;
-        console.error("No id so, generating one", element);
+        console.error("No id so, generating one: ", element.id);
     }
     return element;
 };

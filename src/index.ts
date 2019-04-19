@@ -170,7 +170,7 @@ const tools: BinderTools = { put, get, getValue, setValue, clickListener };
 const fixID = (element:HTMLElement, name: string):HTMLElement => {
   if (!element.id || element.id === undefined) {
     element.id = name+"-"+namesDone.length;
-    console.error("No id so, generating one", element);
+    console.error("No id so, generating one: ", element.id);
   }
   return element;
 }
