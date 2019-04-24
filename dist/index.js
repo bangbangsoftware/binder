@@ -128,10 +128,16 @@ const registerAll = (element, plugins = Array(), usage) => {
     if (element == null) {
         return usage;
     }
-    const name = register(element, plugins);
-    const key = (name) ? name : "total";
-    const count = usage[key] | 0;
-    usage[key] = count + 1;
+    const pluginsForElement = register(element, plugins);
+    if (pluginsForElement.length === 0) {
+        const count = usage.total | 0;
+        usage.total = count + 1;
+    }
+    pluginsForElement.forEach(pi => {
+        const key = pi.attributes[0];
+        const count = usage[key] | 0;
+        usage[key] = count + 1;
+    });
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
         const node = element.childNodes[i];
         if (node instanceof HTMLElement) {
@@ -145,7 +151,8 @@ const tools = { put, get, getValue, setValue, clickListener };
 const fixID = (element, name) => {
     if (!element.id || element.id === undefined) {
         element.id = name + "-" + namesDone.length;
-        console.error("No id so, generating one: ", element.id);
+        const typeText = isInput(element) ? "input" : "None input";
+        console.error("No id for " + typeText + " element so, generating one: ", element.id);
     }
     return element;
 };
@@ -153,8 +160,8 @@ const hasAttribute = (plug, element) => {
     const attribute = plug.attributes.find(attr => element.hasAttribute(attr));
     return (attribute !== undefined);
 };
-const getPlugin = (plugins, element) => {
-    return plugins.find(plugin => hasAttribute(plugin, element));
+const getPlugins = (plugins, element) => {
+    return plugins.filter(plugin => hasAttribute(plugin, element));
 };
 const register = (element, plugins = Array()) => {
     const name = getName(element);
@@ -162,21 +169,21 @@ const register = (element, plugins = Array()) => {
         fixID(element, name);
         registerState(element, name);
     }
-    const plugin = getPlugin(plugins, element);
-    if (plugin != undefined) {
+    const pluginsForElement = getPlugins(plugins, element);
+    const pluginsDone = pluginsForElement.filter(plugin => {
         const value = plugin.attributes.map(attr => element.getAttribute(attr))
             .find(v => v != undefined) || "";
         const pluginName = (value) ? value : plugin.attributes[0];
         fixID(element, pluginName);
-        registerPlugin(element, plugin, pluginName);
-    }
-    return null;
+        return registerPlugin(element, plugin, pluginName);
+    });
+    return pluginsDone;
 };
 const registerPlugin = (element, plugin, value) => {
-    if (pluginsDone.some(d => d === element.id)) {
+    if (pluginsDone.some(d => d === element.id + "::" + plugin.attributes[0])) {
         return false;
     }
-    pluginsDone.push(element.id);
+    pluginsDone.push(element.id + "::" + plugin.attributes[0]);
     return plugin.process(element, value);
 };
 const registerState = (element, fieldname) => {
