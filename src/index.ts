@@ -1,4 +1,4 @@
-import { BinderPlugin, BinderPluginProcessor, RegEntry, BinderTools, BinderPluginLogic } from "./binderTypes";
+import { BinderPlugin, RegEntry, BinderTools, BinderPluginLogic } from "./binderTypes";
 
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();

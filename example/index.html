@@ -20,71 +20,145 @@
       <button id="vrsScore" name="vrsScore" class="vrsScore" value="0"></button>
     </div>
     <div class="scored hide" name="scored" id="scored"></div>
-      <button  name="kickoff" class="kickoff" id="kickoff">Kick Off</button>
+    <div class="buttongrid">
+      <button name="kickoff"       class="kickoff" id="kickoff">Kick Off</button>
+      <button showhide-trigger="capshow" class="kickoff" id="captain-butt">Pick Captain</button>
+      <button name="showhide-test" class="kickoff" id="showhide-test" showhide-trigger="team"> EDIT</button> 
+    </div>
     <button toggle="Play On, Whistle blown" name="playing" class="kickoff hide" id="state">Play On</button>
+
     <div id="playing" class="hide">
         <div class="pitch">
-        <button class="pos" name="front1" id="position1" ></button>
-        <button class="pos" name="front2" id="position2" >Fred</button>
-        <button class="pos" name="front3" id="position3" ></button>
-        <button class="pos" name="front4" id="position4" >Jim</button>
-        <button class="pos" name="front5" id="position5" ></button>
-        <button class="pos" name="mid1"   id="position6" >Dick</button>
-        <button class="pos" name="mid2"   id="position7" >Johnno</button>
-        <button class="pos" name="mid3"   id="position8" ></button>
-        <button class="pos" name="mid4"   id="position9" >Filpper</button>
-        <button class="pos" name="mid5"   id="position10 ">Wazo</button>
-        <button class="pos" name="back1"  id="position11">Jimbo</button>
-        <button class="pos" name="back2"  id="position12">Popper</button>
-        <button class="pos" name="back3"  id="position13"></button>
-        <button class="pos" name="back4"  id="position14">Boomer</button>
-        <button class="pos" name="back5"  id="position15">Shizal</button>
-        <div></div>
-        <div></div>
-        <button class="pos" name="goalie" id="position16">Maron</button>
-        <div></div>
-        <div></div>
-    </div>  
-  </div>
+          <button class="pos" name="front1" id="position1" ></button>
+          <button class="pos" name="front2" id="position2" >Fred</button>
+          <button class="pos" name="front3" id="position3" ></button>
+          <button class="pos" name="front4" id="position4" >Jim</button>
+          <button class="pos" name="front5" id="position5" ></button>
+          <button class="pos" name="mid1"   id="position6" >Dick</button>
+          <button class="pos" name="mid2"   id="position7" >Johnno</button>
+          <button class="pos" name="mid3"   id="position8" ></button>
+          <button class="pos" name="mid4"   id="position9" >Filpper</button>
+          <button class="pos" name="mid5"   id="position10 ">Wazo</button>
+          <button class="pos" name="back1"  id="position11">Jimbo</button>
+          <button class="pos" name="back2"  id="position12">Popper</button>
+          <button class="pos" name="back3"  id="position13"></button>
+          <button class="pos" name="back4"  id="position14">Boomer</button>
+          <button class="pos" name="back5"  id="position15">Shizal</button>
+          <div></div>
+          <div></div>
+          <button class="pos" name="goalie" id="position16">Maron</button>
+          <div></div>
+          <div></div>
+      </div>  
+    </div>
   <div id="bench">
       <div class="pitch">
-    <button showhide="team" class="posInput" swapper="formation" name="front1" ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="front2"  ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="front3" ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="front4" ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="front5" ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="mid1"  ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="mid2"   ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="mid3"   ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="mid4"   ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="mid5"   ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="back1"  ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="back2"  ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="back3"  ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="back4"  ></button>
-    <button showhide="team" class="posInput" swapper="formation" name="back5"  ></button>
-      <input showhide="team" class="posInput hide" name="front1" ></input>
-      <input showhide="team" class="posInput hide" name="front2"  ></input>
-      <input showhide="team" class="posInput hide" name="front3" ></input>
-      <input showhide="team" class="posInput hide" name="front4" ></input>
-      <input showhide="team" class="posInput hide" name="front5" ></input>
-      <input showhide="team" class="posInput hide" name="mid1"   ></input>
-      <input showhide="team" class="posInput hide" name="mid2"   ></input>
-      <input showhide="team" class="posInput hide" name="mid3"   ></input>
-      <input showhide="team" class="posInput hide" name="mid4"   ></input>
-      <input showhide="team" class="posInput hide" name="mid5"   ></input>
-      <input showhide="team" class="posInput hide" name="back1" ></input>
-      <input showhide="team" class="posInput hide" name="back2" ></input>
-      <input showhide="team" class="posInput hide" name="back3" ></input>
-      <input showhide="team" class="posInput hide" name="back4" ></input>
-      <input showhide="team" class="posInput hide" name="back5" ></input>
-      <div></div>
-      <div></div>
-      <input showhide="team" class="posInput hide" name="goalie" id="goalie"></input>
-      <button showhide="team" class="posInput" swapper="formation" name="goalie" id="d-goalie"></button>
-      <div dis="bang" class="posInput" swapper="formation" name="goalie" id="goalie"></div>
-      <div></div>
-      <div></div>
+
+        <div showhide="team, capshow" class="hide">
+          <div class="caprib" name="front1-ribbon"  mover="captain" >Captain</div>
+          <div class="capInput" name="front1" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="front2-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="front2" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="front3-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="front3" ></div>
+        </div>
+        <div showhide="capshow" class="hide">
+            <div class="caprib" name="front4-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="front4" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="front5-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="front5" ></div>
+        </div>
+
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib"  name="mid1-ribbon" mover="captain" ></div>
+            <div class="capInput" name="mid1" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib"  name="mid2-ribbon" mover="captain" ></div>
+            <div class="capInput" name="mid2" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="mid3-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="mid3" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib"  name="mid4-ribbon" mover="captain" ></div>
+            <div class="capInput" name="mid4" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib"  name="mid5-ribbon" mover="captain" ></div>
+            <div class="capInput" name="mid5" ></div>
+        </div>
+
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="back1-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="back1" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="back2-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="back2" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="back3-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="back3" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="back4-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="back4" ></div>
+        </div>
+        <div showhide="team, capshow" class="hide">
+            <div class="caprib" name="back5-ribbon"  mover="captain" ></div>
+            <div class="capInput" name="back5" ></div>
+        </div>
+
+        <div showhide="team, capshow" class="caprib" name="front1-ribbon" ></div>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="front1" ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="front2" ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="front3" ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="front4" ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="front5" ></button>
+
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="mid1"  ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="mid2"   ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="mid3"   ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="mid4"   ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="mid5"   ></button>
+
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="back1"  ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="back2"  ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="back3"  ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="back4"  ></button>
+        <button showhide="team, capshow" class="posInput" swapper="formation" name="back5"  ></button>
+
+            <input showhide="team" class="posInput hide" name="front1" ></input>
+            <input showhide="team" class="posInput hide" name="front2"  ></input>
+            <input showhide="team" class="posInput hide" name="front3" ></input>
+            <input showhide="team" class="posInput hide" name="front4" ></input>
+            <input showhide="team" class="posInput hide" name="front5" ></input>
+            <input showhide="team" class="posInput hide" name="mid1"   ></input>
+            <input showhide="team" class="posInput hide" name="mid2"   ></input>
+            <input showhide="team" class="posInput hide" name="mid3"   ></input>
+            <input showhide="team" class="posInput hide" name="mid4"   ></input>
+            <input showhide="team" class="posInput hide" name="mid5"   ></input>
+            <input showhide="team" class="posInput hide" name="back1" ></input>
+            <input showhide="team" class="posInput hide" name="back2" ></input>
+            <input showhide="team" class="posInput hide" name="back3" ></input>
+            <input showhide="team" class="posInput hide" name="back4" ></input>
+            <input showhide="team" class="posInput hide" name="back5" ></input>
+
+            <div></div>
+            <div></div>
+            <input showhide="team" class="posInput hide" name="goalie" id="goalie"></input>
+            <button showhide="team" class="posInput" swapper="formation" name="goalie" id="d-goalie"></button>
+            <div dis="bang" class="posInput" swapper="formation" name="goalie" id="goalie"></div>
+            <div></div>
+            <div></div>
     </div>
       <div class="sub">BENCH</div>
         <div class="bench" >
@@ -96,7 +170,6 @@
         </div>
       </div>
     </div>
-    <button id="showhide-test" name="showhide-test" showhide-trigger="team"> EDIT</button>
     <div class="results">
       <div class="sub">Time</div>
       <div class="sub">Event</div>

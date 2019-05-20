@@ -9,19 +9,29 @@ export function setDocument(d) {
 const elementsGroups = {};
 export const showHidePlugin: BinderPlugin = tools => {
   addHide();
-  return {attributes:["showhide","showhide-trigger"], process:(element: HTMLElement, name:string):boolean => {
-    const groupName = element.getAttribute("showhide");
-    if (groupName) {
-      storeElement(groupName, element);
+  return {
+    attributes: ["showhide", "showhide-trigger"],
+    process: (element: HTMLElement, name: string): boolean => {
+      const groupName = element.getAttribute("showhide");
+      if (!groupName) {
+        return regTrigger(tools, name, element);
+      }
+      const list = groupName.split(",");
+      list.forEach(name => storeElement(name.trim(), element));
       return true;
     }
-    tools.clickListener(element, () => {
-      const list = elementsGroups[name];
-      list.forEach(element => swap(element));
-    });
-    return true;
-  }};
+  };
 };
+
+const regTrigger = (tools,name, element) =>{
+  tools.clickListener(element, () => showHideSwap(name));
+  return true;
+}
+
+export const showHideSwap = name => {
+  const list = elementsGroups[name];
+  list.forEach((el: HTMLElement) => swap(el));
+}
 
 const storeElement = (groupName: string, element: HTMLElement) => {
   const group = elementsGroups[groupName];
@@ -30,17 +40,17 @@ const storeElement = (groupName: string, element: HTMLElement) => {
   elementsGroups[groupName] = list;
 };
 
-const addHide= ()=>{
-  var style = doc.createElement('style');
-  style.type = 'text/css';
-  style.innerHTML = '.hide { display: none; } ';
-  doc.getElementsByTagName('head')[0].appendChild(style);
-}
+const addHide = () => {
+  var style = doc.createElement("style");
+  style.type = "text/css";
+  style.innerHTML = ".hide { display: none; } ";
+  doc.getElementsByTagName("head")[0].appendChild(style);
+};
 
 const swap = (element: HTMLElement) => {
   if (element.classList.contains("hide")) {
     element.classList.remove("hide");
   } else {
-    element.classList.add("hide")
+    element.classList.add("hide");
   }
 };
