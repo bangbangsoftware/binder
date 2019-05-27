@@ -13,7 +13,8 @@ describe("togglePlugin.test", () => {
             return blank;
         },
         setValue: (el, value) => { mockElement.innerText = value; },
-        clickListener: (element, fn) => { }
+        clickListener: (element, fn) => { },
+        stateListener: (id, fn) => { }
     };
     let plugin;
     test("Plugin can be set up", () => {

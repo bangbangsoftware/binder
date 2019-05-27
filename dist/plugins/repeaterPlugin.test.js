@@ -15,7 +15,8 @@ describe("repeaterPlugin.test", () => {
         setValue: (el, value) => {
             el.innerText = value;
         },
-        clickListener: (element, fn) => { }
+        clickListener: (element, fn) => { },
+        stateListener: (element, fn) => { }
     };
     let plugin;
     const headings = ["from", "to", "depart", "arrive", "length"];

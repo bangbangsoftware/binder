@@ -18,6 +18,11 @@ export interface ClickListener {
   (element: Element, fn: Function);
 }
 
+export interface StateListener {
+  (fieldID: string, fn: Function);
+}
+
+
 export interface Checker {
   (element: HTMLElement)
 }
@@ -27,7 +32,8 @@ export interface BinderTools {
   get: ToolGet;
   getValue: ToolGetValue;
   setValue: ToolSetValue;
-  clickListener: ClickListener; 
+  clickListener: ClickListener;
+  stateListener: StateListener; 
 }
 
 export interface BinderPlugin {

@@ -18,7 +18,8 @@ describe("repeaterPlugin.test", () => {
     setValue:(el:HTMLElement,value:string) => {
       el.innerText = value;
     },
-    clickListener: (element: Element, fn: Function) => {}
+    clickListener: (element: Element, fn: Function) => {},
+    stateListener: (element: string, fn: Function) => {}
   };
   let plugin;
 

@@ -20,7 +20,9 @@ export const setValue = (element, value) => {
         const input = element;
         input.value = value;
     }
+    console.log("setvalue ", element.id, "'" + value + "'");
     element.innerText = value;
+    doAll(element, statelisteners);
 };
 const getName = (element) => element.getAttribute("name") || "";
 export function put(element) {
@@ -54,6 +56,7 @@ export function put(element) {
 }
 export function clear() {
     storage.setItem(dataKey, "{}");
+    11;
     for (const field in registry)
         delete registry[field];
 }
@@ -80,6 +83,7 @@ export function bagItAndTagIt(plugs = Array(), key = "reg") {
 export const setStorage = s => (storage = s);
 export const setDocument = d => (doc = d);
 const listeners = new Map();
+const statelisteners = new Map();
 const clickers = new Map();
 const setup = () => {
     console.log("Binder getting data from '" + dataKey + "' in local storage");
@@ -98,6 +102,24 @@ const setup = () => {
         console.error(er);
     }
 };
+const reactAll = (e, mapper) => {
+    if (e.target == null) {
+        return;
+    }
+    const element = e.target;
+    doAll(element, mapper);
+};
+const doAll = (element, mapper) => {
+    const id = element.id;
+    const fns = mapper.get(id);
+    if (fns == null) {
+        //    console.log("IFP - NULL! "+id);
+        //    console.log("IFP - ",mapper);
+        return;
+    }
+    console.log("IFP - calling all listeners for " + id, fns);
+    fns.forEach(fn => fn(element));
+};
 const react = (e, mapper) => {
     if (e.target == null) {
         return;
@@ -111,13 +133,25 @@ const react = (e, mapper) => {
 };
 const listen = (field, fn) => {
     const changed = (e) => fn(e);
-    listeners.set(field.id, changed);
+    addListener(field.id, changed);
+};
+const stateListener = (fieldID, fn) => {
+    const changed = (e) => fn(e);
+    console.log("adding ", fieldID);
+    addListener(fieldID, changed, statelisteners);
+};
+const addListener = (fieldID, changed, ears = listeners) => {
+    const list = ears.get(fieldID);
+    const funcList = list ? list : new Array();
+    funcList.push(changed);
+    ears.set(fieldID, funcList);
 };
 const setupListener = () => {
-    doc.addEventListener("change", e => react(e, listeners));
-    doc.addEventListener("onpaste", e => react(e, listeners));
-    doc.addEventListener("keyup", e => react(e, listeners));
-    doc.addEventListener("oninput", e => react(e, listeners));
+    doc.addEventListener("change", e => reactAll(e, listeners));
+    doc.addEventListener("onpaste", e => reactAll(e, listeners));
+    doc.addEventListener("keyup", e => reactAll(e, listeners));
+    doc.addEventListener("onin", e => reactAll(e, listeners));
+    doc.addEventListener("statechange", e => reactAll(e, statelisteners));
     doc.addEventListener("click", e => react(e, clickers));
 };
 const clickListener = (e, fn) => {
@@ -147,10 +181,15 @@ const registerAll = (element, plugins = Array(), usage) => {
     return usage;
 };
 export const go = plugs => bagItAndTagIt(plugs);
-const tools = { put, get, getValue, setValue, clickListener };
+const tools = { put, get, getValue, setValue, clickListener, stateListener };
+const replaceAll = (s, rid, gain) => {
+    return s.split(rid).join(gain);
+};
 const fixID = (element, name) => {
     if (!element.id || element.id === undefined) {
-        element.id = name + "-" + namesDone.length;
+        const noSpace = replaceAll(name, ' ', '-');
+        const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
+        element.id = id;
         const typeText = isInput(element) ? "input" : "None input";
         console.error("No id for " + typeText + " element so, generating one: ", element.id);
     }

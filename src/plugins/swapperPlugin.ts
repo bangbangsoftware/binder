@@ -1,4 +1,4 @@
-import { BinderPlugin } from "../binderTypes";
+import { BinderPlugin, BinderTools } from "../binderTypes";
 
 // Just for testing....
 let storage = window.localStorage;
@@ -12,7 +12,7 @@ export function setDocument(d) {
   doc = d;
 }
 
-let binder;
+let binder: BinderTools;
 
 export const swapperPlugin:BinderPlugin = tools => {
   binder = tools;
