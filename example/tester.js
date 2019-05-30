@@ -4,6 +4,7 @@ import { togglePlugin } from './dist/plugins/togglePlugin.js'
 import { showHidePlugin, showHideSwap } from './dist/plugins/showhidePlugin.js'
 import { moverPlugin, moverValue, moverCallback } from './dist/plugins/moverPlugin.js'
 import { ifPlugin } from './dist/plugins/ifPlugin.js';
+import{ swapPlugin } from './dist/plugins/swapPlugin.js';
 
 moverValue("Captain");
 moverCallback(() =>{
@@ -13,7 +14,7 @@ moverCallback(() =>{
 console.log("TESTER");
 
 
-bagItAndTagIt([swapperPlugin, togglePlugin, showHidePlugin, moverPlugin, ifPlugin]);
+bagItAndTagIt([swapperPlugin, togglePlugin, showHidePlugin, moverPlugin, ifPlugin, swapPlugin]);
 
 const incrementSeconds = (minutes, seconds) => {
   seconds.innerText = 0;

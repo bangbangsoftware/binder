@@ -144,6 +144,11 @@ button {
   border-style: solid;
 }
 
+.boxing {
+  border: orange;
+  border-style: solid;
+}
+
 input {
   font-size: 30px;
 }

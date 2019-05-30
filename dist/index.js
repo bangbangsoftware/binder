@@ -154,9 +154,30 @@ const setupListener = () => {
     doc.addEventListener("statechange", e => reactAll(e, statelisteners));
     doc.addEventListener("click", e => react(e, clickers));
 };
+const childIDs = (element, ids = new Array()) => {
+    if (!element.id) {
+        console.error("no id, no click listener", element);
+    }
+    else if (ids.indexOf(element.id) === -1) {
+        //console.log("stored to click "+element.id);
+        ids.push(element.id);
+    }
+    if (element.childNodes.length === 0) {
+        return ids;
+    }
+    for (var i = 0, max = element.childNodes.length; i < max; i++) {
+        const node = element.childNodes[i];
+        if (node instanceof HTMLElement) {
+            ids = childIDs(node, ids);
+        }
+    }
+    return ids;
+};
 const clickListener = (e, fn) => {
     const changed = e => fn(e);
-    clickers.set(e.id, changed);
+    childIDs(e)
+        .filter(id => !clickers.has(id))
+        .forEach(id => clickers.set(id, changed));
 };
 const registerAll = (element, plugins = Array(), usage) => {
     if (element == null) {
@@ -181,13 +202,20 @@ const registerAll = (element, plugins = Array(), usage) => {
     return usage;
 };
 export const go = plugs => bagItAndTagIt(plugs);
-const tools = { put, get, getValue, setValue, clickListener, stateListener };
+const tools = {
+    put,
+    get,
+    getValue,
+    setValue,
+    clickListener,
+    stateListener
+};
 const replaceAll = (s, rid, gain) => {
     return s.split(rid).join(gain);
 };
 const fixID = (element, name) => {
     if (!element.id || element.id === undefined) {
-        const noSpace = replaceAll(name, ' ', '-');
+        const noSpace = replaceAll(name, " ", "-");
         const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
         element.id = id;
         const typeText = isInput(element) ? "input" : "None input";
@@ -197,7 +225,7 @@ const fixID = (element, name) => {
 };
 const hasAttribute = (plug, element) => {
     const attribute = plug.attributes.find(attr => element.hasAttribute(attr));
-    return (attribute !== undefined);
+    return attribute !== undefined;
 };
 const getPlugins = (plugins, element) => {
     return plugins.filter(plugin => hasAttribute(plugin, element));
@@ -210,9 +238,10 @@ const register = (element, plugins = Array()) => {
     }
     const pluginsForElement = getPlugins(plugins, element);
     const pluginsDone = pluginsForElement.filter(plugin => {
-        const value = plugin.attributes.map(attr => element.getAttribute(attr))
+        const value = plugin.attributes
+            .map(attr => element.getAttribute(attr))
             .find(v => v != undefined) || "";
-        const pluginName = (value) ? value : plugin.attributes[0];
+        const pluginName = value ? value : plugin.attributes[0];
         fixID(element, pluginName);
         return registerPlugin(element, plugin, pluginName);
     });
