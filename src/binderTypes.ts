@@ -27,6 +27,10 @@ export interface Checker {
   (element: HTMLElement)
 }
 
+export interface IDFixer {
+  (element: HTMLElement, name: string): HTMLElement
+}
+
 export interface BinderTools {
   put: ToolPut;
   get: ToolGet;
@@ -34,6 +38,7 @@ export interface BinderTools {
   setValue: ToolSetValue;
   clickListener: ClickListener;
   stateListener: StateListener; 
+  fixID: IDFixer;
 }
 
 export interface BinderPlugin {

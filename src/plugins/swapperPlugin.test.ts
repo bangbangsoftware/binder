@@ -42,8 +42,9 @@ const binder: BinderTools = {
     doc.getElementById(el.id).innerText = value;
   },
   clickListener: (element: Element, fn: Function) => {},
-  stateListener: (element: string, fn: Function) => {}
- 
+  stateListener: (element: string, fn: Function) => {},
+  fixID: (element: HTMLElement, name: string): HTMLElement => {return element}
+
 };
 
 describe("swapperPlugin.test", () => {

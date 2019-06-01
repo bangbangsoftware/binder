@@ -16,7 +16,8 @@ describe("repeaterPlugin.test", () => {
             el.innerText = value;
         },
         clickListener: (element, fn) => { },
-        stateListener: (element, fn) => { }
+        stateListener: (element, fn) => { },
+        fixID: (element, name) => { return element; }
     };
     let plugin;
     const headings = ["from", "to", "depart", "arrive", "length"];

@@ -181,10 +181,13 @@ const setupListener = () => {
   doc.addEventListener("click", e => react(e, clickers));
 };
 
-const childIDs = (element: Element, ids = new Array<string>()): Array<string> => {
+const childIDs = (
+  element: Element,
+  ids = new Array<string>()
+): Array<string> => {
   if (!element.id) {
-    console.error("no id, no click listener",element);
-  } else if (ids.indexOf(element.id) === -1){
+    console.error("no id, no click listener", element);
+  } else if (ids.indexOf(element.id) === -1) {
     //console.log("stored to click "+element.id);
     ids.push(element.id);
   }
@@ -236,6 +239,21 @@ const registerAll = (
   return usage;
 };
 
+const fixID = (element: HTMLElement, name: string): HTMLElement => {
+  if (element.id && element.id !== undefined) {
+    return element;
+  }
+  const noSpace = replaceAll(name, " ", "-");
+  const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
+  element.id = id;
+  const typeText = isInput(element) ? "input" : "None input";
+  console.error(
+    "No id for " + typeText + " element so, generating one: ",
+    element.id
+  );
+  return element;
+};
+
 export const go = plugs => bagItAndTagIt(plugs);
 const tools: BinderTools = {
   put,
@@ -243,25 +261,12 @@ const tools: BinderTools = {
   getValue,
   setValue,
   clickListener,
-  stateListener
+  stateListener,
+  fixID
 };
 
 const replaceAll = (s: string, rid: string, gain: string) => {
   return s.split(rid).join(gain);
-};
-
-const fixID = (element: HTMLElement, name: string): HTMLElement => {
-  if (!element.id || element.id === undefined) {
-    const noSpace = replaceAll(name, " ", "-");
-    const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
-    element.id = id;
-    const typeText = isInput(element) ? "input" : "None input";
-    console.error(
-      "No id for " + typeText + " element so, generating one: ",
-      element.id
-    );
-  }
-  return element;
 };
 
 const hasAttribute = (plug: BinderPluginLogic, element: Element): boolean => {

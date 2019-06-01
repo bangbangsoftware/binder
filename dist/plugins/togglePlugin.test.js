@@ -14,7 +14,8 @@ describe("togglePlugin.test", () => {
         },
         setValue: (el, value) => { mockElement.innerText = value; },
         clickListener: (element, fn) => { },
-        stateListener: (id, fn) => { }
+        stateListener: (id, fn) => { },
+        fixID: (element, name) => { return element; }
     };
     let plugin;
     test("Plugin can be set up", () => {

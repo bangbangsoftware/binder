@@ -201,6 +201,17 @@ const registerAll = (element, plugins = Array(), usage) => {
     }
     return usage;
 };
+const fixID = (element, name) => {
+    if (element.id && element.id !== undefined) {
+        return element;
+    }
+    const noSpace = replaceAll(name, " ", "-");
+    const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
+    element.id = id;
+    const typeText = isInput(element) ? "input" : "None input";
+    console.error("No id for " + typeText + " element so, generating one: ", element.id);
+    return element;
+};
 export const go = plugs => bagItAndTagIt(plugs);
 const tools = {
     put,
@@ -208,20 +219,11 @@ const tools = {
     getValue,
     setValue,
     clickListener,
-    stateListener
+    stateListener,
+    fixID
 };
 const replaceAll = (s, rid, gain) => {
     return s.split(rid).join(gain);
-};
-const fixID = (element, name) => {
-    if (!element.id || element.id === undefined) {
-        const noSpace = replaceAll(name, " ", "-");
-        const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
-        element.id = id;
-        const typeText = isInput(element) ? "input" : "None input";
-        console.error("No id for " + typeText + " element so, generating one: ", element.id);
-    }
-    return element;
 };
 const hasAttribute = (plug, element) => {
     const attribute = plug.attributes.find(attr => element.hasAttribute(attr));

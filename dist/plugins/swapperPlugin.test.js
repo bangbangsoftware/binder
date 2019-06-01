@@ -38,7 +38,8 @@ const binder = {
         doc.getElementById(el.id).innerText = value;
     },
     clickListener: (element, fn) => { },
-    stateListener: (element, fn) => { }
+    stateListener: (element, fn) => { },
+    fixID: (element, name) => { return element; }
 };
 describe("swapperPlugin.test", () => {
     let plugin;
