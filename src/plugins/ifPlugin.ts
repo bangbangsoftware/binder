@@ -29,8 +29,19 @@ export const ifPlugin: BinderPlugin = tools => {
 
 const getValue = (tools: BinderTools, fieldID:string)=>{
   const valueElement = <HTMLElement>doc.getElementById(fieldID);
+  if (valueElement == null){
+    return getValueFromStorage(tools, fieldID);
+  }
   const value = tools.getValue(valueElement);
   return value
+}
+
+const getValueFromStorage = (tools: BinderTools, fieldID:string) =>{
+  const regEntry = tools.get(fieldID);
+  if (regEntry == null){
+    return null;
+  }
+  return regEntry.currentValue
 }
 
 const addHide = () => {

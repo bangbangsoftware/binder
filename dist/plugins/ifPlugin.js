@@ -26,8 +26,18 @@ export const ifPlugin = tools => {
 };
 const getValue = (tools, fieldID) => {
     const valueElement = doc.getElementById(fieldID);
+    if (valueElement == null) {
+        return getValueFromStorage(tools, fieldID);
+    }
     const value = tools.getValue(valueElement);
     return value;
+};
+const getValueFromStorage = (tools, fieldID) => {
+    const regEntry = tools.get(fieldID);
+    if (regEntry == null) {
+        return null;
+    }
+    return regEntry.currentValue;
 };
 const addHide = () => {
     var style = doc.createElement("style");
