@@ -10,12 +10,12 @@ export function setDocument(d) {
 }
 let binder;
 const swapped = new Array();
+const PREFIX = "swap-parent-id-for-";
 export const swapPlugin = tools => {
     binder = tools;
     return {
         attributes: ["swap"],
         process: (element) => {
-            console.log("SWAP listening ", element);
             const groupName = element.getAttribute("swap");
             if (groupName == null) {
                 return false;
@@ -24,8 +24,7 @@ export const swapPlugin = tools => {
             if (!pids) {
                 return false;
             }
-            // Need to do a shuffle or a post process shuffle???
-            storage.setItem("swap-parent-id-for-" + element.id, JSON.stringify(pids));
+            storage.setItem(PREFIX + element.id, JSON.stringify(pids));
             tools.clickListener(element, (e) => click(element));
             return true;
         }
@@ -37,7 +36,7 @@ export const getParentIds = (element, tools) => {
         return false;
     }
     const pids = { currentParentID: pid, originParentID: pid };
-    const parentIDs = storage.getItem("swap-parent-id-for-" + element.id);
+    const parentIDs = storage.getItem(PREFIX + element.id);
     if (parentIDs) {
         const storedPIDs = JSON.parse(parentIDs);
         checkSwap(element, storedPIDs);
@@ -46,17 +45,10 @@ export const getParentIds = (element, tools) => {
     return pids;
 };
 export const checkSwap = (element, pids) => {
-    const found = swapped.findIndex(storedPids => {
-        if (pids.originParentID === storedPids.pids.originParentID
-            || pids.currentParentID === storedPids.pids.originParentID) {
-            return true;
-        }
-        if (pids.originParentID === storedPids.pids.currentParentID
-            || pids.currentParentID === storedPids.pids.currentParentID) {
-            return true;
-        }
-        return false;
-    });
+    const found = swapped.findIndex(storedPids => pids.originParentID === storedPids.pids.originParentID ||
+        pids.currentParentID === storedPids.pids.originParentID ||
+        pids.originParentID === storedPids.pids.currentParentID ||
+        pids.currentParentID === storedPids.pids.currentParentID);
     if (found === -1) {
         swapped.push({ element, pids });
         return;
@@ -70,20 +62,19 @@ export const sortParentID = (element, tools) => {
     if (parent == null) {
         return false;
     }
-    const parentWithID = tools.fixID(parent, "swap-parent-id-for-" + element.id);
+    const parentWithID = tools.fixID(parent, PREFIX + element.id);
     return parentWithID.id;
 };
 export const click = (element) => {
-    console.log("SWAP CLICKED");
     const groupName = element.getAttribute("swap");
-    const idSelected = storage.getItem("swapall-" + groupName);
+    const key = "swapall" + groupName;
+    const idSelected = storage.getItem(key);
     if (!idSelected) {
-        console.log("SWAP stored");
         element.classList.add("swap-selected");
-        storage.setItem("swapall-" + groupName, element.id);
+        storage.setItem(key, element.id);
         return;
     }
-    storage.removeItem("swapall-" + groupName);
+    storage.removeItem(key);
     const selectedElement = doc.getElementById(idSelected);
     if (selectedElement == null) {
         console.error(idSelected + " is missing ???!");
@@ -107,12 +98,18 @@ export const click = (element) => {
     storeNewParentID(element, selectedParent.id);
 };
 export const storeNewParentID = (element, id) => {
-    const pidsString = storage.getItem("swap-parent-id-for-" + element.id);
+    const key = PREFIX + element.id;
+    const pidsString = storage.getItem(key);
     if (pidsString == null) {
         return false;
     }
     const pids = JSON.parse(pidsString);
     pids.currentParentID = id;
-    storage.setItem("swap-parent-id-for-" + element.id, JSON.stringify(pids));
+    if (pids.originParentID === pids.currentParentID) {
+        storage.removeItem(key);
+    }
+    else {
+        storage.setItem(key, JSON.stringify(pids));
+    }
 };
 //# sourceMappingURL=swapPlugin.js.map
