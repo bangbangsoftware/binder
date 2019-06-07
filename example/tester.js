@@ -1,5 +1,5 @@
-import { bagItAndTagIt, put } from "./dist/index.js";
-import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
+import { bagItAndTagIt, put, setValue } from "./dist/index.js";
+import { swapperPlugin, action } from './dist/plugins/swapperPlugin.js'
 import { togglePlugin } from './dist/plugins/togglePlugin.js'
 import { showHidePlugin, showHideSwap } from './dist/plugins/showhidePlugin.js'
 import { moverPlugin, moverValue, moverCallback } from './dist/plugins/moverPlugin.js'
@@ -10,6 +10,19 @@ moverValue("Captain");
 moverCallback(() =>{
   showHideSwap("capshow");
 });
+
+let lastCaptian = null;
+action( {id:"captain-butt", callback:(element)=>{
+  console.log(element.id+" ACTION clicked"); 
+  const ribbonID = element.id+"-ribbon";
+  const ribbonElement = document.getElementById(element.id+"-ribbon");
+  console.log(ribbonID+", ribbon element is "+ribbonElement);
+  setValue(ribbonElement,"Captain");
+  if (lastCaptian != null){
+    setValue(lastCaptian,"");
+  }
+  lastCaptian = ribbonElement;
+}});
 
 console.log("TESTER");
 

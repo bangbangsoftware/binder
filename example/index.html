@@ -47,7 +47,7 @@
     <div class="scored hide" name="scored" id="scored"></div>
     <div class="buttongrid">
       <button name="kickoff" class="kickoff" id="kickoff">Kick Off</button>
-      <button showhide-trigger="capshow" class="kickoff" id="captain-butt">Pick Captain</button>
+      <button swapper-action="formation" class="kickoff" id="captain-butt">Pick Captain</button>
       <button name="showhide-test" class="kickoff" id="showhide-test" showhide-trigger="team"> EDIT</button> 
     </div>
 
@@ -178,22 +178,22 @@
         </span>
 
         <span showhide="team, capshow">
-          <div if="front2" name="front2-ribbon" ></div>  
+          <div if="front2" id="front2-ribbon" name="front2-ribbon" ></div>  
           <button id="front2" class="posInput" swapper="formation" name="front2" ></button>
         </span>
 
         <span showhide="team, capshow">
-          <div if="front3" name="front3-ribbon" ></div>  
+          <div if="front3" id="front3-ribbon" name="front3-ribbon" ></div>  
           <button id="front3" showhide="team, capshow" class="posInput" swapper="formation" name="front3" ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div if="front4" name="front4-ribbon" ></div>  
+          <div if="front4" id="front4-ribbon" name="front4-ribbon" ></div>  
           <button id="front4" showhide="team, capshow" class="posInput" swapper="formation" name="front4" ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div if="front5" name="front5-ribbon" ></div>  
+          <div if="front5" id="front5-ribbon" name="front5-ribbon" ></div>  
           <button id="front5" showhide="team, capshow" class="posInput" swapper="formation" name="front5" ></button>
         </span>
 

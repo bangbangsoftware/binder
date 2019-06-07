@@ -8,7 +8,14 @@ import {
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
 
-const isInput = (element: Element) => element.localName === "input";
+//https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+
+const isInput = (element: Element) => {
+  if (element == null || element.localName == null){
+    return false;
+  }
+  return element.localName === "input";
+}
 const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
@@ -27,6 +34,10 @@ export const getValue = (element: HTMLElement): string => {
   return element.innerText;
 };
 export const setValue = (element: HTMLElement, value: string) => {
+  if (element == null){
+    console.log("Cannot set "+value+" as element is null");
+    return;
+  }
   if (isInput(element)) {
     const input = <HTMLInputElement>element;
     input.value = value;
@@ -36,8 +47,12 @@ export const setValue = (element: HTMLElement, value: string) => {
   doAll(element, statelisteners);
 };
 
-const getName = (element: Element): string =>
-  element.getAttribute("name") || "";
+const getName = (element: Element): string =>{
+  if (element == null){
+    return "";
+  }
+  return element.getAttribute("name") || "";
+}
 
 export function put(element: HTMLElement): { [key: string]: RegEntry } {
   const fieldname = getName(element);
@@ -71,7 +86,6 @@ export function put(element: HTMLElement): { [key: string]: RegEntry } {
 
 export function clear() {
   storage.setItem(dataKey, "{}");
-  11;
   for (const field in registry) delete registry[field];
 }
 
@@ -86,7 +100,7 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>(), key = "reg") {
   everything.forEach((element: HTMLElement) => {
     results = registerAll(element, plugins, results);
   });
-  console.log("Detected.....");
+  console.log("Detected....."); 
   Object.keys(results).forEach(k => {
     console.log(k + " - " + results[k]);
   });

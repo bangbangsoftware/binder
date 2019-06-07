@@ -1,6 +1,12 @@
 const namesDone = new Array();
 const pluginsDone = new Array();
-const isInput = (element) => element.localName === "input";
+//https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+const isInput = (element) => {
+    if (element == null || element.localName == null) {
+        return false;
+    }
+    return element.localName === "input";
+};
 const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
 let storage = window.localStorage;
@@ -16,6 +22,10 @@ export const getValue = (element) => {
     return element.innerText;
 };
 export const setValue = (element, value) => {
+    if (element == null) {
+        console.log("Cannot set " + value + " as element is null");
+        return;
+    }
     if (isInput(element)) {
         const input = element;
         input.value = value;
@@ -24,7 +34,12 @@ export const setValue = (element, value) => {
     element.innerText = value;
     doAll(element, statelisteners);
 };
-const getName = (element) => element.getAttribute("name") || "";
+const getName = (element) => {
+    if (element == null) {
+        return "";
+    }
+    return element.getAttribute("name") || "";
+};
 export function put(element) {
     const fieldname = getName(element);
     if (fieldname === "") {
@@ -56,7 +71,6 @@ export function put(element) {
 }
 export function clear() {
     storage.setItem(dataKey, "{}");
-    11;
     for (const field in registry)
         delete registry[field];
 }
