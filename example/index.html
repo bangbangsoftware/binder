@@ -3,34 +3,41 @@
       <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-
+    <div class="topline">
+      <button swap-action="swaps" class="kickoff" id="captain-butt">Pick Captain</button>
+    </div>
     <div class="topbar">
       <div id="slot-one">
-        <button class="boxing" swap="tetet">
-          <div id="s1" name="one">SWAP ONE</div>
-          <div id="s2" name="two">SWAP ONE SUB FIELD</div>
+        <button class="boxing" id="slot-one-butt" swap="swaps">
+          <div id="s1" name="one">SWAP-1</div>
+          <div id="s2" name="two">Player Fred</div>
+          <div class="swap-data" id="slot-one-butt-data" name="slot-one-data"></div>
         </button>
       </div>        
       <div id="slot-two">        
-        <button class="boxing" swap="tetet">
-          <div id="s3" name="three">SWAP TWO</div>
-          <div id="s4" name="four">and here is two's data</div>
+        <button class="boxing" id="slot-two-butt" swap="swaps">
+          <div id="s3" name="three">SWAP-2</div>
+          <div id="s4" name="four">Player John</div>
+          <div class="swap-data" id="slot-two-butt-data" name="slot-two-data"></div>
         </button>
       </div>        
       <div id="slot-three">        
-        <button class="boxing" swap="tetet">
-          <div id="s5" name="five">SWAP Three</div>
-          <div id="s6" name="six">and here is 3's data</div>
+        <button class="boxing" id="slot-three-butt" swap="swaps">
+          <div id="s5" name="five">SWAP-3</div>
+          <div id="s6" name="six">Player Bobo</div>
+          <div class="swap-data" id="slot-three-butt-data" name="slot-three-data"></div>
         </button>
       </div>        
       <div id="slot-four">        
-        <button class="boxing" swap="tetet">
-          <div id="s7" name="seven">SWAP FOUR</div>
-          <div id="s8" name="eight">and here is 4's data</div>
+        <button class="boxing" id="slot-four-butt" swap="swaps">
+          <div id="s7" name="seven">SWAP-4</div>
+          <div id="s8" name="eight">PLayer Jojo</div>
+          <div class="swap-data" id="slot-four-butt-data" name="slot-four-data"></div>
         </button>
       </div>        
     </div>        
-    <div class="title">The Binder <a class="next" href="nextPage.html"><button>Next Page</button></a></div>
+  </br></br>
+    <div class="title">The Binder 
     <div class="where">
       <button toggle="HOME,AWAY" name="where" id="where">HOME</button>
     </div>
@@ -47,8 +54,8 @@
     <div class="scored hide" name="scored" id="scored"></div>
     <div class="buttongrid">
       <button name="kickoff" class="kickoff" id="kickoff">Kick Off</button>
-      <button swapper-action="formation" class="kickoff" id="captain-butt">Pick Captain</button>
-      <button name="showhide-test" class="kickoff" id="showhide-test" showhide-trigger="team"> EDIT</button> 
+      <button name="showhide-test" class="kickoff" id="showhide-test" showhide-trigger="team"> EDIT</button>
+      <a class="next" href="nextPage.html"><button class="fillout">Next Page</button></a></div> 
     </div>
 
     <div id="playing" class="hide">
@@ -179,7 +186,7 @@
 
         <span showhide="team, capshow">
           <div if="front2" id="front2-ribbon" name="front2-ribbon" ></div>  
-          <button id="front2" class="posInput" swapper="formation" name="front2" ></button>
+          <button id="front2" class="posInput" swapper="formation" na+me="front2" ></button>
         </span>
 
         <span showhide="team, capshow">
@@ -199,54 +206,54 @@
 
     
         <span showhide="team, capshow">
-          <div name="mid1-ribbon" ></div>  
+          <div name="mid1-ribbon" id="mid1-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="mid1"  ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div name="mid2-ribbon" ></div>  
+          <div name="mid2-ribbon" id="mid2-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="mid2"   ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div name="mid3-ribbon" ></div>  
+          <div name="mid3-ribbon" id="mid3-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="mid3"   ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div name="mid4-ribbon" ></div>  
+          <div name="mid4-ribbon" id="mid4-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="mid4"   ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div name="mid5-ribbon" ></div>  
+          <div name="mid5-ribbon" id="mid5-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="mid5"   ></button>
         </span>
         
 
 
         <span showhide="team, capshow">
-          <div name="back1-ribbon" ></div>  
+          <div name="back1-ribbon" id="back1-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="back1"  ></button>
         </span>
         
         <span showhide="team, capshow">
-          <div name="back2-ribbon" ></div>  
+          <div name="back2-ribbon" id="back2-ribbon"></div>  
           <button showhide="team, capshow" class="posInput" swapper="formation" name="back2"  ></button>
         </span>
         
           <span showhide="team, capshow">
-              <div name="back3-ribbon" ></div>  
+              <div name="back3-ribbon" id="back3-ribbon"></div>  
               <button showhide="team, capshow" class="posInput" swapper="formation" name="back3"  ></button>
           </span>
         
           <span showhide="team, capshow">
-              <div name="back4-ribbon" ></div>  
+              <div name="back4-ribbon" id="back4-ribbon"></div>  
               <button showhide="team, capshow" class="posInput" swapper="formation" name="back4"  ></button>
           </span>
         
           <span showhide="team, capshow">
-              <div name="back5-ribbon" ></div>  
+              <div name="back5-ribbon" id="back5-ribbon"></div>  
               <button showhide="team, capshow" class="posInput" swapper="formation" name="back5"  ></button>
           </span>
 

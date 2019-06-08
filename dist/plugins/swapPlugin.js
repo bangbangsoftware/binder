@@ -8,18 +8,18 @@ let doc = document;
 export function setDocument(d) {
     doc = d;
 }
+export const action = (actionF) => {
+    actions.push(actionF);
+};
 let binder;
 const swapped = new Array();
 const PREFIX = "swap-parent-id-for-";
+const actions = new Array();
 export const swapPlugin = tools => {
     binder = tools;
     return {
-        attributes: ["swap"],
+        attributes: ["swap", "swap-action"],
         process: (element) => {
-            const groupName = element.getAttribute("swap");
-            if (groupName == null) {
-                return false;
-            }
             const pids = getParentIds(element, tools);
             if (!pids) {
                 return false;
@@ -65,13 +65,70 @@ export const sortParentID = (element, tools) => {
     const parentWithID = tools.fixID(parent, PREFIX + element.id);
     return parentWithID.id;
 };
+const registerActionSelection = (element, groupName) => {
+    element.classList.add("swap-selected");
+    storage.setItem("swap-action-" + groupName, element.id);
+};
+const clickAction = (element) => {
+    const groupName = element.getAttribute("swap-action");
+    if (groupName == null) {
+        console.error("swap action has no group? ", element);
+        return;
+    }
+    doAction(element, groupName);
+};
+const doAction = (actionElement, groupName) => {
+    const actionID = storage.getItem("swap-action-" + groupName);
+    const key = "swapall" + groupName;
+    const idSelected = storage.getItem(key);
+    if (actionID == null && idSelected == null) {
+        registerActionSelection(actionElement, groupName);
+        return;
+    }
+    storage.removeItem("swap-action-" + groupName);
+    if (idSelected == null) {
+        console.log("Nothing selected for action yet");
+        return;
+    }
+    storage.removeItem(key);
+    actionElement.classList.remove("swap-selected");
+    const selected = doc.getElementById(idSelected);
+    if (selected == null) {
+        console.error(idSelected + " is missing??");
+        return;
+    }
+    selected.classList.remove("swap-selected");
+    const action = actions.find(acts => acts.id === actionElement.id);
+    if (action == null) {
+        console.error("No id action registered for " + actionElement.id);
+        return;
+    }
+    action.callback(selected);
+};
+const registerSelection = (element, groupName, key) => {
+    element.classList.add("swap-selected");
+    storage.setItem(key, element.id);
+    const actionID = storage.getItem("swap-action-" + groupName);
+    if (actionID == null) {
+        return;
+    }
+    const actionElement = doc.getElementById(actionID);
+    if (actionElement == null) {
+        console.error(actionID + " action is missing??");
+        return;
+    }
+    doAction(actionElement, groupName);
+};
 export const click = (element) => {
     const groupName = element.getAttribute("swap");
+    if (groupName == null) {
+        clickAction(element);
+        return;
+    }
     const key = "swapall" + groupName;
     const idSelected = storage.getItem(key);
     if (!idSelected) {
-        element.classList.add("swap-selected");
-        storage.setItem(key, element.id);
+        registerSelection(element, groupName, key);
         return;
     }
     storage.removeItem(key);

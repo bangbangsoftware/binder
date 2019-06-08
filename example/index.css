@@ -146,6 +146,15 @@ button {
   font-size: 40px;
 }
 
+.swap-data {
+  color:blue;
+}
+
+.fillout {
+  height: 60px;
+  width: 100%;
+}
+
 .linked {
   border: orange;
   border-style: solid;

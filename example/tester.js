@@ -1,10 +1,10 @@
 import { bagItAndTagIt, put, setValue } from "./dist/index.js";
-import { swapperPlugin, action } from './dist/plugins/swapperPlugin.js'
+import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
 import { togglePlugin } from './dist/plugins/togglePlugin.js'
 import { showHidePlugin, showHideSwap } from './dist/plugins/showhidePlugin.js'
 import { moverPlugin, moverValue, moverCallback } from './dist/plugins/moverPlugin.js'
 import { ifPlugin } from './dist/plugins/ifPlugin.js';
-import{ swapPlugin } from './dist/plugins/swapPlugin.js';
+import{ swapPlugin, action } from './dist/plugins/swapPlugin.js';
 
 moverValue("Captain");
 moverCallback(() =>{
@@ -14,10 +14,10 @@ moverCallback(() =>{
 let lastCaptian = null;
 action( {id:"captain-butt", callback:(element)=>{
   console.log(element.id+" ACTION clicked"); 
-  const ribbonID = element.id+"-ribbon";
-  const ribbonElement = document.getElementById(element.id+"-ribbon");
-  console.log(ribbonID+", ribbon element is "+ribbonElement);
-  setValue(ribbonElement,"Captain");
+  const ribbonID = element.id+"-data";
+  const ribbonElement = document.getElementById(element.id+"-data");
+  console.log(ribbonID+", element is ",ribbonElement);
+  setValue(ribbonElement,"- Captain -");
   if (lastCaptian != null){
     setValue(lastCaptian,"");
   }
