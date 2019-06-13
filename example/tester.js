@@ -1,33 +1,73 @@
-import { bagItAndTagIt, put, setValue } from "./dist/index.js";
-import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
-import { togglePlugin } from './dist/plugins/togglePlugin.js'
-import { showHidePlugin, showHideSwap } from './dist/plugins/showhidePlugin.js'
-import { moverPlugin, moverValue, moverCallback } from './dist/plugins/moverPlugin.js'
-import { ifPlugin } from './dist/plugins/ifPlugin.js';
-import{ swapPlugin, action } from './dist/plugins/swapPlugin.js';
+import { bagItAndTagIt, put, setValue, getValue } from "./dist/index.js";
+import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
+import { togglePlugin } from "./dist/plugins/togglePlugin.js";
+import { showHidePlugin, showHideSwap } from "./dist/plugins/showhidePlugin.js";
+import {
+  moverPlugin,
+  moverValue,
+  moverCallback
+} from "./dist/plugins/moverPlugin.js";
+import { ifPlugin } from "./dist/plugins/ifPlugin.js";
+import { swapPlugin, action } from "./dist/plugins/swapPlugin.js";
 
 moverValue("Captain");
-moverCallback(() =>{
+moverCallback(() => {
   showHideSwap("capshow");
 });
 
+const findLast = () => {
+  const swapids = [
+    "slot-one-butt-data",
+    "slot-two-butt-data",
+    "slot-three-butt-data",
+    "slot-four-butt-data"
+  ];
+  const found = swapids
+    .map(id => document.getElementById(id))
+    .filter(el => {
+      if (el == null) {
+        return false;
+      }
+      const value = el.innerText;
+      console.log("VALUE IS ------" + value + "======");
+      return value != null && value.length > 0;
+    });
+
+  console.log("FOUND ", found);
+  return found.length === 0 ? null : found[0];
+};
+
 let lastCaptian = null;
-action( {id:"captain-butt", callback:(element)=>{
-  console.log(element.id+" ACTION clicked"); 
-  const ribbonID = element.id+"-data";
-  const ribbonElement = document.getElementById(element.id+"-data");
-  console.log(ribbonID+", element is ",ribbonElement);
-  setValue(ribbonElement,"- Captain -");
-  if (lastCaptian != null){
-    setValue(lastCaptian,"");
+action({
+  id: "captain-butt",
+  callback: element => {
+    console.log(element.id + " ACTION clicked");
+    if (lastCaptian == null) {
+      lastCaptian = findLast();
+    }
+    const ribbonID = element.id + "-data";
+    const ribbonElement = document.getElementById(element.id + "-data");
+    console.log(ribbonID + ", element is ", ribbonElement);
+    setValue(ribbonElement, "- Captain -");
+    put(ribbonElement);
+    if (lastCaptian != null) {
+      setValue(lastCaptian, "");
+      put(lastCaptian);
+    }
+    lastCaptian = ribbonElement;
   }
-  lastCaptian = ribbonElement;
-}});
+});
 
 console.log("TESTER");
 
-
-bagItAndTagIt([swapperPlugin, togglePlugin, showHidePlugin, moverPlugin, ifPlugin, swapPlugin]);
+bagItAndTagIt([
+  swapperPlugin,
+  togglePlugin,
+  showHidePlugin,
+  moverPlugin,
+  ifPlugin,
+  swapPlugin
+]);
 
 const incrementSeconds = (minutes, seconds) => {
   seconds.innerText = 0;
@@ -88,7 +128,7 @@ kickoff.addEventListener("click", e => {
   document.getElementById("bench").classList.add("hide");
   document.getElementById("kickoff").classList.remove("hide");
   document.getElementById("state").classList.remove("hide");
-  const time = timeFormat(); 
+  const time = timeFormat();
   results({ time, event: "Kick off" });
   running = setInterval(increment, 1000);
   const scoreLabel = document.getElementById("score");
@@ -122,8 +162,8 @@ concede.addEventListener("click", e => {
 
 for (let n = 1; n < 17; n++) {
   const el = document.getElementById("position" + n);
-  if (el){
-    el.addEventListener("click", e => playerScored(e));    
+  if (el) {
+    el.addEventListener("click", e => playerScored(e));
   }
 }
 
@@ -138,7 +178,7 @@ const playerScored = e => {
   }
   const scoreLabel = document.getElementById("score");
   scoreLabel.innerText = parseInt(scoreLabel.innerText) + 1;
-  const time = timeFormat(); 
+  const time = timeFormat();
   results({ time, event: "Goal by " + who });
   const scored = document.getElementById("scored");
   scored.innerText = "!!! " + who + " scored !!!";
