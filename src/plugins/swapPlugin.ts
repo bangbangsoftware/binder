@@ -1,13 +1,19 @@
 import { BinderPlugin, BinderTools } from "../binderTypes";
+import { moveAction, DataMover } from "./swapperMoveSubplugin.js";
 
 // Just for testing....
 let storage = window.localStorage;
+let doc = document;
+
+const swapped = new Array<Swapped>();
+const PREFIX = "swap-parent-id-for-";
+const actions: Array<ActionFunction> = new Array<ActionFunction>();
+const movers: Array<DataMover> = new Array<DataMover>();
+
 export function setStorage(s) {
   storage = s;
 }
 
-// Just for testing....
-let doc = document;
 export function setDocument(d) {
   doc = d;
 }
@@ -21,21 +27,16 @@ export interface Swapped {
   pids: Pids;
   element: Element;
 }
-export const action = (actionF: ActionFunction) => {
-  actions.push(actionF);
-}
 
-let binder: BinderTools;
-const swapped = new Array<Swapped>();
-const PREFIX = "swap-parent-id-for-";
-const actions: Array<ActionFunction> = new Array<ActionFunction>();
+export const actionMover = (dataMove: DataMover) => movers.push(dataMove);
+export const action = (actionF: ActionFunction) => actions.push(actionF);
+
 export interface ActionFunction {
   id: string,
   callback: Function
 }
 
 export const swapPlugin: BinderPlugin = tools => {
-  binder = tools;
   return {
     attributes: ["swap", "swap-action"],
     process: (element: Element): boolean => {
@@ -43,6 +44,7 @@ export const swapPlugin: BinderPlugin = tools => {
       if (!pids) {
         return false;
       }
+      registerMover(tools, element);    
       storage.setItem(PREFIX + element.id, JSON.stringify(pids));
       tools.clickListener(element, (e: Event) => click(element));
       return true;
@@ -97,66 +99,6 @@ export const sortParentID = (
   return parentWithID.id;
 };
 
-
-const registerActionSelection = (element: Element, groupName: string) =>{
-  element.classList.add("swap-selected");
-  storage.setItem("swap-action-" + groupName, element.id);
-}
-
-const clickAction = (element: Element) => {
-  const groupName = element.getAttribute("swap-action");
-  if (groupName == null){
-    console.error("swap action has no group? ",element);
-    return;
-  }
-  doAction(element, groupName);  
-}
-
-const doAction = (actionElement: Element, groupName: string) => {  
-  const actionID = storage.getItem("swap-action-" + groupName);
-  const key = "swapall" + groupName;
-  const idSelected = storage.getItem(key);
-  if (actionID == null && idSelected == null) {
-    registerActionSelection(actionElement, groupName);
-    return;
-  }
-  storage.removeItem("swap-action-" + groupName);
-  if (idSelected == null){
-    console.log("Nothing selected for action yet");
-    return
-  }
-  storage.removeItem(key);
-  actionElement.classList.remove("swap-selected");
-  const selected = doc.getElementById(idSelected);
-  if (selected == null){
-    console.error(idSelected+" is missing??");
-    return;
-  }
-  selected.classList.remove("swap-selected");
-  const action = actions.find(acts => acts.id === actionElement.id);
-  if (action == null){
-    console.error("No id action registered for "+actionElement.id);
-    return;
-  } 
-  action.callback(selected);
-}
-
-const registerSelection = (element: Element, groupName: string, key: string) =>{
-  element.classList.add("swap-selected");
-  storage.setItem(key, element.id);
-  const actionID = storage.getItem("swap-action-" + groupName);
-  if (actionID == null ){
-    return;
-  }
-  const actionElement = doc.getElementById(actionID);
-  if (actionElement == null){
-    console.error(actionID+" action is missing??");
-    return;
-  }
-  doAction(actionElement, groupName);
-}
-
-
 export const click = (element: Element) => {
   const groupName = element.getAttribute("swap");
   if (groupName == null ){
@@ -210,3 +152,85 @@ export const storeNewParentID = (element: Element, id: string) => {
     storage.setItem(key, JSON.stringify(pids));
   }
 };
+
+const registerActionSelection = (element: Element, groupName: string) =>{
+  element.classList.add("swap-selected");
+  storage.setItem("swap-action-" + groupName, element.id);
+}
+
+const clickAction = (element: Element) => {
+  const groupName = element.getAttribute("swap-action");
+  if (groupName == null){
+    console.error("swap action has no group? ",element);
+    return;
+  }
+  doAction(element, groupName);  
+}
+
+const doAction = (actionElement: Element, groupName: string) => {  
+  const actionID = storage.getItem("swap-action-" + groupName);
+  const key = "swapall" + groupName;
+  const idSelected = storage.getItem(key);
+  if (actionID == null && idSelected == null) {
+    registerActionSelection(actionElement, groupName);
+    return;
+  }
+  storage.removeItem("swap-action-" + groupName);
+  if (idSelected == null){
+    console.log("Nothing selected for action yet");
+    return
+  }
+  storage.removeItem(key);
+  actionElement.classList.remove("swap-selected");
+  const selected = doc.getElementById(idSelected);
+  if (selected == null){
+    console.error(idSelected+" is missing??");
+    return;
+  }
+  selected.classList.remove("swap-selected");
+  const action = actions.find(acts => acts.id === actionElement.id);
+  if (action == null){
+    console.error("No id action registered for "+actionElement.id);
+    return;
+  } 
+  action.callback(selected);
+}
+
+const getGroupName = (element: Element): string | false => {
+  const actionName = element.getAttribute("swap-action");
+  if (actionName != null){
+    return false;
+  }  
+  const groupName = element.getAttribute("swap");
+  if (groupName == null){
+    return false;
+  }  
+  return groupName;
+}
+
+const registerMover = (tools: BinderTools, element: Element) => {
+  const groupName = getGroupName(element);
+  if (!groupName){
+    return;1
+  }
+  movers.filter((mover:DataMover)=>mover.group === groupName)
+        .forEach((mover:DataMover)=>{
+          const creator = moveAction(tools,mover,element.id);
+          action(creator);        
+        });
+}
+
+const registerSelection = (element: Element, groupName: string, key: string) =>{
+  element.classList.add("swap-selected");
+  storage.setItem(key, element.id);
+  const actionID = storage.getItem("swap-action-" + groupName);
+  if (actionID == null ){
+    return;
+  }
+  const actionElement = doc.getElementById(actionID);
+  if (actionElement == null){
+    console.error(actionID+" action is missing??");
+    return;
+  }
+  doAction(actionElement, groupName);
+}

@@ -1,3 +1,4 @@
+import { moveAction } from "./swapperMoveSubplugin.js";
 // Just for testing....
 let storage = window.localStorage;
 export function setStorage(s) {
@@ -8,6 +9,10 @@ let doc = document;
 export function setDocument(d) {
     doc = d;
 }
+const movers = new Array();
+export const actionMover = (dataMove) => {
+    movers.push(dataMove);
+};
 export const action = (actionF) => {
     actions.push(actionF);
 };
@@ -24,6 +29,7 @@ export const swapPlugin = tools => {
             if (!pids) {
                 return false;
             }
+            registerMover(tools, element);
             storage.setItem(PREFIX + element.id, JSON.stringify(pids));
             tools.clickListener(element, (e) => click(element));
             return true;
@@ -104,6 +110,31 @@ const doAction = (actionElement, groupName) => {
         return;
     }
     action.callback(selected);
+};
+const getGroupName = (element) => {
+    const actionName = element.getAttribute("swap-action");
+    if (actionName != null) {
+        return false;
+    }
+    const groupName = element.getAttribute("swap");
+    if (groupName == null) {
+        return false;
+    }
+    return groupName;
+};
+const registerMover = (tools, element) => {
+    console.log("REG", element);
+    const groupName = getGroupName(element);
+    if (!groupName) {
+        return;
+    }
+    console.log("REG", groupName);
+    movers.filter((mover) => mover.group === groupName)
+        .forEach((mover) => {
+        const creator = moveAction(tools, mover, element.id);
+        console.log("REG", creator);
+        action(creator);
+    });
 };
 const registerSelection = (element, groupName, key) => {
     element.classList.add("swap-selected");

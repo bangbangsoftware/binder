@@ -1,3 +1,4 @@
+import { moveAction } from "./swapperMoveSubplugin.js";
 // Just for testing....
 let storage = window.localStorage;
 export function setStorage(s) {
@@ -10,15 +11,43 @@ export function setDocument(d) {
 }
 let binder;
 const actions = new Array();
-export const action = (actionF) => {
+const movers = new Array();
+export const actionMover = (dataMove) => {
+    movers.push(dataMove);
+};
+export const swapAction = (actionF) => {
     actions.push(actionF);
 };
-export const swapperPlugin = tools => {
+export const swapperPlugin = (tools) => {
     binder = tools;
+    const ids = Array();
     return { attributes: ["swapper", "swapper-action"], process: (element) => {
+            registerMover(tools, element);
             tools.clickListener(element, (e) => click(element));
             return true;
         } };
+};
+const getGroupName = (element) => {
+    const actionName = element.getAttribute("swapper-action");
+    if (actionName != null) {
+        return false;
+    }
+    const groupName = element.getAttribute("swapper");
+    if (groupName == null) {
+        return false;
+    }
+    return groupName;
+};
+const registerMover = (tools, element) => {
+    const groupName = getGroupName(element);
+    if (!groupName) {
+        return;
+    }
+    movers.filter((mover) => mover.group === groupName)
+        .forEach((mover) => {
+        const creator = moveAction(tools, mover, element.id);
+        swapAction(creator);
+    });
 };
 const registerSelection = (element, groupName) => {
     element.classList.add("swap-selected");
@@ -47,8 +76,8 @@ const clickAction = (element) => {
     doAction(element, groupName);
 };
 const doAction = (actionElement, groupName) => {
-    const actionID = storage.getItem("swap-action-" + groupName);
     const idSelected = storage.getItem("swap-" + groupName);
+    const actionID = storage.getItem("swap-action-" + groupName);
     if (actionID == null && idSelected == null) {
         registerActionSelection(actionElement, groupName);
         return;

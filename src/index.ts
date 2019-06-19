@@ -11,11 +11,11 @@ const pluginsDone = new Array<string>();
 //https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
 
 const isInput = (element: Element) => {
-  if (element == null || element.localName == null){
+  if (element == null || element.localName == null) {
     return false;
   }
   return element.localName === "input";
-}
+};
 const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
@@ -34,8 +34,8 @@ export const getValue = (element: HTMLElement): string => {
   return element.innerText;
 };
 export const setValue = (element: HTMLElement, value: string) => {
-  if (element == null){
-    console.log("Cannot set "+value+" as element is null");
+  if (element == null) {
+    console.log("Cannot set " + value + " as element is null");
     return;
   }
   if (isInput(element)) {
@@ -47,12 +47,12 @@ export const setValue = (element: HTMLElement, value: string) => {
   doAll(element, statelisteners);
 };
 
-const getName = (element: Element): string =>{
-  if (element == null){
+const getName = (element: Element): string => {
+  if (element == null) {
     return "";
   }
   return element.getAttribute("name") || "";
-}
+};
 
 export function put(element: HTMLElement): { [key: string]: RegEntry } {
   const fieldname = getName(element);
@@ -96,14 +96,12 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>(), key = "reg") {
   setup();
   const plugins = plugs.map(setupPlugin => setupPlugin(tools));
   const everything = doc.querySelectorAll("*");
-  let results = {};
+  let results = new Array<Usage>();
   everything.forEach((element: HTMLElement) => {
     results = registerAll(element, plugins, results);
   });
-  console.log("Detected....."); 
-  Object.keys(results).forEach(k => {
-    console.log(k + " - " + results[k]);
-  });
+  console.log("Detected.....");
+  results.forEach(result => console.log(result.name + " - " + result.qty));
   console.log(".............");
   show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
 }
@@ -224,26 +222,52 @@ const clickListener = (e: Element, fn: Function) => {
     .forEach(id => clickers.set(id, changed));
 };
 
+export interface Usage {
+  name: string;
+  qty: number;
+}
+
+const increment = (usage: Array<Usage>, name: string): Array<Usage> => {
+  const index = usage.findIndex((use: Usage) => use.name === name);
+  if (index === -1) {
+    usage.push({ name, qty: 1 });
+    return usage;
+  }
+  const replacement: Usage = { name, qty: usage[index].qty + 1 };
+  usage[index] = replacement;
+  return usage;
+};
+
+const updateUsage = (
+  usage: Array<Usage>,
+  pluginsForElement: Array<BinderPluginLogic>
+): Array<Usage> => {
+  if (pluginsForElement.length === 0) {
+    increment(usage, "total");
+  }
+  pluginsForElement.forEach(pi => {
+    const key = pi.attributes[0];
+    increment(usage, key);
+  });
+  return usage;
+};
+
 const registerAll = (
   element: HTMLElement,
   plugins = Array<BinderPluginLogic>(),
-  usage: { [key: string]: number }
-): { [key: string]: number } => {
+  usage: Array<Usage>
+): Array<Usage> => {
   if (element == null) {
     return usage;
   }
 
-  const pluginsForElement = register(element, plugins);
-  if (pluginsForElement.length === 0) {
-    const count = usage.total | 0;
-    usage.total = count + 1;
-  }
-  pluginsForElement.forEach(pi => {
-    const key = pi.attributes[0];
-    const count = usage[key] | 0;
-    usage[key] = count + 1;
-  });
+  const pluginsForElement: Array<BinderPluginLogic> = register(
+    element,
+    plugins
+  );
+  usage = updateUsage(usage, pluginsForElement);
 
+  // recurrsive calls....
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     const node = element.childNodes[i];
     if (node instanceof HTMLElement) {
@@ -269,7 +293,7 @@ const fixID = (element: HTMLElement, name: string): HTMLElement => {
 };
 
 export const go = plugs => bagItAndTagIt(plugs);
-const tools: BinderTools = {
+export const tools: BinderTools = {
   put,
   get,
   getValue,
@@ -326,7 +350,8 @@ const registerPlugin = (
     return false;
   }
   pluginsDone.push(element.id + "::" + plugin.attributes[0]);
-  return plugin.process(element, value);
+  const used = plugin.process(element, value);
+  return used;
 };
 
 const registerState = (element: HTMLElement, fieldname: string): boolean => {

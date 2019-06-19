@@ -1,5 +1,7 @@
 import { BinderPlugin, BinderTools } from "../binderTypes";
 
+import { moveAction, DataMover } from "./swapperMoveSubplugin.js";
+
 // Just for testing....
 let storage = window.localStorage;
 export function setStorage(s) {
@@ -19,17 +21,49 @@ export interface ActionFunction {
   callback: Function
 }
 
-export const action = (actionF: ActionFunction) => {
+const movers: Array<DataMover> = new Array<DataMover>();
+export const actionMover = (dataMove: DataMover) => {
+  movers.push(dataMove);
+}
+
+export const swapAction = (actionF: ActionFunction) => {
   actions.push(actionF);
 }
 
-export const swapperPlugin:BinderPlugin = tools => {
+export const swapperPlugin:BinderPlugin
+ = (tools:BinderTools) => {
   binder = tools;
+  const ids = Array<String>();
   return {attributes:["swapper", "swapper-action"], process:(element: Element):boolean => {
+    registerMover(tools, element);    
     tools.clickListener(element, (e:Event) => click(element));
     return true;
   }};
 };
+
+const getGroupName = (element: Element): string | false => {
+  const actionName = element.getAttribute("swapper-action");
+  if (actionName != null){
+    return false;
+  }  
+  const groupName = element.getAttribute("swapper");
+  if (groupName == null){
+    return false;
+  }  
+  return groupName;
+}
+
+const registerMover = (tools: BinderTools, element: Element) => {
+  const groupName = getGroupName(element);
+  if (!groupName){
+    return;
+  }
+  movers.filter((mover:DataMover)=>mover.group === groupName)
+        .forEach((mover:DataMover)=>{
+          const creator = moveAction(tools,mover,element.id);
+          swapAction(creator);        
+        });
+}
 
 const registerSelection = (element: Element, groupName: string) =>{
   element.classList.add("swap-selected");
@@ -61,8 +95,8 @@ const clickAction = (element: Element) => {
 }
 
 const doAction = (actionElement: Element, groupName: string) => {  
-  const actionID = storage.getItem("swap-action-" + groupName);
   const idSelected = storage.getItem("swap-" + groupName);
+  const actionID = storage.getItem("swap-action-" + groupName);
   if (actionID == null && idSelected == null) {
     registerActionSelection(actionElement, groupName);
     return;

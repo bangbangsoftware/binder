@@ -1,4 +1,4 @@
-import { bagItAndTagIt, put, setValue, getValue } from "./dist/index.js";
+import { bagItAndTagIt, put } from "./dist/index.js";
 import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
 import { togglePlugin } from "./dist/plugins/togglePlugin.js";
 import { showHidePlugin, showHideSwap } from "./dist/plugins/showhidePlugin.js";
@@ -8,55 +8,19 @@ import {
   moverCallback
 } from "./dist/plugins/moverPlugin.js";
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";
-import { swapPlugin, action } from "./dist/plugins/swapPlugin.js";
+import { swapPlugin, actionMover } from "./dist/plugins/swapPlugin.js";
 
 moverValue("Captain");
 moverCallback(() => {
   showHideSwap("capshow");
 });
 
-const findLast = () => {
-  const swapids = [
-    "slot-one-butt-data",
-    "slot-two-butt-data",
-    "slot-three-butt-data",
-    "slot-four-butt-data"
-  ];
-  const found = swapids
-    .map(id => document.getElementById(id))
-    .filter(el => {
-      if (el == null) {
-        return false;
-      }
-      const value = el.innerText;
-      console.log("VALUE IS ------" + value + "======");
-      return value != null && value.length > 0;
-    });
-
-  console.log("FOUND ", found);
-  return found.length === 0 ? null : found[0];
-};
-
-let lastCaptian = null;
-action({
-  id: "captain-butt",
-  callback: element => {
-    console.log(element.id + " ACTION clicked");
-    if (lastCaptian == null) {
-      lastCaptian = findLast();
-    }
-    const ribbonID = element.id + "-data";
-    const ribbonElement = document.getElementById(element.id + "-data");
-    console.log(ribbonID + ", element is ", ribbonElement);
-    setValue(ribbonElement, "- Captain -");
-    put(ribbonElement);
-    if (lastCaptian != null) {
-      setValue(lastCaptian, "");
-      put(lastCaptian);
-    }
-    lastCaptian = ribbonElement;
-  }
-});
+const group = "swaps";
+const actionID = "captain-butt";
+const data = "- Captian -";
+const dataIDpostFix = "data";
+const mover = { group, actionID, data, dataIDpostFix};
+actionMover(mover);
 
 console.log("TESTER");
 

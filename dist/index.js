@@ -82,14 +82,12 @@ export function bagItAndTagIt(plugs = Array(), key = "reg") {
     setup();
     const plugins = plugs.map(setupPlugin => setupPlugin(tools));
     const everything = doc.querySelectorAll("*");
-    let results = {};
+    let results = new Array();
     everything.forEach((element) => {
         results = registerAll(element, plugins, results);
     });
     console.log("Detected.....");
-    Object.keys(results).forEach(k => {
-        console.log(k + " - " + results[k]);
-    });
+    results.forEach(result => console.log(result.name + " - " + result.qty));
     console.log(".............");
     show(doc.getElementsByTagName("BODY")[0]);
 }
@@ -193,20 +191,33 @@ const clickListener = (e, fn) => {
         .filter(id => !clickers.has(id))
         .forEach(id => clickers.set(id, changed));
 };
+const increment = (usage, name) => {
+    const index = usage.findIndex((use) => use.name === name);
+    if (index === -1) {
+        usage.push({ name, qty: 1 });
+        return usage;
+    }
+    const replacement = { name, qty: usage[index].qty + 1 };
+    usage[index] = replacement;
+    return usage;
+};
+const updateUsage = (usage, pluginsForElement) => {
+    if (pluginsForElement.length === 0) {
+        increment(usage, "total");
+    }
+    pluginsForElement.forEach(pi => {
+        const key = pi.attributes[0];
+        increment(usage, key);
+    });
+    return usage;
+};
 const registerAll = (element, plugins = Array(), usage) => {
     if (element == null) {
         return usage;
     }
     const pluginsForElement = register(element, plugins);
-    if (pluginsForElement.length === 0) {
-        const count = usage.total | 0;
-        usage.total = count + 1;
-    }
-    pluginsForElement.forEach(pi => {
-        const key = pi.attributes[0];
-        const count = usage[key] | 0;
-        usage[key] = count + 1;
-    });
+    usage = updateUsage(usage, pluginsForElement);
+    // recurrsive calls....
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
         const node = element.childNodes[i];
         if (node instanceof HTMLElement) {
@@ -227,7 +238,7 @@ const fixID = (element, name) => {
     return element;
 };
 export const go = plugs => bagItAndTagIt(plugs);
-const tools = {
+export const tools = {
     put,
     get,
     getValue,
@@ -268,7 +279,8 @@ const registerPlugin = (element, plugin, value) => {
         return false;
     }
     pluginsDone.push(element.id + "::" + plugin.attributes[0]);
-    return plugin.process(element, value);
+    const used = plugin.process(element, value);
+    return used;
 };
 const registerState = (element, fieldname) => {
     if (namesDone.some(d => d === element.id)) {
