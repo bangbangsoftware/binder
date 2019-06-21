@@ -149,7 +149,6 @@ const doAll = (element, mapper) => {
     //    console.log("IFP - ",mapper);
     return;
   }
-  console.log("IFP - calling all listeners for " + id, fns);
 
   fns.forEach(fn => fn(element));
 };
@@ -362,7 +361,7 @@ const registerState = (element: HTMLElement, fieldname: string): boolean => {
 
   addToRegister(element, fieldname);
   if (isInput(element)) {
-    listen(element, e => put(e.target));
+    listen(element, e => put(e));
   }
   return true;
 };

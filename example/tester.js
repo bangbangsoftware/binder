@@ -10,17 +10,17 @@ import {
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";
 import { swapPlugin, actionMover } from "./dist/plugins/swapPlugin.js";
 
-moverValue("Captain");
-moverCallback(() => {
-  showHideSwap("capshow");
-});
-
 const group = "swaps";
 const actionID = "captain-butt";
 const data = "- Captian -";
 const dataIDpostFix = "data";
 const mover = { group, actionID, data, dataIDpostFix};
 actionMover(mover);
+
+moverValue("Captain");
+moverCallback(() => {
+  showHideSwap("capshow");
+});
 
 console.log("TESTER");
 

@@ -20,7 +20,6 @@ export const swapAction = (actionF) => {
 };
 export const swapperPlugin = (tools) => {
     binder = tools;
-    const ids = Array();
     return { attributes: ["swapper", "swapper-action"], process: (element) => {
             registerMover(tools, element);
             tools.clickListener(element, (e) => click(element));

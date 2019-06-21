@@ -130,7 +130,10 @@ const doAll = (element, mapper) => {
         return;
     }
     console.log("IFP - calling all listeners for " + id, fns);
-    fns.forEach(fn => fn(element));
+    fns.forEach(fn => {
+        console.log("IFP - looping " + id, fn, element);
+        fn(element);
+    });
 };
 const react = (e, mapper) => {
     if (e.target == null) {
@@ -289,7 +292,11 @@ const registerState = (element, fieldname) => {
     namesDone.push(element.id);
     addToRegister(element, fieldname);
     if (isInput(element)) {
-        listen(element, e => put(e.target));
+        listen(element, e => {
+            console.log("OK", e);
+            console.log("ok....", e.target);
+            put(e);
+        });
     }
     return true;
 };

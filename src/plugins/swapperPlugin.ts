@@ -33,7 +33,6 @@ export const swapAction = (actionF: ActionFunction) => {
 export const swapperPlugin:BinderPlugin
  = (tools:BinderTools) => {
   binder = tools;
-  const ids = Array<String>();
   return {attributes:["swapper", "swapper-action"], process:(element: Element):boolean => {
     registerMover(tools, element);    
     tools.clickListener(element, (e:Event) => click(element));
