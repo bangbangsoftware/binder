@@ -23,14 +23,13 @@ export const getValue = (element) => {
 };
 export const setValue = (element, value) => {
     if (element == null) {
-        console.log("Cannot set " + value + " as element is null");
+        console.error("Cannot set " + value + " as element is null");
         return;
     }
     if (isInput(element)) {
         const input = element;
         input.value = value;
     }
-    console.log("setvalue ", element.id, "'" + value + "'");
     element.innerText = value;
     doAll(element, statelisteners);
 };
@@ -125,15 +124,9 @@ const doAll = (element, mapper) => {
     const id = element.id;
     const fns = mapper.get(id);
     if (fns == null) {
-        //    console.log("IFP - NULL! "+id);
-        //    console.log("IFP - ",mapper);
         return;
     }
-    console.log("IFP - calling all listeners for " + id, fns);
-    fns.forEach(fn => {
-        console.log("IFP - looping " + id, fn, element);
-        fn(element);
-    });
+    fns.forEach(fn => fn(element));
 };
 const react = (e, mapper) => {
     if (e.target == null) {
@@ -142,9 +135,11 @@ const react = (e, mapper) => {
     const element = e.target;
     const id = element.id;
     const fn = mapper.get(id);
-    if (fn != null) {
-        fn(e);
+    if (fn == null) {
+        console.error("ACTION: no action for " + id);
+        return;
     }
+    fn(e);
 };
 const listen = (field, fn) => {
     const changed = (e) => fn(e);
@@ -152,7 +147,6 @@ const listen = (field, fn) => {
 };
 const stateListener = (fieldID, fn) => {
     const changed = (e) => fn(e);
-    console.log("adding ", fieldID);
     addListener(fieldID, changed, statelisteners);
 };
 const addListener = (fieldID, changed, ears = listeners) => {
@@ -292,11 +286,7 @@ const registerState = (element, fieldname) => {
     namesDone.push(element.id);
     addToRegister(element, fieldname);
     if (isInput(element)) {
-        listen(element, e => {
-            console.log("OK", e);
-            console.log("ok....", e.target);
-            put(e);
-        });
+        listen(element, e => put(e));
     }
     return true;
 };

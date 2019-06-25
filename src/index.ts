@@ -35,14 +35,13 @@ export const getValue = (element: HTMLElement): string => {
 };
 export const setValue = (element: HTMLElement, value: string) => {
   if (element == null) {
-    console.log("Cannot set " + value + " as element is null");
+    console.error("Cannot set " + value + " as element is null");
     return;
   }
   if (isInput(element)) {
     const input = <HTMLInputElement>element;
     input.value = value;
   }
-  console.log("setvalue ", element.id, "'" + value + "'");
   element.innerText = value;
   doAll(element, statelisteners);
 };
@@ -145,8 +144,6 @@ const doAll = (element, mapper) => {
   const id = element.id;
   const fns = mapper.get(id);
   if (fns == null) {
-    //    console.log("IFP - NULL! "+id);
-    //    console.log("IFP - ",mapper);
     return;
   }
 
@@ -160,9 +157,11 @@ const react = (e: Event, mapper: Map<string, Function>) => {
   const element = <Element>e.target;
   const id = element.id;
   const fn = mapper.get(id);
-  if (fn != null) {
-    fn(e);
+  if (fn == null) {
+    console.error("ACTION: no action for "+id);
+    return;
   }
+  fn(e);
 };
 
 const listen = (field: Element, fn: Function) => {
@@ -172,7 +171,6 @@ const listen = (field: Element, fn: Function) => {
 
 const stateListener = (fieldID: string, fn: Function) => {
   const changed = (e: Event) => fn(e);
-  console.log("adding ", fieldID);
   addListener(fieldID, changed, statelisteners);
 };
 

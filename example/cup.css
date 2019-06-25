@@ -1,0 +1,28 @@
+.main {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+  }
+
+.level {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto;
+    grid-gap: 30px;
+}
+  
+ .match {
+    display: grid;
+    grid-template-columns: auto 25px auto auto;
+    grid-template-rows: 80px;
+ } 
+
+ .vrs {
+     vertical-align: middle;
+     align-self: center;
+ }
+
+ .winner {
+     font-size: 300px;
+ }

@@ -184,6 +184,11 @@ input {
 
   }
 
+  .box {
+    border: #0a3a5a;
+    border-style: double;
+  }
+
 .buttongrid {
   display: grid;
   grid-template-columns: auto auto auto;
