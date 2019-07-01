@@ -8,6 +8,8 @@ import {
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
 
+let mode:string = "";
+
 //https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
 
 const isInput = (element: Element) => {
@@ -212,8 +214,29 @@ const childIDs = (
   return ids;
 };
 
-const clickListener = (e: Element, fn: Function) => {
-  const changed = e => fn(e);
+const shouldClick = (modes:Array<string>): boolean =>{
+  if (modes.length === 0){
+    console.log("No mode list set");
+    return true;
+  }
+  if (mode.length === 0){
+    console.log("No mode set")
+    return true;
+  }
+  if (modes.indexOf(mode) > -1){
+    console.log("Mode in list")
+    return true;
+  }
+  console.warn("'"+mode+"' is not in mode list ", modes);
+  return false;
+} 
+
+const clickListener = (e: Element, fn: Function, modes:Array<string> = []) => {
+  const changed = e => {
+    if (shouldClick(modes)){
+      fn(e);
+    }
+  };
   childIDs(e)
     .filter(id => !clickers.has(id))
     .forEach(id => clickers.set(id, changed));
@@ -288,6 +311,16 @@ const fixID = (element: HTMLElement, name: string): HTMLElement => {
   );
   return element;
 };
+
+export const setMode = (newMode: string): string => {
+  const oldMode = mode+"";
+  mode = newMode;
+  return oldMode;
+}
+
+export const getMode = (): string => {
+  return mode;
+}
 
 export const go = plugs => bagItAndTagIt(plugs);
 export const tools: BinderTools = {

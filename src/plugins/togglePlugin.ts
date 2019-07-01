@@ -5,7 +5,7 @@ let binder: BinderTools;
 export const togglePlugin = (tools: BinderTools) => {
   binder = tools;
   return {attributes:["toggle"], process:(element: Element, name: string):boolean => {
-    tools.clickListener(element, (e:Event) => click(element));
+    tools.clickListener(element, (e:Event) => click(element), [name]);
     return true;
   }};
 };

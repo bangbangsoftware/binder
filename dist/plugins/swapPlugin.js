@@ -17,14 +17,19 @@ export const action = (actionF) => actions.push(actionF);
 export const swapPlugin = tools => {
     return {
         attributes: ["swap", "swap-action"],
-        process: (element) => {
+        process: (element, groupName) => {
             const pids = getParentIds(element, tools);
             if (!pids) {
                 return false;
             }
             registerMover(tools, element);
             storage.setItem(PREFIX + element.id, JSON.stringify(pids));
-            tools.clickListener(element, (e) => click(element));
+            if (groupName) {
+                tools.clickListener(element, (e) => click(element), [groupName]);
+            }
+            else {
+                console.error("SWAP PLUGIN:No group name??! ", element);
+            }
             return true;
         }
     };

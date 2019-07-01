@@ -39,18 +39,24 @@ export interface ActionFunction {
 export const swapPlugin: BinderPlugin = tools => {
   return {
     attributes: ["swap", "swap-action"],
-    process: (element: Element): boolean => {
+    process: (element: Element, groupName: string): boolean => {
       const pids = getParentIds(element, tools);
       if (!pids) {
         return false;
       }
       registerMover(tools, element);    
       storage.setItem(PREFIX + element.id, JSON.stringify(pids));
-      tools.clickListener(element, (e: Event) => click(element));
+      if (groupName){
+        tools.clickListener(element, (e: Event) => click(element), [groupName]);
+      } else {
+        console.error("SWAP PLUGIN:No group name??! ", element);
+      }
       return true;
     }
   };
 };
+
+
 
 export const getParentIds = (
   element: Element,

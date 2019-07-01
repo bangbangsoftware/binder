@@ -15,7 +15,7 @@ export interface ToolSetValue {
 }
 
 export interface ClickListener {
-  (element: Element, fn: Function);
+  (element: Element, fn: Function, modes?:Array<string>);
 }
 
 export interface StateListener {

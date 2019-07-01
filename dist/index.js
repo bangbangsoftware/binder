@@ -1,5 +1,6 @@
 const namesDone = new Array();
 const pluginsDone = new Array();
+let mode = "";
 //https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
 const isInput = (element) => {
     if (element == null || element.localName == null) {
@@ -182,8 +183,28 @@ const childIDs = (element, ids = new Array()) => {
     }
     return ids;
 };
-const clickListener = (e, fn) => {
-    const changed = e => fn(e);
+const shouldClick = (modes) => {
+    if (modes.length === 0) {
+        console.log("No mode list set");
+        return true;
+    }
+    if (mode.length === 0) {
+        console.log("No mode set");
+        return true;
+    }
+    if (modes.indexOf(mode) > -1) {
+        console.log("Mode in list");
+        return true;
+    }
+    console.warn("'" + mode + "' is not in mode list ", modes);
+    return false;
+};
+const clickListener = (e, fn, modes = []) => {
+    const changed = e => {
+        if (shouldClick(modes)) {
+            fn(e);
+        }
+    };
     childIDs(e)
         .filter(id => !clickers.has(id))
         .forEach(id => clickers.set(id, changed));
@@ -233,6 +254,14 @@ const fixID = (element, name) => {
     const typeText = isInput(element) ? "input" : "None input";
     console.error("No id for " + typeText + " element so, generating one: ", element.id);
     return element;
+};
+export const setMode = (newMode) => {
+    const oldMode = mode + "";
+    mode = newMode;
+    return oldMode;
+};
+export const getMode = () => {
+    return mode;
 };
 export const go = plugs => bagItAndTagIt(plugs);
 export const tools = {

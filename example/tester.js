@@ -1,4 +1,4 @@
-import { bagItAndTagIt, put } from "./dist/index.js";
+import { bagItAndTagIt, put, setMode } from "./dist/index.js";
 import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
 import { togglePlugin } from "./dist/plugins/togglePlugin.js";
 import { showHidePlugin, showHideSwap } from "./dist/plugins/showhidePlugin.js";
@@ -12,7 +12,7 @@ import { swapPlugin, actionMover } from "./dist/plugins/swapPlugin.js";
 
 const group = "swaps";
 const actionID = "captain-butt";
-const data = "- Captian -";
+const data = "- Assigned Data -";
 const dataIDpostFix = "data";
 const mover = { group, actionID, data, dataIDpostFix};
 actionMover(mover);
@@ -70,6 +70,19 @@ const timeFormat = () => {
 };
 
 const main = document.getElementById("results");
+
+const modeButt = document.getElementById("mode");
+let mode = "";
+modeButt.addEventListener("click", ()=>{
+  if (mode === ""){
+    setMode("swap");
+    mode = "swap";
+  } else {
+    setMode("");
+    mode = "";
+  }
+  console.log("mode is "+mode);
+})
 
 const results = what => {
   const time = document.createElement("div");
