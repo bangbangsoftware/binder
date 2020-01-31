@@ -1,7 +1,7 @@
 [Logo of the project](./icon.svg)
 
 #  The Binder 
-> A tiny library for binding data on a web page and storing locally, 
+> A tiny library for binding data on a web page, storing locally and working off line. 
 
 It's local data, for local people. If you want to get an app up *quickly*
 that doesn't need to share data, but need to persist data, then binder 
