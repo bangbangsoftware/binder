@@ -26,7 +26,7 @@ So add it to your page, most basically like....
 <script type='module' src='./node_modules/binder/dist/go.js'></script>
 ```
 
-This will register any element on the page with a **name*** attribute, eg. 
+This will register any element on the page with a **name** attribute, eg. 
 
 ```shell
 <html>
