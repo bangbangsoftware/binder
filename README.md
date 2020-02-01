@@ -1,10 +1,6 @@
 #  The Binder 
-> A tiny library for binding data on a web page, storing locally and working off line. 
-
 It came about when I wanted an app to help keep tally of my son's
-[five-a-side football scores](//github.com/bangbangsoftware/footswell/). 
-
-it's all in local storage for local people.
+[five-a-side football scores](//github.com/bangbangsoftware/footswell/). It's a tiny library for binding data on a web page, all in local storage for local people.
 
 ## Installing / Getting started
 
