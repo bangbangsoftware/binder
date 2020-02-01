@@ -3,18 +3,10 @@
 #  The Binder 
 > A tiny library for binding data on a web page, storing locally and working off line. 
 
-It's local data, for local people. If you want to get an app up *quickly*
-that doesn't need to share data, but need to persist data, then binder 
-can do it. 
-
-It came about when I wanted to write an app to help keep tally of my son's
+It came about when I wanted an app to help keep tally of my son's
 [five-a-side football scores](//github.com/bangbangsoftware/footswell/). 
 
-I was going to use the mighty [vue](https://vuejs.org/), 
-but got too caught up in setup and besides I wanted to try my hand at
-pure js. 
-
-it's in local storage.
+it's all in local storage for local people.
 
 ## Installing / Getting started
 
