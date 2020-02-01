@@ -14,18 +14,6 @@ I was going to use the mighty [vue](https://vuejs.org/),
 but got too caught up in setup and besides I wanted to try my hand at
 pure js. 
 
-### Yes, but could it be used for multiple users ???
-Well, no - not out the box, not if you wanted to share data across users.
-However I was thinking of developing a light weight couchdb like system
-using postgres notify, websockets and some simple [localStorage](https://en.wikipedia.org/wiki/Web_storage) syncing
-code...
-
-### More techno bable
-It's a *simple fit* to straight forward use case, using localStorage 
-as a sort of redux store. It has a plugin system, where you can add 
-features in a decoupled way. It is small, in fact these docs are most
-likely bigger than the code. So if you want to use routes, just get
-the webserver to serve another file, the state will still be there as
 it's in local storage.
 
 ## Installing / Getting started
@@ -34,6 +22,15 @@ it's in local storage.
 
 ```shell
 npm i https://github.com/bangbangsoftware/binder -D
+
+
+### What can i just copy and paste to get started ???
+
+You can **run** the bash script **quick-bind.sh**
+
+## Live demo...
+
+This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/example/)
 ```
 
 ### Basic use...
@@ -44,7 +41,7 @@ So add it to your page, most basically like....
 <script type='module' src='./node_modules/binder/dist/go.js'></script>
 ```
 
-This will register any element on the page with a name attribute, eg. 
+This will register any element on the page with a **name*** attribute, eg. 
 
 ```shell
 <html>
@@ -67,32 +64,6 @@ The value will be a map, where "sport" is mapped to whatever is typed in
 
 ![Stored in local storage](./localredux.png)
 
-### What can i just copy and paste to get started ???
-
-You can run the bash script quick-bind.sh, which started out doing a quick project below, 
-but then I got carried away and it's a little bigger now, showing off plugins as well.
-
-```shell
-mkdir ../what-a-bind && cd ../what-a-bind
-npm init -y
-npm i live-server
-npm i https://github.com/bangbangsoftware/binder -D
-echo "<html>"  > index.html
-echo "      <input placeholder='go on type in here' name='name' id='name' autofocus></input>" >> index.html
-for i in `seq 1 25`;
-do
-    echo "      <div name='name' id='label$i'></div>" >> index.html
-done
-echo "      <div name='storage' id='slabel'>Press refresh (F5), Look in local storage!</div>" >> index.html
-echo "      <script type='module' src='../node_modules/binder/dist/go.js'></script>" >> index.html
-echo "</html>" >> index.html
-node ./node_modules/.bin/live-server
-```
-
-## Live demo...
-
-This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/example/)
-
 ## Security
 
 Everything is stored locally, so as long as your local storage is safe, so is your data.
@@ -109,7 +80,7 @@ None!
 npm start
 
 # build for production with minification 
-npm run build - yet to do (Might use rollup) 
+npm run build - yet to do (Might use rollup or snowpack) 
 
 # run unit tests
 npm run unit - currently there are none
@@ -136,10 +107,9 @@ eg.
 import { switchPlugin, togglePlugin, bagItAndTagIt } from "binder";
 bagItAndTagIt([togglePlugin, switchPlugin])
 ```
+The plugin should be a function that accepts an object and return a function that accepts a HTML element. 
 
-The plugin should be a function that accepts an object and return a function 
-that accepts a HTML element. The object it accepts consists of the binder 
-tools (put, get, putValue, getValue, registerAll, clickListener functions). 
+The object it accepts consists of the binder tools (put, get, putValue, getValue, registerAll, clickListener functions). 
 It should filter out any HTML the plugin is not interested in. 
 
 eg.
@@ -175,6 +145,19 @@ npm run build
  This will build the site to dist, which can be commited and served by github
  pages
 
+### Yes, but could it be used for multiple users ???
+Well, no - not out the box, not if you wanted to share data across users.
+However I was thinking of developing a light weight couchdb like system
+using postgres notify, websockets and some simple [localStorage](https://en.wikipedia.org/wiki/Web_storage) syncing
+code...
+
+### More techno bable
+It's a *simple fit* to straight forward use case, using localStorage 
+as a sort of redux store. It has a plugin system, where you can add 
+features in a decoupled way. It is small, in fact these docs are most
+likely bigger than the code. So if you want to use routes, just get
+the webserver to serve another file, the state will still be there as
+
 ## To Do
 
 * [ ] Documentation 
@@ -204,7 +187,7 @@ Don't know.
 
 > Is it linked to a browser?
 
-Yes, it binds to the browsers local storage for the domain where it's hosted.
+Yes, it binds to the browsers local storage for the domain where it's hosted. Will work on any browser that supports local storage.
 
 ## Style guide
 
