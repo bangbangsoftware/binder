@@ -1,4 +1,4 @@
-import { moveAction } from "./swapperMoveSubplugin";
+import { moveAction } from "./swapperMoveSubplugin.js";
 // Just for testing....
 let storage = window.localStorage;
 export function setStorage(s) {
