@@ -16,7 +16,7 @@ export const moverPlugin = tools => {
                 element.innerText = value;
                 list.forEach(element => tools.put(element));
                 callback();
-            });
+            }, [name]);
             return true;
         } };
 };

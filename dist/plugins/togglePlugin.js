@@ -2,7 +2,7 @@ let binder;
 export const togglePlugin = (tools) => {
     binder = tools;
     return { attributes: ["toggle"], process: (element, name) => {
-            tools.clickListener(element, (e) => click(element));
+            tools.clickListener(element, (e) => click(element), [name]);
             return true;
         } };
 };

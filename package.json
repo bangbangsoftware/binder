@@ -26,14 +26,18 @@
   },
   "homepage": "https://github.com/bangbangsoftware/binder#readme",
   "dependencies": {
+    "@babel/core": "^7.8.4",
     "live-server": "^1.2.1"
   },
   "devDependencies": {
+    "@babel/parser": "^7.8.4",
     "@babel/preset-env": "^7.3.4",
+    "@babel/types": "^7.8.3",
     "@types/jest": "^24.0.9",
+    "babel-eslint": "^10.0.3",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
     "ts-jest": "^24.0.0",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.7.5"
   }
 }

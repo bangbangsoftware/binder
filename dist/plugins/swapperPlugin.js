@@ -1,4 +1,4 @@
-import { moveAction } from "./swapperMoveSubplugin.js";
+import { moveAction } from "./swapperMoveSubplugin";
 // Just for testing....
 let storage = window.localStorage;
 export function setStorage(s) {
@@ -20,9 +20,9 @@ export const swapAction = (actionF) => {
 };
 export const swapperPlugin = (tools) => {
     binder = tools;
-    return { attributes: ["swapper", "swapper-action"], process: (element) => {
+    return { attributes: ["swapper", "swapper-action"], process: (element, name) => {
             registerMover(tools, element);
-            tools.clickListener(element, (e) => click(element));
+            tools.clickListener(element, (e) => click(element), [name]);
             return true;
         } };
 };

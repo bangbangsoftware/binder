@@ -8,7 +8,7 @@ const flight1 = {from:"Maythorne",to:"Mars",depart:"Tomorrow at 8pm", arrive:"10
 
 const flights = [];
 console.time("data setup");
-for(let c = 0; c < 500;c++){
+for(let c = 0; c < 200;c++){
     flights.push(flight1);
 }
 console.timeEnd("data setup");

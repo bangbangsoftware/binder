@@ -1,6 +1,6 @@
 import { BinderPlugin, BinderTools } from "../binderTypes";
 
-import { moveAction, DataMover } from "./swapperMoveSubplugin.js";
+import { moveAction, DataMover } from "./swapperMoveSubplugin";
 
 // Just for testing....
 let storage = window.localStorage;

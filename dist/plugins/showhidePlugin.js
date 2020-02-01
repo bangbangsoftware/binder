@@ -20,7 +20,7 @@ export const showHidePlugin = tools => {
     };
 };
 const regTrigger = (tools, name, element) => {
-    tools.clickListener(element, () => showHideSwap(name));
+    tools.clickListener(element, () => showHideSwap(name), [name]);
     return true;
 };
 export const showHideSwap = name => {
