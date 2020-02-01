@@ -14,16 +14,15 @@ it's all in local storage for local people.
 
 ```shell
 npm i https://github.com/bangbangsoftware/binder -D
-
+```
 
 ### What can i just copy and paste to get started ???
 
-You can **run** the bash script **quick-bind.sh**
+You can **run** the bash script **./quick-bind.sh**
 
 ## Live demo...
 
 This is hosted on github pages [here](http://bangbangsoftware.github.io/binder/example/)
-```
 
 ### Basic use...
 
