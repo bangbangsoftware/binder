@@ -1,7 +1,6 @@
 #  The Binder 
-It came about when I wanted an app to help keep tally of my son's
-[five-a-side football scores](//github.com/bangbangsoftware/footswell/). It's a tiny library for binding data on a web page, all in local storage for local people.
-
+A tiny library for binding data on a web page, all in local storage for local people.
+It came about when I wanted an app to help keep tally of my son's [five-a-side football scores](//github.com/bangbangsoftware/footswell/).
 ## Installing / Getting started
 
 ### Install...
