@@ -1,5 +1,3 @@
-[Logo of the project](./icon.svg)
-
 #  The Binder 
 > A tiny library for binding data on a web page, storing locally and working off line. 
 
