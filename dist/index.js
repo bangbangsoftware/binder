@@ -135,9 +135,11 @@ const react = (e, mapper) => {
     }
     const element = e.target;
     const id = element.id;
-    const fn = mapper.get(id);
+    const key = (mode.length === 0) ? element.id : mode + "-" + element.id;
+    const fn = mapper.get(key);
     if (fn == null) {
-        console.error("ACTION: no action for " + id);
+        console.error("ACTION: " + key + " :: no action for '" + id + "' in the mode '" + mode + "'.");
+        console.log(mapper);
         return;
     }
     fn(e);
@@ -165,14 +167,18 @@ const setupListener = () => {
     doc.addEventListener("click", e => react(e, clickers));
 };
 const childIDs = (element, ids = new Array()) => {
-    if (!element.id) {
+    if (element == null) {
+        console.error("no element for clicker");
+        return ids;
+    }
+    else if (!element.id) {
         console.error("no id, no click listener", element);
     }
     else if (ids.indexOf(element.id) === -1) {
         //console.log("stored to click "+element.id);
         ids.push(element.id);
     }
-    if (element.childNodes.length === 0) {
+    if (!element.childNodes || element.childNodes.length === 0) {
         return ids;
     }
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
@@ -183,31 +189,16 @@ const childIDs = (element, ids = new Array()) => {
     }
     return ids;
 };
-const shouldClick = (modes) => {
-    if (modes.length === 0) {
-        console.log("No mode list set");
-        return true;
-    }
-    if (mode.length === 0) {
-        console.log("No mode set");
-        return true;
-    }
-    if (modes.indexOf(mode) > -1) {
-        console.log("Mode in list");
-        return true;
-    }
-    console.warn("'" + mode + "' is not in mode list ", modes);
-    return false;
-};
 const clickListener = (e, fn, modes = []) => {
-    const changed = e => {
-        if (shouldClick(modes)) {
-            fn(e);
-        }
-    };
+    const changed = e => fn(e);
     childIDs(e)
         .filter(id => !clickers.has(id))
         .forEach(id => clickers.set(id, changed));
+    modes.forEach(modeInList => {
+        childIDs(e)
+            .filter(id => !clickers.has(modeInList + "-" + id))
+            .forEach(id => clickers.set(modeInList + "-" + id, changed));
+    });
 };
 const increment = (usage, name) => {
     const index = usage.findIndex((use) => use.name === name);

@@ -1,4 +1,4 @@
-import { bagItAndTagIt, put, setMode } from "./dist/index.js";
+import { bagItAndTagIt, put, setMode, tools } from "./dist/index.js";
 import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
 import { togglePlugin } from "./dist/plugins/togglePlugin.js";
 import { showHidePlugin, showHideSwap } from "./dist/plugins/showhidePlugin.js";
@@ -72,17 +72,18 @@ const timeFormat = () => {
 const main = document.getElementById("results");
 
 const modeButt = document.getElementById("mode");
-let mode = "";
-modeButt.addEventListener("click", ()=>{
-  if (mode === ""){
-    setMode("swap");
-    mode = "swap";
+let mode = "enable all";
+tools.clickListener(modeButt, ()=>{
+  if (mode === "enable all"){
+    setMode("disable");
+    mode = "disable some";
   } else {
     setMode("");
-    mode = "";
+    mode = "enable all";
   }
+  modeButt.innerText = "Mode now is "+mode;
   console.log("mode is "+mode);
-})
+});
 
 const results = what => {
   const time = document.createElement("div");
@@ -99,7 +100,7 @@ const results = what => {
 
 const kickoff = document.getElementById("kickoff");
 let running;
-kickoff.addEventListener("click", e => {
+tools.clickListener(kickoff, e => {
   e.target.style.display = "none";
   document.getElementById("playing").classList.remove("hide");
   document.getElementById("bench").classList.add("hide");
@@ -115,7 +116,7 @@ kickoff.addEventListener("click", e => {
 });
 
 const state = document.getElementById("state");
-state.addEventListener("click", e => {
+tools.clickListener(state, e => {
   const pause = e.target.innerText === "Play On";
   if (pause) {
     document.getElementById("playing").classList.add("hide");
@@ -129,7 +130,7 @@ state.addEventListener("click", e => {
 });
 
 const concede = document.getElementById("vrsScore");
-concede.addEventListener("click", e => {
+tools.clickListener("click", e => {
   const el = e.target;
   el.innerText = parseInt(el.innerText) + 1;
   const time = timeFormat();

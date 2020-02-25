@@ -158,9 +158,11 @@ const react = (e: Event, mapper: Map<string, Function>) => {
   }
   const element = <Element>e.target;
   const id = element.id;
-  const fn = mapper.get(id);
+  const key = (mode.length === 0) ? element.id : mode+"-"+element.id;
+  const fn = mapper.get(key);
   if (fn == null) {
-    console.error("ACTION: no action for "+id);
+    console.error("ACTION: "+key+" :: no action for '"+id+"' in the mode '"+mode+"'.");
+    console.log(mapper);
     return;
   }
   fn(e);
@@ -196,13 +198,16 @@ const childIDs = (
   element: Element,
   ids = new Array<string>()
 ): Array<string> => {
-  if (!element.id) {
+  if (element == null) {
+    console.error("no element for clicker");
+    return ids;
+  } else if (!element.id) {
     console.error("no id, no click listener", element);
   } else if (ids.indexOf(element.id) === -1) {
     //console.log("stored to click "+element.id);
     ids.push(element.id);
   }
-  if (element.childNodes.length === 0) {
+  if (!element.childNodes || element.childNodes.length === 0) {
     return ids;
   }
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
@@ -214,32 +219,17 @@ const childIDs = (
   return ids;
 };
 
-const shouldClick = (modes:Array<string>): boolean =>{
-  if (modes.length === 0){
-    console.log("No mode list set");
-    return true;
-  }
-  if (mode.length === 0){
-    console.log("No mode set")
-    return true;
-  }
-  if (modes.indexOf(mode) > -1){
-    console.log("Mode in list")
-    return true;
-  }
-  console.warn("'"+mode+"' is not in mode list ", modes);
-  return false;
-} 
-
 const clickListener = (e: Element, fn: Function, modes:Array<string> = []) => {
-  const changed = e => {
-    if (shouldClick(modes)){
-      fn(e);
-    }
-  };
-  childIDs(e)
-    .filter(id => !clickers.has(id))
-    .forEach(id => clickers.set(id, changed));
+  const changed = e => fn(e);
+    childIDs(e)
+      .filter(id => !clickers.has(id))
+      .forEach(id => clickers.set(id, changed));
+
+  modes.forEach(modeInList =>{
+    childIDs(e)
+    .filter(id => !clickers.has(modeInList+"-"+id))
+    .forEach(id => clickers.set(modeInList+"-"+id, changed));
+  }); 
 };
 
 export interface Usage {

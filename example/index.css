@@ -73,6 +73,7 @@ body {
 
 .center {
   justify-self: center;
+  display:grid;
 }
 
 .sub {
