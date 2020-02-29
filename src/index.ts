@@ -7,7 +7,6 @@ import {
 
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
-
 const listeners = new Map<string, Array<Function>>();
 const statelisteners = new Map<string, Array<Function>>();
 const clickers = new Map<string, Function>();
@@ -15,7 +14,7 @@ const clickers = new Map<string, Function>();
 const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
-// Dodgy mutable variables.... maybe need to be put in local storage?
+// Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
 let mode:string = "";
 let dataKey = "reg";
 
@@ -32,12 +31,7 @@ export interface Usage {
   qty: number;
 }
 
-const isInput = (element: Element) => {
-  if (element == null || element.localName == null) {
-    return false;
-  }
-  return element.localName === "input";
-};
+const isInput = (element: Element) => element != null && element.localName == null && element.localName === "input";
 
 export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
@@ -48,6 +42,7 @@ export const getValue = (element: HTMLElement): string => {
   }
   return element.innerText;
 };
+
 export const setValue = (element: HTMLElement, value: string) => {
   if (element == null) {
     console.error("Cannot set " + value + " as element is null");
@@ -67,6 +62,26 @@ const getName = (element: Element): string => {
   }
   return element.getAttribute("name") || "";
 };
+
+export const setByName = (fieldname: string, value: string) => {
+  const data = get(fieldname);
+  if (!data){
+    console.error("Cannot set " + value + " for "+fieldname+" as its not in the mark up.");
+    return;
+  }
+  data.currentValue = value;
+  data.elements = data.elements.map((element: HTMLElement) => {
+    setValue(element, data.currentValue);
+    return element;
+  });
+  registry[fieldname] = data;
+  const keyvalue = {};
+  Object.keys(registry).forEach(key => {
+    keyvalue[key] = registry[key].currentValue;
+  });
+  const reg = JSON.stringify(keyvalue);
+  storage.setItem(dataKey, reg);
+}
 
 export function put(element: HTMLElement): { [key: string]: RegEntry } {
   const fieldname = getName(element);
