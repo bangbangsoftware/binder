@@ -22,7 +22,6 @@ export interface StateListener {
   (fieldID: string, fn: Function);
 }
 
-
 export interface Checker {
   (element: HTMLElement)
 }

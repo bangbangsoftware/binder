@@ -1,18 +1,25 @@
 const namesDone = new Array();
 const pluginsDone = new Array();
+const listeners = new Map();
+const statelisteners = new Map();
+const clickers = new Map();
+const hide = (element) => (element.style.display = "none");
+const show = (element) => (element.style.display = "block");
+// Dodgy mutable variables.... maybe need to be put in local storage?
 let mode = "";
-//https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+let dataKey = "reg";
+// More dodgy mutable variables, but used for testing
+let storage = window.localStorage;
+let doc = document;
+// Just for testing....
+export const setStorage = s => (storage = s);
+export const setDocument = d => (doc = d);
 const isInput = (element) => {
     if (element == null || element.localName == null) {
         return false;
     }
     return element.localName === "input";
 };
-const hide = (element) => (element.style.display = "none");
-const show = (element) => (element.style.display = "block");
-let storage = window.localStorage;
-let doc = document;
-let dataKey = "reg";
 export const registry = {};
 export const get = (key) => registry[key];
 export const getValue = (element) => {
@@ -91,12 +98,50 @@ export function bagItAndTagIt(plugs = Array(), key = "reg") {
     console.log(".............");
     show(doc.getElementsByTagName("BODY")[0]);
 }
-// Just for testing....
-export const setStorage = s => (storage = s);
-export const setDocument = d => (doc = d);
-const listeners = new Map();
-const statelisteners = new Map();
-const clickers = new Map();
+export const setMode = (newMode) => {
+    const oldMode = mode + "";
+    mode = newMode;
+    return oldMode;
+};
+export const getMode = () => {
+    return mode;
+};
+const clickListener = (e, fn, modes = []) => {
+    const changed = (e) => fn(e);
+    childIDs(e)
+        .filter(id => !clickers.has(id))
+        .forEach(id => clickers.set(id, changed));
+    modes.forEach(modeInList => {
+        childIDs(e)
+            .filter(id => !clickers.has(modeInList + "-" + id))
+            .forEach(id => clickers.set(modeInList + "-" + id, changed));
+    });
+};
+const stateListener = (fieldID, fn) => {
+    const changed = (e) => fn(e);
+    addListener(fieldID, changed, statelisteners);
+};
+const fixID = (element, name) => {
+    if (element.id && element.id !== undefined) {
+        return element;
+    }
+    const noSpace = replaceAll(name, " ", "-");
+    const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
+    element.id = id;
+    const typeText = isInput(element) ? "input" : "None input";
+    console.error("No id for " + typeText + " element so, generating one: ", element.id);
+    return element;
+};
+export const tools = {
+    put,
+    get,
+    getValue,
+    setValue,
+    clickListener,
+    stateListener,
+    fixID
+};
+export const go = (plugs) => bagItAndTagIt(plugs);
 const setup = () => {
     console.log("Binder getting data from '" + dataKey + "' in local storage");
     const regString = storage.getItem(dataKey);
@@ -127,7 +172,7 @@ const doAll = (element, mapper) => {
     if (fns == null) {
         return;
     }
-    fns.forEach(fn => fn(element));
+    fns.forEach((fn) => fn(element));
 };
 const react = (e, mapper) => {
     if (e.target == null) {
@@ -148,10 +193,6 @@ const listen = (field, fn) => {
     const changed = (e) => fn(e);
     addListener(field.id, changed);
 };
-const stateListener = (fieldID, fn) => {
-    const changed = (e) => fn(e);
-    addListener(fieldID, changed, statelisteners);
-};
 const addListener = (fieldID, changed, ears = listeners) => {
     const list = ears.get(fieldID);
     const funcList = list ? list : new Array();
@@ -171,7 +212,7 @@ const childIDs = (element, ids = new Array()) => {
         console.error("no element for clicker");
         return ids;
     }
-    else if (!element.id) {
+    if (!element.id) {
         console.error("no id, no click listener", element);
     }
     else if (ids.indexOf(element.id) === -1) {
@@ -188,17 +229,6 @@ const childIDs = (element, ids = new Array()) => {
         }
     }
     return ids;
-};
-const clickListener = (e, fn, modes = []) => {
-    const changed = e => fn(e);
-    childIDs(e)
-        .filter(id => !clickers.has(id))
-        .forEach(id => clickers.set(id, changed));
-    modes.forEach(modeInList => {
-        childIDs(e)
-            .filter(id => !clickers.has(modeInList + "-" + id))
-            .forEach(id => clickers.set(modeInList + "-" + id, changed));
-    });
 };
 const increment = (usage, name) => {
     const index = usage.findIndex((use) => use.name === name);
@@ -234,35 +264,6 @@ const registerAll = (element, plugins = Array(), usage) => {
         }
     }
     return usage;
-};
-const fixID = (element, name) => {
-    if (element.id && element.id !== undefined) {
-        return element;
-    }
-    const noSpace = replaceAll(name, " ", "-");
-    const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
-    element.id = id;
-    const typeText = isInput(element) ? "input" : "None input";
-    console.error("No id for " + typeText + " element so, generating one: ", element.id);
-    return element;
-};
-export const setMode = (newMode) => {
-    const oldMode = mode + "";
-    mode = newMode;
-    return oldMode;
-};
-export const getMode = () => {
-    return mode;
-};
-export const go = plugs => bagItAndTagIt(plugs);
-export const tools = {
-    put,
-    get,
-    getValue,
-    setValue,
-    clickListener,
-    stateListener,
-    fixID
 };
 const replaceAll = (s, rid, gain) => {
     return s.split(rid).join(gain);

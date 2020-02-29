@@ -8,9 +8,29 @@ import {
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
 
-let mode:string = "";
+const listeners = new Map<string, Array<Function>>();
+const statelisteners = new Map<string, Array<Function>>();
+const clickers = new Map<string, Function>();
 
-//https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+const hide = (element: HTMLElement) => (element.style.display = "none");
+const show = (element: HTMLElement) => (element.style.display = "block");
+
+// Dodgy mutable variables.... maybe need to be put in local storage?
+let mode:string = "";
+let dataKey = "reg";
+
+// More dodgy mutable variables, but used for testing
+let storage = window.localStorage;
+let doc = document;
+
+// Just for testing....
+export const setStorage = s => (storage = s);
+export const setDocument = d => (doc = d);
+
+export interface Usage {
+  name: string;
+  qty: number;
+}
 
 const isInput = (element: Element) => {
   if (element == null || element.localName == null) {
@@ -18,13 +38,6 @@ const isInput = (element: Element) => {
   }
   return element.localName === "input";
 };
-const hide = (element: HTMLElement) => (element.style.display = "none");
-const show = (element: HTMLElement) => (element.style.display = "block");
-
-let storage = window.localStorage;
-let doc = document;
-
-let dataKey = "reg";
 
 export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
@@ -107,17 +120,63 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>(), key = "reg") {
   show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
 }
 
-// Just for testing....
-export const setStorage = s => (storage = s);
-export const setDocument = d => (doc = d);
+export const setMode = (newMode: string): string => {
+  const oldMode = mode+"";
+  mode = newMode;
+  return oldMode;
+}
 
-const listeners = new Map<string, Array<Function>>();
-const statelisteners = new Map<string, Array<Function>>();
-const clickers = new Map<string, Function>();
+export const getMode = (): string => {
+  return mode;
+}
+
+const clickListener = (e: Element, fn: Function, modes:Array<string> = []) => {
+  const changed = (e:Element) => fn(e);
+    childIDs(e)
+      .filter(id => !clickers.has(id))
+      .forEach(id => clickers.set(id, changed));
+
+  modes.forEach(modeInList =>{
+    childIDs(e)
+    .filter(id => !clickers.has(modeInList+"-"+id))
+    .forEach(id => clickers.set(modeInList+"-"+id, changed));
+  }); 
+};
+
+const stateListener = (fieldID: string, fn: Function) => {
+  const changed = (e: Event) => fn(e);
+  addListener(fieldID, changed, statelisteners);
+};
+
+const fixID = (element: HTMLElement, name: string): HTMLElement => {
+  if (element.id && element.id !== undefined) {
+    return element;
+  }
+  const noSpace = replaceAll(name, " ", "-");
+  const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
+  element.id = id;
+  const typeText = isInput(element) ? "input" : "None input";
+  console.error(
+    "No id for " + typeText + " element so, generating one: ",
+    element.id
+  );
+  return element;
+};
+
+export const tools: BinderTools = {
+  put,
+  get,
+  getValue,
+  setValue,
+  clickListener,
+  stateListener,
+  fixID
+};
+export const go = (plugs: Array<BinderPlugin>) => bagItAndTagIt(plugs);
 
 const setup = () => {
   console.log("Binder getting data from '" + dataKey + "' in local storage");
-  const regString = storage.getItem(dataKey);
+  const regString:string|null = storage.getItem(dataKey);
   setupListener();
   if (!regString) {
     return;
@@ -142,14 +201,14 @@ const reactAll = (e: Event, mapper: Map<string, Array<Function>>) => {
   doAll(element, mapper);
 };
 
-const doAll = (element, mapper) => {
+const doAll = (element:Element, mapper: Map<string, Array<Function>>) => {
   const id = element.id;
   const fns = mapper.get(id);
   if (fns == null) {
     return;
   }
 
-  fns.forEach(fn => fn(element));
+  fns.forEach((fn:Function) => fn(element));
 };
 
 const react = (e: Event, mapper: Map<string, Function>) => {
@@ -171,11 +230,6 @@ const react = (e: Event, mapper: Map<string, Function>) => {
 const listen = (field: Element, fn: Function) => {
   const changed = (e: Element) => fn(e);
   addListener(field.id, changed);
-};
-
-const stateListener = (fieldID: string, fn: Function) => {
-  const changed = (e: Event) => fn(e);
-  addListener(fieldID, changed, statelisteners);
 };
 
 const addListener = (fieldID: string, changed: Function, ears = listeners) => {
@@ -201,15 +255,19 @@ const childIDs = (
   if (element == null) {
     console.error("no element for clicker");
     return ids;
-  } else if (!element.id) {
+  } 
+  
+  if (!element.id) {
     console.error("no id, no click listener", element);
   } else if (ids.indexOf(element.id) === -1) {
     //console.log("stored to click "+element.id);
     ids.push(element.id);
   }
+
   if (!element.childNodes || element.childNodes.length === 0) {
     return ids;
   }
+  
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     const node = element.childNodes[i];
     if (node instanceof HTMLElement) {
@@ -218,24 +276,6 @@ const childIDs = (
   }
   return ids;
 };
-
-const clickListener = (e: Element, fn: Function, modes:Array<string> = []) => {
-  const changed = e => fn(e);
-    childIDs(e)
-      .filter(id => !clickers.has(id))
-      .forEach(id => clickers.set(id, changed));
-
-  modes.forEach(modeInList =>{
-    childIDs(e)
-    .filter(id => !clickers.has(modeInList+"-"+id))
-    .forEach(id => clickers.set(modeInList+"-"+id, changed));
-  }); 
-};
-
-export interface Usage {
-  name: string;
-  qty: number;
-}
 
 const increment = (usage: Array<Usage>, name: string): Array<Usage> => {
   const index = usage.findIndex((use: Usage) => use.name === name);
@@ -285,42 +325,6 @@ const registerAll = (
     }
   }
   return usage;
-};
-
-const fixID = (element: HTMLElement, name: string): HTMLElement => {
-  if (element.id && element.id !== undefined) {
-    return element;
-  }
-  const noSpace = replaceAll(name, " ", "-");
-  const id = replaceAll(noSpace, ",", "-") + "-" + namesDone.length;
-  element.id = id;
-  const typeText = isInput(element) ? "input" : "None input";
-  console.error(
-    "No id for " + typeText + " element so, generating one: ",
-    element.id
-  );
-  return element;
-};
-
-export const setMode = (newMode: string): string => {
-  const oldMode = mode+"";
-  mode = newMode;
-  return oldMode;
-}
-
-export const getMode = (): string => {
-  return mode;
-}
-
-export const go = plugs => bagItAndTagIt(plugs);
-export const tools: BinderTools = {
-  put,
-  get,
-  getValue,
-  setValue,
-  clickListener,
-  stateListener,
-  fixID
 };
 
 const replaceAll = (s: string, rid: string, gain: string) => {

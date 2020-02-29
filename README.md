@@ -103,7 +103,7 @@ eg.
  
  export const myPlugin = tools => {
    binder = tools;
-   return element => {
+   return (element, mode) => {
      const name = element.getAttribute("myPluginAttribute");
      if (!name) {
        return; // this element is not for me.....
@@ -127,8 +127,8 @@ To build the project...
 ```shell
 npm run build
 ```
- This will build the site to dist, which can be commited and served by github
- pages
+This will build the site to dist, which can be commited and served by github
+pages
 
 ### Yes, but could it be used for multiple users ???
 Well, no - not out the box, not if you wanted to share data across users.

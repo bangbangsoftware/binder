@@ -12,7 +12,7 @@ export const repeaterPlugin = (tools) => {
             const list = data.get(repeaterName);
             if (list == null) {
                 console.error("No data been defined for '" + repeaterName + "' ");
-                return;
+                return false;
             }
             const parent = element.parentNode;
             if (parent == null) {

@@ -13,11 +13,11 @@ export const repeaterPlugin = (tools: BinderTools) => {
   console.log("** Repeater plugin **");
   return {
     attributes: ["repeater"],
-    process: (element: Element, repeaterName: string) => {
+    process: (element: Element, repeaterName: string): boolean => {
       const list = data.get(repeaterName);
       if (list == null){
         console.error("No data been defined for '"+repeaterName+"' ");
-        return;
+        return false;
       }
       const parent = element.parentNode;
       if (parent == null){
