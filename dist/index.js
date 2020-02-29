@@ -5,7 +5,7 @@ const statelisteners = new Map();
 const clickers = new Map();
 const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
-// Dodgy mutable variables.... maybe need to be put in local storage?
+// Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
 let mode = "";
 let dataKey = "reg";
 // More dodgy mutable variables, but used for testing
@@ -14,12 +14,7 @@ let doc = document;
 // Just for testing....
 export const setStorage = s => (storage = s);
 export const setDocument = d => (doc = d);
-const isInput = (element) => {
-    if (element == null || element.localName == null) {
-        return false;
-    }
-    return element.localName === "input";
-};
+const isInput = (element) => element != null && element.localName == null && element.localName === "input";
 export const registry = {};
 export const get = (key) => registry[key];
 export const getValue = (element) => {
@@ -46,6 +41,25 @@ const getName = (element) => {
         return "";
     }
     return element.getAttribute("name") || "";
+};
+export const setByName = (fieldname, value) => {
+    const data = get(fieldname);
+    if (!data) {
+        console.error("Cannot set " + value + " for " + fieldname + " as its not in the mark up.");
+        return;
+    }
+    data.currentValue = value;
+    data.elements = data.elements.map((element) => {
+        setValue(element, data.currentValue);
+        return element;
+    });
+    registry[fieldname] = data;
+    const keyvalue = {};
+    Object.keys(registry).forEach(key => {
+        keyvalue[key] = registry[key].currentValue;
+    });
+    const reg = JSON.stringify(keyvalue);
+    storage.setItem(dataKey, reg);
 };
 export function put(element) {
     const fieldname = getName(element);
