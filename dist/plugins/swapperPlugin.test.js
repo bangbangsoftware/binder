@@ -37,6 +37,7 @@ const binder = {
     setValue: (el, value) => {
         doc.getElementById(el.id).innerText = value;
     },
+    setByName: (name, value) => { },
     clickListener: (element, fn) => { },
     stateListener: (element, fn) => { },
     fixID: (element, name) => { return element; }

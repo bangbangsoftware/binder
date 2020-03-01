@@ -15,6 +15,7 @@ describe("repeaterPlugin.test", () => {
         setValue: (el, value) => {
             el.innerText = value;
         },
+        setByName: (name, value) => { },
         clickListener: (element, fn) => { },
         stateListener: (element, fn) => { },
         fixID: (element, name) => { return element; }

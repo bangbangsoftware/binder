@@ -41,6 +41,7 @@ const binder: BinderTools = {
   setValue: (el: Element, value: string) => {
     doc.getElementById(el.id).innerText = value;
   },
+  setByName: (name:string, value: string) =>{},
   clickListener: (element: Element, fn: Function) => {},
   stateListener: (element: string, fn: Function) => {},
   fixID: (element: HTMLElement, name: string): HTMLElement => {return element}

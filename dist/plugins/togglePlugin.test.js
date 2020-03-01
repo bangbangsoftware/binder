@@ -13,6 +13,7 @@ describe("togglePlugin.test", () => {
             return blank;
         },
         setValue: (el, value) => { mockElement.innerText = value; },
+        setByName: (name, value) => { },
         clickListener: (element, fn) => { },
         stateListener: (id, fn) => { },
         fixID: (element, name) => { return element; }

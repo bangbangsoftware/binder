@@ -183,6 +183,7 @@ export const tools: BinderTools = {
   get,
   getValue,
   setValue,
+  setByName,
   clickListener,
   stateListener,
   fixID

@@ -14,6 +14,10 @@ export interface ToolSetValue {
   (element: Element, value: String);
 }
 
+export interface ToolSetName {
+  (name: String, value: String);
+}
+
 export interface ClickListener {
   (element: Element, fn: Function, modes?:Array<string>);
 }
@@ -35,6 +39,7 @@ export interface BinderTools {
   get: ToolGet;
   getValue: ToolGetValue;
   setValue: ToolSetValue;
+  setByName: ToolSetName;
   clickListener: ClickListener;
   stateListener: StateListener; 
   fixID: IDFixer;

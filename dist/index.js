@@ -151,6 +151,7 @@ export const tools = {
     get,
     getValue,
     setValue,
+    setByName,
     clickListener,
     stateListener,
     fixID
