@@ -48,7 +48,7 @@ const getStorageList = (name) => {
 };
 const getList = (name, list, index = 0) => {
     const value = binder.get(name + "-" + index);
-    if (value == null) {
+    if (value == null || value.currentValue == null) {
         return list;
     }
     list.push(value.currentValue);

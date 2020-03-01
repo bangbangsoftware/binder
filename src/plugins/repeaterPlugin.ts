@@ -60,7 +60,7 @@ const getList = (
   index = 0
 ): Array<String> => {
   const value = binder.get(name + "-" + index);
-  if (value == null) {
+  if (value == null || value.currentValue == null) {
     return list;
   }
   list.push(value.currentValue);
