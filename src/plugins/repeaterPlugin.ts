@@ -16,7 +16,6 @@ export const repeaterPlugin = (tools: BinderTools) => {
     process: (element: Element, repeaterName: string): boolean => {
       const list = getData(repeaterName);
       if (list == null) {
-
         return false;
       }
       const parent = element.parentNode;
@@ -38,31 +37,35 @@ const getData = (name: string): Array<String> | null => {
     return list;
   }
   const fromStorage = getStorageList(name);
-  if (fromStorage.length > 0){
+  if (fromStorage.length > 0) {
     return fromStorage;
   }
   console.error("No data been defined for '" + name + "' ");
   return null;
-}
+};
 
-const getStorageList = (name:String):Array<String> => {
+const getStorageList = (name: String): Array<String> => {
   const results = new Array<String>();
-  const keys = getList(name+"-key", new Array<String>());
-  if (keys.length == 0){
+  const keys = getList(name + "-key", new Array<String>());
+  if (keys.length == 0) {
     return results;
   }
-  keys.forEach(key => getList(name+"-"+key, results));
+  keys.forEach(key => getList(name + "-" + key, results));
   return results;
-}
+};
 
-const getList = (name: string, list: Array<String>, index = 0):Array<String> => {
-  const value = binder.get(name+"-"+index);
-  if (value == null){
+const getList = (
+  name: string,
+  list: Array<String>,
+  index = 0
+): Array<String> => {
+  const value = binder.get(name + "-" + index);
+  if (value == null) {
     return list;
   }
   list.push(value.currentValue);
-  return getList(name, list, index +1 );
-}
+  return getList(name, list, index + 1);
+};
 
 const build = (
   parent: Node,
@@ -82,7 +85,7 @@ const build = (
     }
     return birth;
   });
-  [...keys].forEach((key,i) => binder.setByName(name + "-key-"+i, key));
+  [...keys].forEach((key, i) => binder.setByName(name + "-key-" + i, key));
   news.forEach((newElement, i) =>
     parent.insertBefore(newElement, element.nextSibling)
   );
@@ -113,7 +116,7 @@ const setValues = (
   const keys = new Set<String>();
   placeHolders.forEach((el: HTMLElement) => {
     const value = getValue(el, index, data);
-    el.id = name + "-" + value.key+index;
+    el.id = name + "-" + value.key + "-" + index;
     keys.add(value.key);
     el.setAttribute("name", el.id);
     el.removeAttribute("place");

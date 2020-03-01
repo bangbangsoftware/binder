@@ -85,7 +85,7 @@ const setValues = (placeHolders, name, data, index) => {
     const keys = new Set();
     placeHolders.forEach((el) => {
         const value = getValue(el, index, data);
-        el.id = name + "-" + value.key + index;
+        el.id = name + "-" + value.key + "-" + index;
         keys.add(value.key);
         el.setAttribute("name", el.id);
         el.removeAttribute("place");
