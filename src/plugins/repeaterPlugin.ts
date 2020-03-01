@@ -16,7 +16,7 @@ export const repeaterPlugin = (tools: BinderTools) => {
     process: (element: Element, repeaterName: string): boolean => {
       const list = data.get(repeaterName);
       if (list == null) {
-        console.error("No data been defined for '" + repeaterName + "' ");
+
         return false;
       }
       const parent = element.parentNode;
@@ -32,7 +32,27 @@ export const repeaterPlugin = (tools: BinderTools) => {
   };
 };
 
-const popData = (repeaterName: string) => {};
+const getData = (name: string): Array<String> | null => {
+  const list = data.get(name);
+  if (list != null) {
+    return list;
+  }
+  const fromStorage = getList(name+"-key-", new Array<String>());
+  if (fromStorage.length > 0){
+    return fromStorage;
+  }
+  console.error("No data been defined for '" + name + "' ");
+  return null;
+}
+
+const getList = (name: string, list: Array<String>, index = 0):Array<String> => {
+  const value = binder.get(name+"-"+index);
+  if (value == null){
+    return list;
+  }
+  list.push(value.currentValue);
+  return this.getList(name, list, index +1 );
+}
 
 const build = (
   parent: Node,
