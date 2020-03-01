@@ -51,7 +51,7 @@ const getList = (name: string, list: Array<String>, index = 0):Array<String> => 
     return list;
   }
   list.push(value.currentValue);
-  return this.getList(name, list, index +1 );
+  return getList(name, list, index +1 );
 }
 
 const build = (

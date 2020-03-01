@@ -43,7 +43,7 @@ const getList = (name, list, index = 0) => {
         return list;
     }
     list.push(value.currentValue);
-    return this.getList(name, list, index + 1);
+    return getList(name, list, index + 1);
 };
 const build = (parent, element, name, data) => {
     let keys = new Set();
