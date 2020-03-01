@@ -64,11 +64,15 @@ const getName = (element: Element): string => {
 };
 
 export const setByName = (fieldname: string, value: string) => {
-  const data = get(fieldname);
-  if (!data){
-    console.error("Cannot set " + value + " for "+fieldname+" as its not in the mark up.");
-    return;
+  const currentData = get(fieldname);
+  if (!currentData){
+    console.warn("Setting " + value + " for "+fieldname+", however its not in the mark up.");
   }
+  const regEntry: RegEntry = {
+    currentValue: value,
+    elements: []
+  };
+  const data = (currentData)? currentData : regEntry;
   data.currentValue = value;
   data.elements = data.elements.map((element: HTMLElement) => {
     setValue(element, data.currentValue);

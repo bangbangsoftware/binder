@@ -43,11 +43,15 @@ const getName = (element) => {
     return element.getAttribute("name") || "";
 };
 export const setByName = (fieldname, value) => {
-    const data = get(fieldname);
-    if (!data) {
-        console.error("Cannot set " + value + " for " + fieldname + " as its not in the mark up.");
-        return;
+    const currentData = get(fieldname);
+    if (!currentData) {
+        console.warn("Setting " + value + " for " + fieldname + ", however its not in the mark up.");
     }
+    const regEntry = {
+        currentValue: value,
+        elements: []
+    };
+    const data = (currentData) ? currentData : regEntry;
     data.currentValue = value;
     data.elements = data.elements.map((element) => {
         setValue(element, data.currentValue);
