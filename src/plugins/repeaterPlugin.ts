@@ -14,9 +14,8 @@ export const repeaterPlugin = (tools: BinderTools) => {
   return {
     attributes: ["repeater"],
     process: (element: Element, repeaterName: string): boolean => {
-      const list = data.get(repeaterName);
+      const list = this.getData(repeaterName);
       if (list == null) {
-
         return false;
       }
       const parent = element.parentNode;

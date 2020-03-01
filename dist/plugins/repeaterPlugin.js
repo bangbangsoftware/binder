@@ -9,7 +9,7 @@ export const repeaterPlugin = (tools) => {
     return {
         attributes: ["repeater"],
         process: (element, repeaterName) => {
-            const list = data.get(repeaterName);
+            const list = this.getData(repeaterName);
             if (list == null) {
                 return false;
             }
