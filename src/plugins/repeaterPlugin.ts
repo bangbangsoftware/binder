@@ -37,7 +37,7 @@ const getData = (name: string): Array<String> | null => {
   if (list != null) {
     return list;
   }
-  const fromStorage = getList(name+"-key-", new Array<String>());
+  const fromStorage = getList(name+"-key", new Array<String>());
   if (fromStorage.length > 0){
     return fromStorage;
   }

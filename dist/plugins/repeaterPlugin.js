@@ -30,7 +30,7 @@ const getData = (name) => {
     if (list != null) {
         return list;
     }
-    const fromStorage = getList(name + "-key-", new Array());
+    const fromStorage = getList(name + "-key", new Array());
     if (fromStorage.length > 0) {
         return fromStorage;
     }
