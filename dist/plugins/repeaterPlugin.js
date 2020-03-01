@@ -41,7 +41,7 @@ const build = (parent, element, name, data) => {
         }
         return birth;
     });
-    keys.forEach((key, i) => binder.setByName(name + "-key-" + i, key));
+    [...keys].forEach((key, i) => binder.setByName(name + "-key-" + i, key));
     news.forEach((newElement, i) => parent.insertBefore(newElement, element.nextSibling));
     return element;
 };
