@@ -46,16 +46,16 @@ const build = (parent: Node, element: Element, name: string, data: Array<any>): 
   return element;
 };
 
-const getValue = (el: HTMLElement, index: number, data: any):string => {
+const getValue = (el: HTMLElement, index: number, data: any):{"data":string,"key":string} => {
   const key = el.getAttribute("place");
   if (!key){
     return data;
     
   }
   if (key === "$index"){
-    return ""+index;
+    return {"data":""+index,key};
   }
-  return data[key];
+  return {"data":data[key],key};
 }
 
 const setValues = (placeHolders: Array<Element>, id: string, data: any , i: number) => {
@@ -64,7 +64,7 @@ const setValues = (placeHolders: Array<Element>, id: string, data: any , i: numb
     el.id = id + "-"+index;
     el.setAttribute("name", el.id);
     el.removeAttribute("place");
-    binder.setValue(el, value);
+    binder.setValue(el, JSON.stringify(value));
     binder.put(el);
   });
 };
