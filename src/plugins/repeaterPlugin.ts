@@ -37,12 +37,22 @@ const getData = (name: string): Array<String> | null => {
   if (list != null) {
     return list;
   }
-  const fromStorage = getList(name+"-key", new Array<String>());
+  const fromStorage = getStorageList(name);
   if (fromStorage.length > 0){
     return fromStorage;
   }
   console.error("No data been defined for '" + name + "' ");
   return null;
+}
+
+const getStorageList = (name:String):Array<String> => {
+  const results = new Array<String>();
+  const keys = getList(name+"-key", new Array<String>());
+  if (keys.length == 0){
+    return results;
+  }
+  keys.forEach(key => getList(name+"-"+key, results));
+  return results;
 }
 
 const getList = (name: string, list: Array<String>, index = 0):Array<String> => {
@@ -65,9 +75,8 @@ const build = (
     const birth = <Element>element.cloneNode(true);
     birth.removeAttribute("repeater");
     const placeHolders = findPlace(birth, []);
-    const id = name + "-" + i;
-    birth.id = id;
-    const newKeys = setValues(placeHolders, id, bit, i);
+    birth.id = name + "-" + i;
+    const newKeys = setValues(placeHolders, name, bit, i);
     if (newKeys.size > keys.size) {
       keys = newKeys;
     }
@@ -97,14 +106,14 @@ const getValue = (
 
 const setValues = (
   placeHolders: Array<Element>,
-  id: string,
+  name: string,
   data: any,
-  i: number
+  index: number
 ): Set<String> => {
   const keys = new Set<String>();
-  placeHolders.forEach((el: HTMLElement, index: number) => {
-    const value = getValue(el, i, data);
-    el.id = id + "-" + value.key;
+  placeHolders.forEach((el: HTMLElement) => {
+    const value = getValue(el, index, data);
+    el.id = name + "-" + value.key+index;
     keys.add(value.key);
     el.setAttribute("name", el.id);
     el.removeAttribute("place");
