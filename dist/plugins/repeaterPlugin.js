@@ -52,10 +52,10 @@ const getValue = (el, index, data) => {
 const setValues = (placeHolders, id, data, i) => {
     placeHolders.forEach((el, index) => {
         const value = getValue(el, i, data);
-        el.id = id + "-" + index;
+        el.id = id + "-" + value.key;
         el.setAttribute("name", el.id);
         el.removeAttribute("place");
-        binder.setValue(el, JSON.stringify(value));
+        binder.setValue(el, value.data);
         binder.put(el);
     });
 };

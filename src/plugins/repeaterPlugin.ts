@@ -61,10 +61,10 @@ const getValue = (el: HTMLElement, index: number, data: any):{"data":string,"key
 const setValues = (placeHolders: Array<Element>, id: string, data: any , i: number) => {
   placeHolders.forEach((el: HTMLElement, index: number) => {
     const value = getValue(el,i, data);
-    el.id = id + "-"+index;
+    el.id = id + "-"+value.key;
     el.setAttribute("name", el.id);
     el.removeAttribute("place");
-    binder.setValue(el, JSON.stringify(value));
+    binder.setValue(el, value.data);
     binder.put(el);
   });
 };
