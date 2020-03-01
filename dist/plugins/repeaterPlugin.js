@@ -45,9 +45,9 @@ const getValue = (el, index, data) => {
         return data;
     }
     if (key === "$index") {
-        return "" + index;
+        return { "data": "" + index, key };
     }
-    return data[key];
+    return { "data": data[key], key };
 };
 const setValues = (placeHolders, id, data, i) => {
     placeHolders.forEach((el, index) => {
@@ -55,7 +55,7 @@ const setValues = (placeHolders, id, data, i) => {
         el.id = id + "-" + index;
         el.setAttribute("name", el.id);
         el.removeAttribute("place");
-        binder.setValue(el, value);
+        binder.setValue(el, JSON.stringify(value));
         binder.put(el);
     });
 };
