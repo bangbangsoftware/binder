@@ -38,16 +38,26 @@ const getData = (name) => {
     }
     console.log("Repeater data obtained from generate function -" + name);
     const generated = func();
-    binder.setByName(name + "-data", JSON.stringify(generated));
     return generated;
 };
 const getStorageList = (name) => {
-    const mapString = binder.get(name + "-data");
-    if (mapString == null) {
+    const allKeys = binder.get(name + "-keys");
+    if (allKeys == null) {
         return null;
     }
-    const data = JSON.parse(mapString.currentValue);
-    return data;
+    const keys = JSON.parse(allKeys.currentValue);
+    const rows = getRows(name, keys, 0);
+    console.log("Got from storage ", rows);
+    return rows;
+};
+const getRows = (name, keys, index, rows = []) => {
+    const row = {};
+    const values = keys.map(key => row[key] = binder.get(name + "-" + key + "-" + index));
+    if (Object.keys(values).length == 0) {
+        return rows;
+    }
+    rows.push(row);
+    return getRows(name, keys, index + 1, rows);
 };
 const build = (parent, element, name, data) => {
     const news = data.map((bit, i) => {
@@ -73,7 +83,10 @@ const getValue = (el, index, data) => {
     return { data: data[key], key };
 };
 const setValues = (placeHolders, name, data, index) => {
-    placeHolders.forEach((el) => populatePlaceHolder(el, index, name, data));
+    const keys = new Set();
+    placeHolders.forEach((el) => keys.add(populatePlaceHolder(el, index, name, data)));
+    console.log("keys", keys);
+    binder.setByName(name + "-keys", JSON.stringify(keys));
 };
 const populatePlaceHolder = (el, index, name, data) => {
     const value = getValue(el, index, data);
@@ -83,6 +96,7 @@ const populatePlaceHolder = (el, index, name, data) => {
     el.removeAttribute("place");
     binder.setValue(el, value.data);
     binder.put(el);
+    return key;
 };
 const findPlaceInChildNodes = (childNodes, result) => {
     childNodes.forEach(node => findPlace(node, result));
