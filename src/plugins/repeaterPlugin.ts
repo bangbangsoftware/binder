@@ -62,7 +62,11 @@ const getStorageList = (name: String): Array<any> | null => {
 
 const getRows = (name: String, keys: Array<string>, index:number, rows: Array<any> = []) => {
   const row = {};
-  const values = keys.map(key => row[key] = binder.get(name+"-"+key+"-"+index));
+const values = keys.map(key => {
+      const value = binder.get(name+"-"+key+"-"+index);
+      row[key] = value;
+      return value;
+    }).filter(what => what != null);
   if (Object.keys(values).length == 0){
     return rows;
   }
@@ -125,7 +129,7 @@ const populatePlaceHolder = (el: HTMLElement, index: number, name: string, data:
   el.removeAttribute("place");
   binder.setValue(el, value.data);
   binder.put(el);
-  return key;
+  return (value.key == null)? "": value.key;
 }
 
 const findPlaceInChildNodes = (

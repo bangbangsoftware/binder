@@ -52,7 +52,11 @@ const getStorageList = (name) => {
 };
 const getRows = (name, keys, index, rows = []) => {
     const row = {};
-    const values = keys.map(key => row[key] = binder.get(name + "-" + key + "-" + index));
+    const values = keys.map(key => {
+        const value = binder.get(name + "-" + key + "-" + index);
+        row[key] = value;
+        return value;
+    }).filter(what => what != null);
     if (Object.keys(values).length == 0) {
         return rows;
     }
@@ -95,7 +99,7 @@ const populatePlaceHolder = (el, index, name, data) => {
     el.removeAttribute("place");
     binder.setValue(el, value.data);
     binder.put(el);
-    return key;
+    return (value.key == null) ? "" : value.key;
 };
 const findPlaceInChildNodes = (childNodes, result) => {
     childNodes.forEach(node => findPlace(node, result));
