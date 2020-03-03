@@ -2,6 +2,7 @@ let binder;
 const data = new Map();
 export const addData = (name, list) => {
     data.set(name, list);
+    binder.setByName(name + "-data", JSON.stringify(data));
 };
 export const repeaterPlugin = (tools) => {
     binder = tools;
@@ -31,43 +32,29 @@ const getData = (name) => {
         return list;
     }
     const fromStorage = getStorageList(name);
-    if (fromStorage.length > 0) {
+    if (fromStorage != null) {
         return fromStorage;
     }
     console.error("No data been defined for '" + name + "' ");
     return null;
 };
 const getStorageList = (name) => {
-    const results = new Array();
-    const keys = getList(name + "-key", new Array());
-    if (keys.length == 0) {
-        return results;
+    const mapString = binder.get(name + "-data");
+    if (mapString == null) {
+        return null;
     }
-    keys.forEach(key => getList(name + "-" + key, results));
-    return results;
-};
-const getList = (name, list, index = 0) => {
-    const value = binder.get(name + "-" + index);
-    if (value == null || value.currentValue == null) {
-        return list;
-    }
-    list.push(value.currentValue);
-    return getList(name, list, index + 1);
+    const map = JSON.parse(mapString.currentValue);
+    return map.get(name);
 };
 const build = (parent, element, name, data) => {
-    let keys = new Set();
     const news = data.map((bit, i) => {
         const birth = element.cloneNode(true);
         birth.removeAttribute("repeater");
         const placeHolders = findPlace(birth, []);
         birth.id = name + "-" + i;
-        const newKeys = setValues(placeHolders, name, bit, i);
-        if (newKeys.size > keys.size) {
-            keys = newKeys;
-        }
+        setValues(placeHolders, name, bit, i);
         return birth;
     });
-    [...keys].forEach((key, i) => binder.setByName(name + "-key-" + i, key));
     news.forEach((newElement, i) => parent.insertBefore(newElement, element.nextSibling));
     return element;
 };
