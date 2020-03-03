@@ -1,4 +1,4 @@
-import { repeaterPlugin, addData } from "./repeaterPlugin";
+import { repeaterPlugin, addFunction } from "./repeaterPlugin";
 const headerElement = document.createElement("div");
 headerElement.setAttribute("repeater", "header");
 const headerPlaceElement = document.createElement("div");
@@ -23,8 +23,8 @@ describe("repeaterPlugin.test", () => {
     let plugin;
     const headings = ["from", "to", "depart", "arrive", "length"];
     test("Plugin can be set up", () => {
-        addData("header", headings);
-        plugin = repeaterPlugin()(binder);
+        addFunction("header", () => headings);
+        plugin = repeaterPlugin(binder);
     });
     test("Can register ", () => {
         plugin.process(headerElement, "header");

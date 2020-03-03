@@ -1,5 +1,5 @@
 import { bagItAndTagIt, put, setMode, tools } from "./dist/index.js";
-import { swapperPlugin } from "./dist/plugins/swap perPlugin.js";
+import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
 import { togglePlugin } from "./dist/plugins/togglePlugin.js";
 import { showHidePlugin, showHideSwap } from "./dist/plugins/showhidePlugin.js";
 import {

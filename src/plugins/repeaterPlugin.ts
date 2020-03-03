@@ -2,20 +2,19 @@ import { BinderTools } from "../binderTypes";
 
 let binder: BinderTools;
 
-const data: Map<string, Array<any>> = new Map<string, Array<any>>(); 
+const setupFuncs = new Map<string,Function>(); 
 
-export const addData = (name: string, list: Array<any>) => {
-  data.set(name, list);
-  binder.setByName(name+"-data", JSON.stringify(list));
+export const addFunction = (name: string, setupFn: Function) => {
+  setupFuncs.set(name, setupFn);
 };
 
-export const repeaterPlugin = (baseDataFn: Function = () =>{}) => (tools: BinderTools) => {
+export const repeaterPlugin = (tools: BinderTools) => {
   binder = tools;
   console.log("** Repeater plugin **");
   return {
     attributes: ["repeater"],
     process: (element: Element, repeaterName: string): boolean => {
-      const list = getData(repeaterName, baseDataFn);
+      const list = getData(repeaterName);
       if (list == null) {
         return false;
       }
@@ -32,18 +31,21 @@ export const repeaterPlugin = (baseDataFn: Function = () =>{}) => (tools: Binder
   };
 };
 
-const getData = (name: string, makeData: Function): Array<any> | null => {
+const getData = (name: string): Array<any> | null => {
   const fromStorage = getStorageList(name);
   if (fromStorage != null) {
+    console.log("Repeater data obtained from storage");
     return fromStorage;
   }
-  const list = data.get(name);
-  if (list != null) {
-    return list;
-  }
 
-  const generated = makeData();
-  binder.setByName(name+"-data", JSON.stringify(generated));
+  const func = setupFuncs.get(name);
+  if (func == null){
+    console.warn("Repeater data has no function for -"+name);
+    return null;
+  }
+  console.log("Repeater data obtained from generate function -"+name);
+  const generated = func();
+  binder.setByName(name+"-data", JSON.stringify(generated));  
 
   return generated;
 };
@@ -81,13 +83,14 @@ const getValue = (
   el: HTMLElement,
   index: number,
   data: any
-): { data: string; key: string } => {
-  const key = el.getAttribute("place");
-  if (!key) {
-    return data;
-  }
+): { data: string; key: string | null } => {
+  const place = el.getAttribute("place");
+  const key = (place === undefined)? null : place;
   if (key === "$index") {
     return { data: "" + index, key };
+  }
+  if (key === null || key === "") {
+    return {data, key};
   }
   return { data: data[key], key };
 };
@@ -97,19 +100,19 @@ const setValues = (
   name: string,
   data: any,
   index: number
-): Set<String> => {
-  const keys = new Set<String>();
-  placeHolders.forEach((el: HTMLElement) => {
-    const value = getValue(el, index, data);
-    el.id = name + "-" + value.key + "-" + index;
-    keys.add(value.key);
-    el.setAttribute("name", el.id);
-    el.removeAttribute("place");
-    binder.setValue(el, value.data);
-    binder.put(el);
-  });
-  return keys;
+) => {
+  placeHolders.forEach((el: HTMLElement) => populatePlaceHolder(el,index, name, data));
 };
+
+const populatePlaceHolder = (el: HTMLElement, index: number, name: string, data: any) => {
+  const value = getValue(el, index, data);
+  const key = (value.key == null)? "": value.key+"-";
+  el.id = name + "-" + key + index;
+  el.setAttribute("name", el.id);
+  el.removeAttribute("place");
+  binder.setValue(el, value.data);
+  binder.put(el);
+}
 
 const findPlaceInChildNodes = (
   childNodes: NodeListOf<ChildNode>,
