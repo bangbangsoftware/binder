@@ -35,7 +35,9 @@ const getData = (name, makeData) => {
     if (list != null) {
         return list;
     }
-    return makeData();
+    const generated = makeData();
+    binder.setByName(name + "-data", JSON.stringify(generated));
+    return generated;
 };
 const getStorageList = (name) => {
     const mapString = binder.get(name + "-data");

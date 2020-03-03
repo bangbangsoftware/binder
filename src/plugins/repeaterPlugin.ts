@@ -42,7 +42,10 @@ const getData = (name: string, makeData: Function): Array<any> | null => {
     return list;
   }
 
-  return makeData();
+  const generated = makeData();
+  binder.setByName(name+"-data", JSON.stringify(generated));
+
+  return generated;
 };
 
 const getStorageList = (name: String): Array<any> | null => {
