@@ -1,7 +1,21 @@
 let binder;
 const setupFuncs = new Map();
+const cloneElements = new Map();
 export const addFunction = (name, setupFn) => {
     setupFuncs.set(name, setupFn);
+};
+export const addRow = (name, data) => {
+    var _a;
+    const whatWhere = cloneElements.get(name);
+    if (whatWhere == null) {
+        return;
+    }
+    const parent = whatWhere.parent;
+    const element = whatWhere.element;
+    const index = whatWhere.index;
+    const newDiv = build(parent, element, name, data, index);
+    (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.append(newDiv);
+    cloneElements.set(name, { parent, element, "index": index + data.length });
 };
 export const repeaterPlugin = (tools) => {
     binder = tools;
@@ -19,8 +33,11 @@ export const repeaterPlugin = (tools) => {
             }
             parent.removeChild(element);
             const newDiv = build(parent, element, repeaterName, list);
+            const cloned = element.cloneNode(true);
+            const cloneData = { element: cloned, parent, index: list.length };
+            cloneElements.set(repeaterName, cloneData);
+            console.log("cloners", { element: cloneElements, parent });
             element.replaceWith(newDiv);
-            element = newDiv;
             return true;
         }
     };
@@ -46,9 +63,18 @@ const getStorageList = (name) => {
         return null;
     }
     const keys = JSON.parse(allKeys.currentValue);
-    const rows = getRows(name, keys, 0);
+    const rows = (keys.length > 0) ? getRows(name, keys, 0) : getKeylessRow(name, 0);
     console.log("Got from storage ", rows);
     return rows;
+};
+const getKeylessRow = (name, index, rows = []) => {
+    const value = binder.get(name + "--" + index);
+    console.log("ADDING " + name + "--" + index + " ", value);
+    if (!value) {
+        return rows;
+    }
+    rows.push(value.currentValue);
+    return getKeylessRow(name, index + 1, rows);
 };
 const getRows = (name, keys, index, rows = []) => {
     const row = {};
@@ -68,13 +94,13 @@ const getRows = (name, keys, index, rows = []) => {
     rows.push(row);
     return getRows(name, keys, index + 1, rows);
 };
-const build = (parent, element, name, data) => {
-    const news = data.map((bit, i) => {
+const build = (parent, element, name, data, offset = 0) => {
+    const news = data.map((field, i) => {
         const birth = element.cloneNode(true);
         birth.removeAttribute("repeater");
         const placeHolders = findPlace(birth, []);
-        birth.id = name + "-" + i;
-        setValues(placeHolders, name, bit, i);
+        birth.id = name + "-" + (offset + i);
+        setValues(placeHolders, name, field, (offset + i));
         return birth;
     });
     news.forEach((newElement, i) => parent.insertBefore(newElement, element.nextSibling));
@@ -93,18 +119,23 @@ const getValue = (el, index, data) => {
 };
 const setValues = (placeHolders, name, data, index) => {
     const keys = new Set();
-    placeHolders.forEach((el) => keys.add(populatePlaceHolder(el, index, name, data)));
+    placeHolders.forEach((el) => {
+        const key = populatePlaceHolder(el, index, name, data);
+        if (key != null && key.length > 0) {
+            keys.add(key);
+        }
+    });
     binder.setByName(name + "-keys", JSON.stringify([...keys]));
 };
 const populatePlaceHolder = (el, index, name, data) => {
     const value = getValue(el, index, data);
-    const key = value.key == null ? "" : value.key + "-";
-    el.id = name + "-" + key + index;
+    const key = value.key;
+    el.id = name + "-" + key + "-" + index;
     el.setAttribute("name", el.id);
     el.removeAttribute("place");
     binder.setValue(el, value.data);
     binder.put(el);
-    return value.key == null ? "" : value.key;
+    return value.key;
 };
 const findPlaceInChildNodes = (childNodes, result) => {
     childNodes.forEach(node => findPlace(node, result));

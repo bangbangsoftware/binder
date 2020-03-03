@@ -1,6 +1,6 @@
-import { bagItAndTagIt} from "./dist/index.js";
+import { bagItAndTagIt, tools} from "./dist/index.js";
 import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
-import { repeaterPlugin, addFunction } from './dist/plugins/repeaterPlugin.js';
+import { repeaterPlugin, addFunction, addRow } from './dist/plugins/repeaterPlugin.js';
 
 console.log("LOOP TESTER");
 
@@ -10,7 +10,7 @@ const setupData = () => {
 
     const flights = [];
     console.time("data setup");
-    for(let c = 0; c < 500;c++){
+    for(let c = 0; c < 100;c++){
         flights.push(flight1);
     }
     console.timeEnd("data setup");
@@ -29,3 +29,8 @@ console.time("diti");
 bagItAndTagIt([swapperPlugin, repeaterPlugin], "loops");
 console.timeEnd("diti");
 console.log(new Date()," ended");
+const but = document.getElementById("flights-from-99");
+tools.clickListener(but, () =>{
+    const newRow= [{from:"Maythorne",to:"Mars",depart:"Tomorasdfasdfasdf", arrive:"100 years in the future", length:"A long time"}];
+    addRow("flights",newRow);
+})
