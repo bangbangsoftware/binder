@@ -85,8 +85,7 @@ const getValue = (el, index, data) => {
 const setValues = (placeHolders, name, data, index) => {
     const keys = new Set();
     placeHolders.forEach((el) => keys.add(populatePlaceHolder(el, index, name, data)));
-    console.log("keys", keys);
-    binder.setByName(name + "-keys", JSON.stringify(keys));
+    binder.setByName(name + "-keys", JSON.stringify([...keys]));
 };
 const populatePlaceHolder = (el, index, name, data) => {
     const value = getValue(el, index, data);

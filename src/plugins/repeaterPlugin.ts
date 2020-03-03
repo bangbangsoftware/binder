@@ -114,8 +114,7 @@ const setValues = (
 ) => {
   const keys = new Set<String>();
   placeHolders.forEach((el: HTMLElement) => keys.add(populatePlaceHolder(el,index, name, data)));
-  console.log("keys",keys);
-  binder.setByName(name+"-keys", JSON.stringify(keys));
+  binder.setByName(name+"-keys", JSON.stringify([...keys]));
 };
 
 const populatePlaceHolder = (el: HTMLElement, index: number, name: string, data: any) => {
