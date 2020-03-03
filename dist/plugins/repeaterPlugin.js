@@ -2,7 +2,7 @@ let binder;
 const data = new Map();
 export const addData = (name, list) => {
     data.set(name, list);
-    binder.setByName(name + "-data", JSON.stringify(data));
+    binder.setByName(name + "-data", JSON.stringify(list));
 };
 export const repeaterPlugin = (baseDataFn = () => { }) => (tools) => {
     binder = tools;
@@ -44,8 +44,8 @@ const getStorageList = (name) => {
     if (mapString == null) {
         return null;
     }
-    const map = JSON.parse(mapString.currentValue);
-    return map.get(name);
+    const data = JSON.parse(mapString.currentValue);
+    return data;
 };
 const build = (parent, element, name, data) => {
     const news = data.map((bit, i) => {
