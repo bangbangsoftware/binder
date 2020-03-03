@@ -29,4 +29,3 @@ console.time("diti");
 bagItAndTagIt([swapperPlugin, repeaterPlugin], "loops");
 console.timeEnd("diti");
 console.log(new Date()," ended");
-
