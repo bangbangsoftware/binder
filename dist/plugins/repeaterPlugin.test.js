@@ -24,7 +24,7 @@ describe("repeaterPlugin.test", () => {
     const headings = ["from", "to", "depart", "arrive", "length"];
     test("Plugin can be set up", () => {
         addData("header", headings);
-        plugin = repeaterPlugin(binder);
+        plugin = repeaterPlugin()(binder);
     });
     test("Can register ", () => {
         plugin.process(headerElement, "header");

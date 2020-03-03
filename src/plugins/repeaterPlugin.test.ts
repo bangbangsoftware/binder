@@ -29,7 +29,7 @@ describe("repeaterPlugin.test", () => {
 
   test("Plugin can be set up", () => {
     addData("header",headings);
-    plugin = repeaterPlugin(binder);
+    plugin = repeaterPlugin()(binder);
   });
 
   test("Can register ", () =>{

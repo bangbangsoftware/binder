@@ -4,13 +4,13 @@ export const addData = (name, list) => {
     data.set(name, list);
     binder.setByName(name + "-data", JSON.stringify(data));
 };
-export const repeaterPlugin = (tools) => {
+export const repeaterPlugin = (baseDataFn = () => { }) => (tools) => {
     binder = tools;
     console.log("** Repeater plugin **");
     return {
         attributes: ["repeater"],
         process: (element, repeaterName) => {
-            const list = getData(repeaterName);
+            const list = getData(repeaterName, baseDataFn);
             if (list == null) {
                 return false;
             }
@@ -26,17 +26,16 @@ export const repeaterPlugin = (tools) => {
         }
     };
 };
-const getData = (name) => {
-    const list = data.get(name);
-    if (list != null) {
-        return list;
-    }
+const getData = (name, makeData) => {
     const fromStorage = getStorageList(name);
     if (fromStorage != null) {
         return fromStorage;
     }
-    console.error("No data been defined for '" + name + "' ");
-    return null;
+    const list = data.get(name);
+    if (list != null) {
+        return list;
+    }
+    return makeData();
 };
 const getStorageList = (name) => {
     const mapString = binder.get(name + "-data");

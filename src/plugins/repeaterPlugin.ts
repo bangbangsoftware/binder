@@ -2,20 +2,20 @@ import { BinderTools } from "../binderTypes";
 
 let binder: BinderTools;
 
-const data: Map<string, Array<any>> = new Map<string, Array<any>>();
+const data: Map<string, Array<any>> = new Map<string, Array<any>>(); 
 
 export const addData = (name: string, list: Array<any>) => {
   data.set(name, list);
   binder.setByName(name+"-data", JSON.stringify(data));
 };
 
-export const repeaterPlugin = (tools: BinderTools) => {
+export const repeaterPlugin = (baseDataFn: Function = () =>{}) => (tools: BinderTools) => {
   binder = tools;
   console.log("** Repeater plugin **");
   return {
     attributes: ["repeater"],
     process: (element: Element, repeaterName: string): boolean => {
-      const list = getData(repeaterName);
+      const list = getData(repeaterName, baseDataFn);
       if (list == null) {
         return false;
       }
@@ -32,17 +32,17 @@ export const repeaterPlugin = (tools: BinderTools) => {
   };
 };
 
-const getData = (name: string): Array<any> | null => {
-  const list = data.get(name);
-  if (list != null) {
-    return list;
-  }
+const getData = (name: string, makeData: Function): Array<any> | null => {
   const fromStorage = getStorageList(name);
   if (fromStorage != null) {
     return fromStorage;
   }
-  console.error("No data been defined for '" + name + "' ");
-  return null;
+  const list = data.get(name);
+  if (list != null) {
+    return list;
+  }
+
+  return makeData();
 };
 
 const getStorageList = (name: String): Array<any> | null => {
