@@ -2,7 +2,7 @@ import { BinderTools } from "../binderTypes";
 
 let binder: BinderTools;
 
-const setupFuncs = new Map<string,Function>(); 
+const setupFuncs = new Map<string, Function>();
 
 export const addFunction = (name: string, setupFn: Function) => {
   setupFuncs.set(name, setupFn);
@@ -39,40 +39,50 @@ const getData = (name: string): Array<any> | null => {
   }
 
   const func = setupFuncs.get(name);
-  if (func == null){
-    console.warn("Repeater data has no function for -"+name);
+  if (func == null) {
+    console.warn("Repeater data has no function for -" + name);
     return null;
   }
-  console.log("Repeater data obtained from generate function -"+name);
+  console.log("Repeater data obtained from generate function -" + name);
   const generated = func();
-  
+
   return generated;
 };
 
 const getStorageList = (name: String): Array<any> | null => {
-  const allKeys = binder.get(name+"-keys");
-  if (allKeys == null){
+  const allKeys = binder.get(name + "-keys");
+  if (allKeys == null) {
     return null;
   }
   const keys = JSON.parse(allKeys.currentValue);
-  const rows = getRows(name, keys,0);
-  console.log("Got from storage ",rows);
+  const rows = getRows(name, keys, 0);
+  console.log("Got from storage ", rows);
   return rows;
 };
 
-const getRows = (name: String, keys: Array<string>, index:number, rows: Array<any> = []) => {
+const getRows = (
+  name: String,
+  keys: Array<string>,
+  index: number,
+  rows: Array<any> = []
+) => {
   const row = {};
-const values = keys.map(key => {
-      const value = binder.get(name+"-"+key+"-"+index);
-      row[key] = value;
-      return value;
-    }).filter(what => what != null);
-  if (Object.keys(values).length == 0){
+  const values = keys
+    .map(key => {
+      const value = binder.get(name + "-" + key + "-" + index);
+      if (!value){
+        return null;
+      }
+      row[key] = value.currentValue;
+      return value.currentValue;
+    })
+    .filter(what => what != null);
+  if (Object.keys(values).length == 0) {
     return rows;
   }
   rows.push(row);
-  return getRows(name, keys, index+1, rows);
-}
+  return getRows(name, keys, index + 1, rows);
+};
 
 const build = (
   parent: Node,
@@ -100,12 +110,12 @@ const getValue = (
   data: any
 ): { data: string; key: string | null } => {
   const place = el.getAttribute("place");
-  const key = (place === undefined)? null : place;
+  const key = place === undefined ? null : place;
   if (key === "$index") {
     return { data: "" + index, key };
   }
   if (key === null || key === "") {
-    return {data, key};
+    return { data, key };
   }
   return { data: data[key], key };
 };
@@ -117,20 +127,27 @@ const setValues = (
   index: number
 ) => {
   const keys = new Set<String>();
-  placeHolders.forEach((el: HTMLElement) => keys.add(populatePlaceHolder(el,index, name, data)));
-  binder.setByName(name+"-keys", JSON.stringify([...keys]));
+  placeHolders.forEach((el: HTMLElement) =>
+    keys.add(populatePlaceHolder(el, index, name, data))
+  );
+  binder.setByName(name + "-keys", JSON.stringify([...keys]));
 };
 
-const populatePlaceHolder = (el: HTMLElement, index: number, name: string, data: any) => {
+const populatePlaceHolder = (
+  el: HTMLElement,
+  index: number,
+  name: string,
+  data: any
+) => {
   const value = getValue(el, index, data);
-  const key = (value.key == null)? "": value.key+"-";
+  const key = value.key == null ? "" : value.key + "-";
   el.id = name + "-" + key + index;
   el.setAttribute("name", el.id);
   el.removeAttribute("place");
   binder.setValue(el, value.data);
   binder.put(el);
-  return (value.key == null)? "": value.key;
-}
+  return value.key == null ? "" : value.key;
+};
 
 const findPlaceInChildNodes = (
   childNodes: NodeListOf<ChildNode>,

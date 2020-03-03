@@ -52,11 +52,16 @@ const getStorageList = (name) => {
 };
 const getRows = (name, keys, index, rows = []) => {
     const row = {};
-    const values = keys.map(key => {
+    const values = keys
+        .map(key => {
         const value = binder.get(name + "-" + key + "-" + index);
-        row[key] = value;
-        return value;
-    }).filter(what => what != null);
+        if (!value) {
+            return null;
+        }
+        row[key] = value.currentValue;
+        return value.currentValue;
+    })
+        .filter(what => what != null);
     if (Object.keys(values).length == 0) {
         return rows;
     }
@@ -77,7 +82,7 @@ const build = (parent, element, name, data) => {
 };
 const getValue = (el, index, data) => {
     const place = el.getAttribute("place");
-    const key = (place === undefined) ? null : place;
+    const key = place === undefined ? null : place;
     if (key === "$index") {
         return { data: "" + index, key };
     }
@@ -93,13 +98,13 @@ const setValues = (placeHolders, name, data, index) => {
 };
 const populatePlaceHolder = (el, index, name, data) => {
     const value = getValue(el, index, data);
-    const key = (value.key == null) ? "" : value.key + "-";
+    const key = value.key == null ? "" : value.key + "-";
     el.id = name + "-" + key + index;
     el.setAttribute("name", el.id);
     el.removeAttribute("place");
     binder.setValue(el, value.data);
     binder.put(el);
-    return (value.key == null) ? "" : value.key;
+    return value.key == null ? "" : value.key;
 };
 const findPlaceInChildNodes = (childNodes, result) => {
     childNodes.forEach(node => findPlace(node, result));
