@@ -1,6 +1,6 @@
 import { bagItAndTagIt, tools} from "./dist/index.js";
 import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
-import { repeaterPlugin, addFunction, addRow } from './dist/plugins/repeaterPlugin.js';
+import { repeaterPlugin, addSetup, addRow } from './dist/plugins/repeaterPlugin.js';
 
 console.log("LOOP TESTER");
 
@@ -22,8 +22,8 @@ const setupHeader = () =>{
     return headers;
 }
 
-addFunction("headers",setupHeader);
-addFunction("flights",setupData);
+addSetup("headers",setupHeader);
+addSetup("flights",setupData);
 console.log(new Date()," started");
 console.time("diti");
 bagItAndTagIt([swapperPlugin, repeaterPlugin], "loops");

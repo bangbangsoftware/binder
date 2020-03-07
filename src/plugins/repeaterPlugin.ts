@@ -5,7 +5,7 @@ let binder: BinderTools;
 const setupFuncs = new Map<string, Function>();
 const cloneElements = new Map<string, {element:Element,parent:Node, index: number}>();
 
-export const addFunction = (name: string, setupFn: Function) => {
+export const addSetup = (name: string, setupFn: Function) => {
   setupFuncs.set(name, setupFn);
 };
 

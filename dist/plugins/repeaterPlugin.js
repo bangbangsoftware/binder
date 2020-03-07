@@ -1,7 +1,7 @@
 let binder;
 const setupFuncs = new Map();
 const cloneElements = new Map();
-export const addFunction = (name, setupFn) => {
+export const addSetup = (name, setupFn) => {
     setupFuncs.set(name, setupFn);
 };
 export const addRow = (name, data) => {

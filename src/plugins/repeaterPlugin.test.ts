@@ -1,4 +1,4 @@
-import { repeaterPlugin, addFunction } from "./repeaterPlugin";
+import { repeaterPlugin, addSetup } from "./repeaterPlugin";
 import { BinderTools, RegEntry } from "../binderTypes";
 
 const headerElement: HTMLElement = document.createElement("div");
@@ -28,7 +28,7 @@ describe("repeaterPlugin.test", () => {
   const headings = ["from", "to","depart","arrive","length"];
 
   test("Plugin can be set up", () => {
-    addFunction("header",() => headings);
+    addSetup("header",() => headings);
     plugin = repeaterPlugin(binder);
   });
 
