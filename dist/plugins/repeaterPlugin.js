@@ -1,7 +1,7 @@
 let binder;
 const setupFuncs = new Map();
 const sortFuncs = new Map();
-const cloneElements = new Map();
+const repeaters = new Map();
 export const addSetup = (name, setupFn) => {
     setupFuncs.set(name, setupFn);
 };
@@ -20,7 +20,7 @@ const removeElement = (elementId, parent) => {
     parent.removeChild(element);
 };
 const sort = (name, sortFn) => {
-    const whatWhere = cloneElements.get(name);
+    const whatWhere = repeaters.get(name);
     if (whatWhere == null) {
         return;
     }
@@ -30,13 +30,23 @@ const sort = (name, sortFn) => {
     const list = whatWhere.list.sort(sortFn);
     const newDiv = build(parent, element, name, list, 0);
     element.replaceWith(newDiv);
-    cloneElements.set(name, { parent, element, list });
+    repeaters.set(name, { parent, element, list });
+};
+const addAndSort = (name, sortFn, data, repeater) => {
+    const newList = repeater.list.concat(data);
+    repeater.list = newList;
+    sort(name, sortFn);
+    return newList;
 };
 export const addRow = (name, data) => {
     var _a;
-    const whatWhere = cloneElements.get(name);
+    const whatWhere = repeaters.get(name);
     if (whatWhere == null) {
         return;
+    }
+    const sorter = sortFuncs.get(name);
+    if (sorter) {
+        return addAndSort(name, sorter, data, whatWhere);
     }
     const parent = whatWhere.parent;
     const element = whatWhere.element;
@@ -44,7 +54,7 @@ export const addRow = (name, data) => {
     const newDiv = build(parent, element, name, data, list.length);
     const newList = list.concat(data);
     (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.append(newDiv);
-    cloneElements.set(name, { parent, element, "list": newList });
+    repeaters.set(name, { parent, element, "list": newList });
 };
 export const repeaterPlugin = (tools) => {
     binder = tools;
@@ -64,7 +74,7 @@ export const repeaterPlugin = (tools) => {
             const newDiv = build(parent, element, repeaterName, list);
             const cloned = element.cloneNode(true);
             const cloneData = { element: cloned, parent, list };
-            cloneElements.set(repeaterName, cloneData);
+            repeaters.set(repeaterName, cloneData);
             element.replaceWith(newDiv);
             return true;
         }

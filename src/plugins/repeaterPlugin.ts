@@ -2,9 +2,15 @@ import { BinderTools } from "../binderTypes";
 
 let binder: BinderTools;
 
+interface Repeater {
+  element: Element;
+  parent: Node;
+  list: Array<any>;
+}
+
 const setupFuncs = new Map<string, Function>();
 const sortFuncs = new Map<string, Function>();
-const cloneElements = new Map<string, {element:Element,parent:Node, list: Array<any>}>();
+const repeaters = new Map<string, Repeater>();
 
 export const addSetup = (name: string, setupFn: Function) => {
   setupFuncs.set(name, setupFn);
@@ -17,7 +23,6 @@ export const addSort = (name: string, sortFn: Function) => {
 
 const makeRowID = (name: string, i:number): string => name + "-" + i;
 const removeElement = (elementId: string, parent: Node) => {
-  console.log("Removing element with id '"+elementId+"'.");
   const element = document.getElementById(elementId);
   if (!element){
     console.error("Cannot find element?!");
@@ -27,7 +32,7 @@ const removeElement = (elementId: string, parent: Node) => {
 }
 
 const sort = (name: string, sortFn) => {
-  const whatWhere = cloneElements.get(name);
+  const whatWhere = repeaters.get(name);
   if (whatWhere == null){
     return;
   }
@@ -37,22 +42,35 @@ const sort = (name: string, sortFn) => {
   const list = whatWhere.list.sort(sortFn);
   const newDiv = build(parent, element, name, list, 0);
   element.replaceWith(newDiv);
-  cloneElements.set(name, {parent, element,list}); 
+  repeaters.set(name, {parent, element,list}); 
+}
+
+const addAndSort = (name:string, sortFn: Function, data: Array<any>, repeater: Repeater) => {
+  const newList = repeater.list.concat(data);
+  repeater.list = newList;
+  sort(name, sortFn);
+  return newList;
 }
 
 export const addRow = (name: string, data:Array<any>) => {
-  const whatWhere = cloneElements.get(name);
+  const whatWhere = repeaters.get(name);
   if (whatWhere == null){
     return;
+  }
+  const sorter = sortFuncs.get(name);
+  if (sorter){
+    return addAndSort(name, sorter,data, whatWhere)
   }
   const parent = whatWhere.parent;
   const element = whatWhere.element;
   const list = whatWhere.list;
+  
   const newDiv = build(parent, element, name, data, list.length);
   const newList = list.concat(data);
   element.parentElement?.append(newDiv);
-  cloneElements.set(name, {parent, element,"list":newList}); 
+  repeaters.set(name, {parent, element,"list":newList}); 
 }
+
 
 export const repeaterPlugin = (tools: BinderTools) => {
   binder = tools;
@@ -72,7 +90,7 @@ export const repeaterPlugin = (tools: BinderTools) => {
       const newDiv = build(parent, element, repeaterName, list);
       const cloned = <Element>element.cloneNode(true);
       const cloneData = {element: cloned,parent, list};
-      cloneElements.set(repeaterName,cloneData);
+      repeaters.set(repeaterName,cloneData);
       element.replaceWith(newDiv);
       
       return true;  
