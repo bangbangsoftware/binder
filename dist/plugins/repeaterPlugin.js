@@ -1,8 +1,36 @@
 let binder;
 const setupFuncs = new Map();
+const sortFuncs = new Map();
 const cloneElements = new Map();
 export const addSetup = (name, setupFn) => {
     setupFuncs.set(name, setupFn);
+};
+export const addSort = (name, sortFn) => {
+    sortFuncs.set(name, sortFn);
+    sort(name, sortFn);
+};
+const makeRowID = (name, i) => name + "-" + i;
+const removeElement = (elementId, parent) => {
+    console.log("Removing element with id '" + elementId + "'.");
+    const element = document.getElementById(elementId);
+    if (!element) {
+        console.error("Cannot find element?!");
+        return;
+    }
+    parent.removeChild(element);
+};
+const sort = (name, sortFn) => {
+    const whatWhere = cloneElements.get(name);
+    if (whatWhere == null) {
+        return;
+    }
+    const parent = whatWhere.parent;
+    const element = whatWhere.element;
+    whatWhere.list.forEach((row, i) => removeElement(makeRowID(name, i), parent));
+    const list = whatWhere.list.sort(sortFn);
+    const newDiv = build(parent, element, name, list, 0);
+    element.replaceWith(newDiv);
+    cloneElements.set(name, { parent, element, list });
 };
 export const addRow = (name, data) => {
     var _a;
@@ -12,10 +40,11 @@ export const addRow = (name, data) => {
     }
     const parent = whatWhere.parent;
     const element = whatWhere.element;
-    const index = whatWhere.index;
-    const newDiv = build(parent, element, name, data, index);
+    const list = whatWhere.list;
+    const newDiv = build(parent, element, name, data, list.length);
+    const newList = list.concat(data);
     (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.append(newDiv);
-    cloneElements.set(name, { parent, element, "index": index + data.length });
+    cloneElements.set(name, { parent, element, "list": newList });
 };
 export const repeaterPlugin = (tools) => {
     binder = tools;
@@ -34,9 +63,8 @@ export const repeaterPlugin = (tools) => {
             parent.removeChild(element);
             const newDiv = build(parent, element, repeaterName, list);
             const cloned = element.cloneNode(true);
-            const cloneData = { element: cloned, parent, index: list.length };
+            const cloneData = { element: cloned, parent, list };
             cloneElements.set(repeaterName, cloneData);
-            console.log("cloners", { element: cloneElements, parent });
             element.replaceWith(newDiv);
             return true;
         }
@@ -99,7 +127,7 @@ const build = (parent, element, name, data, offset = 0) => {
         const birth = element.cloneNode(true);
         birth.removeAttribute("repeater");
         const placeHolders = findPlace(birth, []);
-        birth.id = name + "-" + (offset + i);
+        birth.id = makeRowID(name, (offset + i));
         setValues(placeHolders, name, field, (offset + i));
         return birth;
     });

@@ -3,11 +3,42 @@ import { BinderTools } from "../binderTypes";
 let binder: BinderTools;
 
 const setupFuncs = new Map<string, Function>();
-const cloneElements = new Map<string, {element:Element,parent:Node, index: number}>();
+const sortFuncs = new Map<string, Function>();
+const cloneElements = new Map<string, {element:Element,parent:Node, list: Array<any>}>();
 
 export const addSetup = (name: string, setupFn: Function) => {
   setupFuncs.set(name, setupFn);
 };
+
+export const addSort = (name: string, sortFn: Function) => {
+  sortFuncs.set(name, sortFn);
+  sort(name, sortFn);
+}
+
+const makeRowID = (name: string, i:number): string => name + "-" + i;
+const removeElement = (elementId: string, parent: Node) => {
+  console.log("Removing element with id '"+elementId+"'.");
+  const element = document.getElementById(elementId);
+  if (!element){
+    console.error("Cannot find element?!");
+    return;
+  }
+  parent.removeChild(element);
+}
+
+const sort = (name: string, sortFn) => {
+  const whatWhere = cloneElements.get(name);
+  if (whatWhere == null){
+    return;
+  }
+  const parent = whatWhere.parent;
+  const element = whatWhere.element;
+  whatWhere.list.forEach((row,i) => removeElement(makeRowID(name,i),parent));
+  const list = whatWhere.list.sort(sortFn);
+  const newDiv = build(parent, element, name, list, 0);
+  element.replaceWith(newDiv);
+  cloneElements.set(name, {parent, element,list}); 
+}
 
 export const addRow = (name: string, data:Array<any>) => {
   const whatWhere = cloneElements.get(name);
@@ -16,10 +47,11 @@ export const addRow = (name: string, data:Array<any>) => {
   }
   const parent = whatWhere.parent;
   const element = whatWhere.element;
-  const index = whatWhere.index;
-  const newDiv = build(parent, element, name, data, index);
+  const list = whatWhere.list;
+  const newDiv = build(parent, element, name, data, list.length);
+  const newList = list.concat(data);
   element.parentElement?.append(newDiv);
-  cloneElements.set(name, {parent, element,"index":index+data.length}); 
+  cloneElements.set(name, {parent, element,"list":newList}); 
 }
 
 export const repeaterPlugin = (tools: BinderTools) => {
@@ -39,9 +71,8 @@ export const repeaterPlugin = (tools: BinderTools) => {
       parent.removeChild(element);
       const newDiv = build(parent, element, repeaterName, list);
       const cloned = <Element>element.cloneNode(true);
-      const cloneData = {element: cloned,parent, index: list.length};
+      const cloneData = {element: cloned,parent, list};
       cloneElements.set(repeaterName,cloneData);
-      console.log("cloners",{element:cloneElements, parent});
       element.replaceWith(newDiv);
       
       return true;  
@@ -123,7 +154,7 @@ const build = (
     const birth = <Element>element.cloneNode(true);
     birth.removeAttribute("repeater");
     const placeHolders = findPlace(birth, []);
-    birth.id = name + "-" + (offset+i);
+    birth.id = makeRowID(name,(offset+i));
     setValues(placeHolders, name, field, (offset+i));
     return birth;
   });
