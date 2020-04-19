@@ -33,7 +33,9 @@ const doc = {
 setDocument(doc);
 const binder: BinderTools = {
   getValue: el => doc.getElementById(el.id).innerText,
+  getByName: s => mockElement.innerText,
   put: () => {},
+  putElements: () => {},
   get: (k: string): RegEntry => {
     const blank = { currentValue: "", elements: Array<Element>() };
     return blank;

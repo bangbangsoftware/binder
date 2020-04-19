@@ -1,7 +1,7 @@
 import { BinderPlugin } from "../binderTypes";
 
 let value;
-let callback = () => {};
+let callback = (element:Element) => {};
 export const moverValue = v => value = v;
 export const moverCallback = cb => callback = cb;
 
@@ -19,7 +19,7 @@ export const moverPlugin: BinderPlugin = tools => {
       list.forEach(element => element.innerText = "");
       element.innerText = value;
       list.forEach(element => tools.put(element));
-      callback();
+      callback(element);
     }, [name]);
     return true;
   }};

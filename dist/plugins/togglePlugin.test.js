@@ -7,7 +7,9 @@ mockElement.setAttribute("toggle", "rugby, long jump, crime");
 describe("togglePlugin.test", () => {
     const binder = {
         getValue: () => mockElement.innerText,
+        getByName: s => mockElement.innerText,
         put: () => { },
+        putElements: () => { },
         get: (k) => {
             const blank = { currentValue: "", elements: Array() };
             return blank;

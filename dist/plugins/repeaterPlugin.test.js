@@ -7,7 +7,9 @@ headerElement.appendChild(headerPlaceElement);
 describe("repeaterPlugin.test", () => {
     const binder = {
         getValue: () => headerElement.innerText,
+        getByName: s => headerElement.innerText,
         put: el => { },
+        putElements: () => { },
         get: (k) => {
             const blank = { currentValue: "", elements: Array() };
             return blank;

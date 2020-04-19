@@ -11,11 +11,13 @@ export const ifPlugin: BinderPlugin = tools => {
   return {
     attributes: ["if"],
     process: (ifElement: HTMLElement, name: string): boolean => {
+      console.log("IFP if Plugin");
       const fieldID = ifElement.getAttribute("if");
       if (!fieldID) {
+        console.log("IFP Error with ",ifElement);
         return false;
       }
-      console.log("IFP - "+fieldID + " has an if.... ");0
+      console.log("IFP - "+fieldID + " has an if.... ");
       tools.stateListener(fieldID, (valueElement: HTMLElement) => {
         const value = getValue(tools, fieldID);
         swap(ifElement,value);
@@ -62,7 +64,7 @@ const hasValue = value => {
 };
 
 const swap = (element: HTMLElement, value: string | null) => {
-  console.log(element.id + " >>", value, "<< " + hasValue(value));
+//  console.log(element.id + " >>", value, "<< " + hasValue(value));
   if (hasValue(value)) {
     console.log("IFP - removing " + element.id + " hiding");
     element.classList.remove("hide");
@@ -70,5 +72,4 @@ const swap = (element: HTMLElement, value: string | null) => {
     console.log("IFP - "+element.id + " hiding");
     element.classList.add("hide");
   }
-  console.log("");
 };

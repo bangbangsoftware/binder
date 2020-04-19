@@ -1,5 +1,5 @@
 let value;
-let callback = () => { };
+let callback = (element) => { };
 export const moverValue = v => value = v;
 export const moverCallback = cb => callback = cb;
 const elementsGroups = {};
@@ -15,7 +15,7 @@ export const moverPlugin = tools => {
                 list.forEach(element => element.innerText = "");
                 element.innerText = value;
                 list.forEach(element => tools.put(element));
-                callback();
+                callback(element);
             }, [name]);
             return true;
         } };

@@ -28,7 +28,7 @@ addSetup("headers",setupHeader);
 addSetup("flights",setupData);
 console.log(new Date()," started");
 console.time("diti");
-bagItAndTagIt([swapperPlugin, repeaterPlugin], "loops");
+bagItAndTagIt(this,[swapperPlugin, repeaterPlugin], "loops");
 console.timeEnd("diti");
 console.log(new Date()," ended");
 const but = document.getElementById("flights-from-99");

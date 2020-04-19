@@ -10,7 +10,9 @@ headerElement.appendChild(headerPlaceElement);
 describe("repeaterPlugin.test", () => {
   const binder: BinderTools = {
     getValue: () => headerElement.innerText,
+    getByName: s => headerElement.innerText,
     put: el => { },
+    putElements: () => {},
     get: (k: string): RegEntry => {
       const blank = { currentValue: "", elements: Array<Element>() };
       return blank;

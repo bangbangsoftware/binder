@@ -9,12 +9,13 @@ import {
 } from "./dist/plugins/moverPlugin.js";
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";
 import { swapPlugin, actionMover } from "./dist/plugins/swapPlugin.js";
+import { clickPlugin, addClickFunction } from "./dist/plugins/clickPlugin.js";
 
 const group = "swaps";
 const actionID = "captain-butt";
 const data = "- Assigned Data -";
 const dataIDpostFix = "data";
-const mover = { group, actionID, data, dataIDpostFix};
+const mover = { group, actionID, data, dataIDpostFix };
 actionMover(mover);
 
 moverValue("Captain");
@@ -22,7 +23,7 @@ moverCallback(() => {
   showHideSwap("capshow");
 });
 
-console.log("TESTER");
+console.log("TESTER ");
 
 bagItAndTagIt([
   swapperPlugin,
@@ -30,8 +31,21 @@ bagItAndTagIt([
   showHidePlugin,
   moverPlugin,
   ifPlugin,
-  swapPlugin
+  swapPlugin,
+  clickPlugin
 ]);
+
+const clearSport = (tools, ev) => {
+  tools.setByName("sport","");
+}
+addClickFunction("clearSport",clearSport);
+
+const titleClicked = (tools, ev) => {
+  alert(" boomer " + ev + tools);
+  tools.setByName("mainTitle", "Hell");
+};
+
+addClickFunction("titleClicked", titleClicked);
 
 const incrementSeconds = (minutes, seconds) => {
   seconds.innerText = 0;
@@ -73,16 +87,16 @@ const main = document.getElementById("results");
 
 const modeButt = document.getElementById("mode");
 let mode = "enable all";
-tools.clickListener(modeButt, ()=>{
-  if (mode === "enable all"){
+tools.clickListener(modeButt, () => {
+  if (mode === "enable all") {
     setMode("disable");
     mode = "disable some";
   } else {
     setMode("");
     mode = "enable all";
   }
-  modeButt.innerText = "Mode now is "+mode;
-  console.log("mode is "+mode);
+  modeButt.innerText = "Mode now is " + mode;
+  console.log("mode is " + mode);
 });
 
 const results = what => {

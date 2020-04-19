@@ -8,12 +8,13 @@ export const ifPlugin = tools => {
     return {
         attributes: ["if"],
         process: (ifElement, name) => {
+            console.log("IFP if Plugin");
             const fieldID = ifElement.getAttribute("if");
             if (!fieldID) {
+                console.log("IFP Error with ", ifElement);
                 return false;
             }
             console.log("IFP - " + fieldID + " has an if.... ");
-            0;
             tools.stateListener(fieldID, (valueElement) => {
                 const value = getValue(tools, fieldID);
                 swap(ifElement, value);
@@ -55,7 +56,7 @@ const hasValue = value => {
     return value.trim().length > 0;
 };
 const swap = (element, value) => {
-    console.log(element.id + " >>", value, "<< " + hasValue(value));
+    //  console.log(element.id + " >>", value, "<< " + hasValue(value));
     if (hasValue(value)) {
         console.log("IFP - removing " + element.id + " hiding");
         element.classList.remove("hide");
@@ -64,6 +65,5 @@ const swap = (element, value) => {
         console.log("IFP - " + element.id + " hiding");
         element.classList.add("hide");
     }
-    console.log("");
 };
 //# sourceMappingURL=ifPlugin.js.map

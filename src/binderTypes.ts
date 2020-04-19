@@ -2,8 +2,16 @@ export interface ToolGet {
   (key:string): RegEntry;
 }
 
+export interface ValueGet {
+  (key:string): string;
+}
+
 export interface ToolPut {
   (element: Element);
+}
+
+export interface ToolPuts {
+  (element: Array<Element>, values: Array<string>);
 }
 
 export interface ToolGetValue {
@@ -36,6 +44,7 @@ export interface IDFixer {
 
 export interface BinderTools {
   put: ToolPut;
+  putElements: ToolPuts;
   get: ToolGet;
   getValue: ToolGetValue;
   setValue: ToolSetValue;
@@ -43,6 +52,7 @@ export interface BinderTools {
   clickListener: ClickListener;
   stateListener: StateListener; 
   fixID: IDFixer;
+  getByName: ValueGet;
 }
 
 export interface BinderPlugin {
@@ -55,7 +65,7 @@ export interface BinderPluginLogic {
 }
 
 export interface BinderPluginProcessor {
-  (element: Element, name: string): boolean;
+  (element: Element, name: string): boolean | Promise<boolean>;
 }
 
 export interface RegEntry {

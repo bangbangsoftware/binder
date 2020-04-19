@@ -133,8 +133,8 @@ pages
 ### Yes, but could it be used for multiple users ???
 Well, no - not out the box, not if you wanted to share data across users.
 However I was thinking of developing a light weight couchdb like system
-using postgres notify, websockets and some simple [localStorage](https://en.wikipedia.org/wiki/Web_storage) syncing
-code...
+using postgres notify, websockets and some simple 
+[localStorage](https://en.wikipedia.org/wiki/Web_storage) syncing code...
 
 ### More techno bable
 It's a *simple fit* to straight forward use case, using localStorage 

@@ -2,7 +2,7 @@ import {
   BinderPlugin,
   RegEntry,
   BinderTools,
-  BinderPluginLogic
+  BinderPluginLogic,
 } from "./binderTypes";
 
 const namesDone = new Array<string>();
@@ -15,7 +15,7 @@ const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
 // Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
-let mode:string = "";
+let mode: string = "";
 let dataKey = "reg";
 
 // More dodgy mutable variables, but used for testing
@@ -23,18 +23,24 @@ let storage = window.localStorage;
 let doc = document;
 
 // Just for testing....
-export const setStorage = s => (storage = s);
-export const setDocument = d => (doc = d);
+export const setStorage = (s) => (storage = s);
+export const setDocument = (d) => (doc = d);
 
 export interface Usage {
   name: string;
   qty: number;
 }
 
-const isInput = (element: Element) => element != null && element.localName == null && element.localName === "input";
+const isInput = (element: Element) =>
+  element != null && element.localName != null && element.localName === "input";
 
 export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
+export const getByName = (key: string): string => {
+  const regEntry: RegEntry = get(key);
+  return regEntry == null? "" : regEntry.currentValue;
+}
+
 export const getValue = (element: HTMLElement): string => {
   if (isInput(element)) {
     const input = <HTMLInputElement>element;
@@ -48,12 +54,39 @@ export const setValue = (element: HTMLElement, value: string) => {
     console.error("Cannot set " + value + " as element is null");
     return;
   }
+
   if (isInput(element)) {
     const input = <HTMLInputElement>element;
     input.value = value;
   }
   element.innerText = value;
-  doAll(element, statelisteners);
+  const name = getName(element);
+  stateChange(name, value, statelisteners);
+};
+
+const stateChange = (
+  name: string,
+  value: string,
+  mapper: Map<string, Array<Function>>
+) => {
+  const fns = mapper.get(name);
+  if (fns == null) {
+    //    console.log(name+" has no function");
+    //    console.log(mapper);
+    return;
+  }
+
+  fns.forEach((fn: Function) => fn(value));
+};
+
+const stateReact = (e: Event, mapper: Map<string, Array<Function>>) => {
+  if (e.target == null) {
+    return;
+  }
+  const element = <HTMLElement>e.target;
+  const name = getName(element);
+  const value = getValue(element);
+  stateChange(name, value, statelisteners);
 };
 
 const getName = (element: Element): string => {
@@ -65,14 +98,20 @@ const getName = (element: Element): string => {
 
 export const setByName = (fieldname: string, value: string) => {
   const currentData = get(fieldname);
-  if (!currentData){
-    console.warn("Setting " + value + " for "+fieldname+", however its not in the mark up.");
+  if (!currentData) {
+    console.warn(
+      "Setting " +
+        value +
+        " for " +
+        fieldname +
+        ", however its not in the mark up."
+    );
   }
   const regEntry: RegEntry = {
     currentValue: value,
-    elements: []
+    elements: [],
   };
-  const data = (currentData)? currentData : regEntry;
+  const data = currentData ? currentData : regEntry;
   data.currentValue = value;
   data.elements = data.elements.map((element: HTMLElement) => {
     setValue(element, data.currentValue);
@@ -80,37 +119,89 @@ export const setByName = (fieldname: string, value: string) => {
   });
   registry[fieldname] = data;
   const keyvalue = {};
-  Object.keys(registry).forEach(key => {
+  Object.keys(registry).forEach((key) => {
     keyvalue[key] = registry[key].currentValue;
+  });
+  const reg = JSON.stringify(keyvalue);
+  storage.setItem(dataKey, reg);
+};
+
+export function putElements(
+  elements: Array<HTMLElement>,
+  values: Array<string>
+) {
+  elements.forEach((element, index) => {
+    try {
+      putElement(element, values[index]);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+  // Store registry
+  const keyvalue = {};
+  Object.keys(register).forEach((key) => {
+    keyvalue[key] = register[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
   storage.setItem(dataKey, reg);
 }
 
-export function put(element: HTMLElement): { [key: string]: RegEntry } {
+const putElement = (
+  element: HTMLElement,
+  currentValue = getValue(element)
+) => {
   const fieldname = getName(element);
-  if (fieldname === "") {
-    console.error("NO name in element !!!!? ", element);
-    return registry;
+  const data = updateEntry(fieldname, element, currentValue);
+
+  // update memory registory
+  register[fieldname] = data;
+};
+
+const updateEntry = (
+  fieldname: string,
+  element: HTMLElement,
+  currentValue: string
+): RegEntry => {
+
+  // get registry entry and update
+  const storedEntry = get(fieldname);
+  if (!storedEntry) {
+//    setValue(element, currentValue);
+    const entry = {
+      elements: [element],
+      currentValue,
+    };
+    registry[fieldname] = entry;
+    stateChange(fieldname, currentValue, statelisteners);
+    return entry;
   }
-  const stored = get(fieldname);
-  const regEntry: RegEntry = {
-    currentValue: getValue(element),
-    elements: [element]
-  };
-  const data = stored ? stored : regEntry;
-  data.currentValue = getValue(element);
-  data.elements = data.elements.map((element: HTMLElement) => {
-    setValue(element, data.currentValue);
-    return element;
-  });
-  if (!data.elements.find(e => e.id === element.id)) {
-    data.elements.push(element);
+
+  storedEntry.currentValue = currentValue;
+
+  // update all elements in entry
+  let newEntry = true;
+  storedEntry.elements = storedEntry.elements.map(
+    (storedElement: HTMLElement) => {
+      setValue(storedElement, currentValue);
+      if (storedElement.id === element.id) {
+        newEntry = false;
+      }
+      return storedElement;
+    }
+  );
+  if (newEntry) {
+    storedEntry.elements.push(element);
   }
-  registry[fieldname] = data;
+  return storedEntry;
+};
+
+export function put(element: HTMLElement): { [key: string]: RegEntry } {
+  putElement(element);
+
+  // Store registry
   const keyvalue = {};
-  Object.keys(registry).forEach(key => {
-    keyvalue[key] = registry[key].currentValue;
+  Object.keys(register).forEach((key) => {
+    keyvalue[key] = register[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
   storage.setItem(dataKey, reg);
@@ -127,39 +218,40 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>(), key = "reg") {
   hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
   for (const field in registry) delete registry[field];
   setup();
-  const plugins = plugs.map(setupPlugin => setupPlugin(tools));
+  const plugins = plugs.map((setupPlugin) => setupPlugin(tools));
   const everything = doc.querySelectorAll("*");
   let results = new Array<Usage>();
   everything.forEach((element: HTMLElement) => {
     results = registerAll(element, plugins, results);
   });
   console.log("Detected.....");
-  results.forEach(result => console.log(result.name + " - " + result.qty));
+  results.forEach((result) => console.log(result.name + " - " + result.qty));
   console.log(".............");
   show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
 }
 
 export const setMode = (newMode: string): string => {
-  const oldMode = mode+"";
+  const oldMode = mode + "";
   mode = newMode;
   return oldMode;
-}
+};
 
 export const getMode = (): string => {
   return mode;
-}
+};
 
-const clickListener = (e: Element, fn: Function, modes:Array<string> = []) => {
-  const changed = (e:Element) => fn(e);
-    childIDs(e)
-      .filter(id => !clickers.has(id))
-      .forEach(id => clickers.set(id, changed));
+const clickListener = (e: Element, fn: Function, modes: Array<string> = []) => {
+  const changed = (e: Element) => fn(e);
+  childIDs(e)
+    .filter((id) => !clickers.has(id))
+    .forEach((id) => clickers.set(id, changed));
 
-  modes.forEach(modeInList =>{
+  modes.forEach((modeInList) => {
     childIDs(e)
-    .filter(id => !clickers.has(modeInList+"-"+id))
-    .forEach(id => clickers.set(modeInList+"-"+id, changed));
-  }); 
+      .filter((id) => !clickers.has(modeInList + "-" + id))
+      .forEach((id) => clickers.set(modeInList + "-" + id, changed));
+  });
+  console.log("clickers", clickers);
 };
 
 const stateListener = (fieldID: string, fn: Function) => {
@@ -184,19 +276,22 @@ const fixID = (element: HTMLElement, name: string): HTMLElement => {
 
 export const tools: BinderTools = {
   put,
+  putElements,
   get,
   getValue,
   setValue,
   setByName,
+  getByName,
   clickListener,
   stateListener,
-  fixID
+  fixID,
 };
+
 export const go = (plugs: Array<BinderPlugin>) => bagItAndTagIt(plugs);
 
 const setup = () => {
   console.log("Binder getting data from '" + dataKey + "' in local storage");
-  const regString:string|null = storage.getItem(dataKey);
+  const regString: string | null = storage.getItem(dataKey);
   setupListener();
   if (!regString) {
     return;
@@ -204,7 +299,7 @@ const setup = () => {
   try {
     const reg = JSON.parse(regString);
     Object.keys(reg).forEach(
-      key => (registry[key] = { currentValue: reg[key], elements: [] })
+      (key) => (registry[key] = { currentValue: reg[key], elements: [] })
     );
   } catch (er) {
     console.error("cannot parse", regString);
@@ -217,18 +312,17 @@ const reactAll = (e: Event, mapper: Map<string, Array<Function>>) => {
   if (e.target == null) {
     return;
   }
+  console.log("Reacting to ", e);
   const element = <Element>e.target;
-  doAll(element, mapper);
-};
-
-const doAll = (element:Element, mapper: Map<string, Array<Function>>) => {
   const id = element.id;
   const fns = mapper.get(id);
   if (fns == null) {
+    //    console.log(id+" has no function");
+    //    console.log(mapper);
     return;
   }
 
-  fns.forEach((fn:Function) => fn(element));
+  fns.forEach((fn: Function) => fn(element));
 };
 
 const react = (e: Event, mapper: Map<string, Function>) => {
@@ -237,11 +331,20 @@ const react = (e: Event, mapper: Map<string, Function>) => {
   }
   const element = <Element>e.target;
   const id = element.id;
-  const key = (mode.length === 0) ? element.id : mode+"-"+element.id;
+  const key = mode.length === 0 ? element.id : mode + "-" + element.id;
   const fn = mapper.get(key);
   if (fn == null) {
-    console.error("ACTION: "+key+" :: no action for '"+id+"' in the mode '"+mode+"'.");
-    console.log(mapper);
+    console.error(
+      "ACTION: " +
+        key +
+        " :: no action for '" +
+        id +
+        "' in the mode '" +
+        mode +
+        "'."
+    );
+    //    console.log(mapper);
+    //    console.log(element);
     return;
   }
   fn(e);
@@ -260,12 +363,13 @@ const addListener = (fieldID: string, changed: Function, ears = listeners) => {
 };
 
 const setupListener = () => {
-  doc.addEventListener("change", e => reactAll(e, listeners));
-  doc.addEventListener("onpaste", e => reactAll(e, listeners));
-  doc.addEventListener("keyup", e => reactAll(e, listeners));
-  doc.addEventListener("onin", e => reactAll(e, listeners));
-  doc.addEventListener("statechange", e => reactAll(e, statelisteners));
-  doc.addEventListener("click", e => react(e, clickers));
+  doc.addEventListener("change", (e) => reactAll(e, listeners));
+  doc.addEventListener("onpaste", (e) => reactAll(e, listeners));
+  doc.addEventListener("keyup", (e) => reactAll(e, listeners));
+  doc.addEventListener("onin", (e) => reactAll(e, listeners));
+  doc.addEventListener("click", (e) => react(e, clickers));
+
+  doc.addEventListener("statechange", (e) => stateReact(e, statelisteners));
 };
 
 const childIDs = (
@@ -275,10 +379,10 @@ const childIDs = (
   if (element == null) {
     console.error("no element for clicker");
     return ids;
-  } 
-  
+  }
+
   if (!element.id) {
-    console.error("no id, no click listener", element);
+    console.error("no id, no click listener:: ", element);
   } else if (ids.indexOf(element.id) === -1) {
     //console.log("stored to click "+element.id);
     ids.push(element.id);
@@ -287,7 +391,7 @@ const childIDs = (
   if (!element.childNodes || element.childNodes.length === 0) {
     return ids;
   }
-  
+
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     const node = element.childNodes[i];
     if (node instanceof HTMLElement) {
@@ -315,7 +419,7 @@ const updateUsage = (
   if (pluginsForElement.length === 0) {
     increment(usage, "total");
   }
-  pluginsForElement.forEach(pi => {
+  pluginsForElement.forEach((pi) => {
     const key = pi.attributes[0];
     increment(usage, key);
   });
@@ -352,7 +456,7 @@ const replaceAll = (s: string, rid: string, gain: string) => {
 };
 
 const hasAttribute = (plug: BinderPluginLogic, element: Element): boolean => {
-  const attribute = plug.attributes.find(attr => element.hasAttribute(attr));
+  const attribute = plug.attributes.find((attr) => element.hasAttribute(attr));
   return attribute !== undefined;
 };
 
@@ -360,7 +464,7 @@ const getPlugins = (
   plugins: Array<BinderPluginLogic>,
   element: Element
 ): Array<BinderPluginLogic> => {
-  return plugins.filter(plugin => hasAttribute(plugin, element));
+  return plugins.filter((plugin) => hasAttribute(plugin, element));
 };
 
 const register = (
@@ -373,15 +477,16 @@ const register = (
     registerState(element, name);
   }
   const pluginsForElement = getPlugins(plugins, element);
-  const pluginsDone = pluginsForElement.filter(plugin => {
+  const pluginsDone = pluginsForElement.filter(async (plugin) => {
     const value =
       plugin.attributes
-        .map(attr => element.getAttribute(attr))
-        .find(v => v != undefined) || "";
+        .map((attr) => element.getAttribute(attr))
+        .find((v) => v != undefined) || "";
     const pluginName = value ? value : plugin.attributes[0];
     fixID(element, pluginName);
-    return registerPlugin(element, plugin, pluginName);
+    return await registerPlugin(element, plugin, pluginName);
   });
+
   return pluginsDone;
 };
 
@@ -389,24 +494,28 @@ const registerPlugin = (
   element: HTMLElement,
   plugin: BinderPluginLogic,
   value: string
-): boolean => {
-  if (pluginsDone.some(d => d === element.id + "::" + plugin.attributes[0])) {
-    return false;
+): Promise<boolean> => {
+  if (pluginsDone.some((d) => d === element.id + "::" + plugin.attributes[0])) {
+    return Promise.resolve(false);
   }
   pluginsDone.push(element.id + "::" + plugin.attributes[0]);
   const used = plugin.process(element, value);
-  return used;
+  if (used instanceof Promise) {
+    return used;
+  }
+  return Promise.resolve(used);
 };
 
 const registerState = (element: HTMLElement, fieldname: string): boolean => {
-  if (namesDone.some(d => d === element.id)) {
+  if (namesDone.some((d) => d === element.id)) {
     return false;
   }
   namesDone.push(element.id);
 
   addToRegister(element, fieldname);
-  if (isInput(element)) {
-    listen(element, e => put(e));
+  const inputer = isInput(element);
+  if (inputer) {
+    listen(element, (e) => put(e));
   }
   return true;
 };

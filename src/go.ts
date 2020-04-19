@@ -5,5 +5,6 @@ import { togglePlugin } from "./plugins/togglePlugin.js";
 import { showHidePlugin } from "./plugins/showhidePlugin.js";
 import { repeaterPlugin } from "./plugins/repeaterPlugin.js";
 import { ifPlugin } from "./plugins/ifPlugin.js";
+import { clickPlugin } from "./plugins/clickPlugin.js";
 
-go([swapperPlugin, swapPlugin, togglePlugin,showHidePlugin, repeaterPlugin, ifPlugin]);
+go([swapperPlugin, swapPlugin, togglePlugin,showHidePlugin, repeaterPlugin, ifPlugin, clickPlugin]);

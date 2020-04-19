@@ -1,306 +1,225 @@
+
 <html>
-  <head>
-      <link rel="stylesheet" href="./index.css" />
-  </head>
-  <body>
-    <div class="title">THE BINDER</div>
-    <div class="box">
-    <div class="topline">
-      <button swap-action="swaps" class="kickoff" id="captain-butt">Assign below</button>
-    </div>
-    
-    <div class="topbar">
-      <div id="slot-two">        
-        <button class="boxing" id="slot-two-butt" swap="swaps">
-          <div class="swap-data" id="slot-two-butt-data" name="slot-two-data"></div>
-          BANG
-        </button>
-      </div>        
-      <div id="slot-three">        
-        <button class="boxing" id="slot-three-butt" swap="swaps">
-          <div class="swap-data" id="slot-three-butt-data" name="slot-three-data"></div>
-          SWAP THESE
-        </button>
-      </div>        
-      <div id="slot-four">        
-        <button class="boxing" id="slot-four-butt" swap="swaps">
-          <div class="swap-data" id="slot-four-butt-data" name="slot-four-data"></div>
-          OK?
-        </button>
-      </div>    
-      <div id="slot-one">        
-          <button class="boxing" id="slot-one-butt" swap="swaps">
-            <div class="swap-data" id="slot-one-butt-data" name="slot-one-data"></div>
-            ORDER
-          </button>
-        </div>    
-      </div>   
-  </div>   
-    <div class="center">     
-        <button name="mode" id="mode">MODE</button>
-    </div>
-  </br></br>
-    <div class="where">
-      <button toggle="HOME,AWAY" name="where" id="where">HOME</button>
-    </div>
-    <div class="teams">
-      <input butlab class="name" name="teamName" placeholder="Team name" id="teamName" value=""></input>
-      <div class="sub center">vrs</div>
-      <input butlab class="name" name="vrsTeam" placeholder="Opposition name" id="opposition" value=""></input>
-      <div id="score" name="score" class="sub center">0</div>
-      <div id="time"  class="time">
-            <div id="minutes">00</div>:<div id="seconds">00</div>
-      </div>
-      <button id="vrsScore" name="vrsScore" class="vrsScore" value="0"></button>
-    </div>
-    <div class="scored hide" name="scored" id="scored"></div>
-    <div class="buttongrid">
-      <button name="kickoff" class="kickoff" id="kickoff">Kick Off</button>
-      <button name="showhide-test" class="kickoff" id="showhide-test" showhide-trigger="team"> EDIT</button>
-      <a class="next" href="nextPage.html"><button class="fillout">Next Page</button></a></div> 
-    </div>
+    <head>
+      <link rel="stylesheet" type="text/css" href="index.css" />
+      <title>Binder Examples</title>
+    </head>
+    <body>
+      <main>
+        <header><h1>The Binder Example Page</h1></header>
+        <section>
 
-    <div id="playing" class="hide">
-        <div class="pitch">
-          <button class="pos" name="front1" id="position1" ></button>
-          <button class="pos" name="front2" id="position2" >Fred</button>
-          <button class="pos" name="front3" id="position3" ></button>
-          <button class="pos" name="front4" id="position4" >Jim</button>
-          <button class="pos" name="front5" id="position5" ></button>
-          <button class="pos" name="mid1"   id="position6" >Dick</button>
-          <button class="pos" name="mid2"   id="position7" >Johnno</button>
-          <button class="pos" name="mid3"   id="position8" ></button>
-          <button class="pos" name="mid4"   id="position9" >Filpper</button>
-          <button class="pos" name="mid5"   id="position10 ">Wazo</button>
-          <button class="pos" name="back1"  id="position11">Jimbo</button>
-          <button class="pos" name="back2"  id="position12">Popper</button>
-          <button class="pos" name="back3"  id="position13"></button>
-          <button class="pos" name="back4"  id="position14">Boomer</button>
-          <button class="pos" name="back5"  id="position15">Shizal</button>
-          <div></div>
-          <div></div>
-          <button class="pos" name="goalie" id="position16">Maron</button>
-          <div></div>
-          <div></div>
-          
-      </div>  
-    </div>
-    <button toggle="Play On, Whistle blown" name="playing" class="kickoff hide" id="state">Play On</button>
-  <div id="bench">
-      <div class="pitch">
+          <article id="simple">
+            <h2>1. Simple start</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code > <pre class="code">
+                      &lt;body>
+                          &lt;input name='sport' autofocus>&lt;/input>
+                          &lt;div name='sport' >&lt;/div>
+                      &lt;/body>
+                      
+                      &lt;script type='module' src='../node_modules/binder/dist/go.js'>&lt;/script>
+                      </pre>
+                  </code>
+                </div>
+                <div>
+                    <br>
+                    <br>
+                    Enter your favourite sport &emsp;
+                    <input name='sport' autofocus></input>
+                  
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <span>
+                        Your sport is <span name='sport' ></span>
+                    </span>
+                    <br>
+                    <br>
+                    <button class="right" click="clearSport"> Clear sport</button>                
+                </div>
+            </div>
+            <p>Did you notice if you press <a href=".">refresh</a> this page the state stays, even works off line</p>
+          </article>
+ 
 
-        <div showhide="capshow" class="hide">
-          <span if="capInput1" >
-            <div class="caprib" name="front1-ribbon" mover="captain" >Captain</div>
-            <div class="capInput" id="capInput1" name="front1" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-          <span if="capInput2">
-            <div class="caprib" name="front2-ribbon"  mover="captain" ></div>
-            <div class="capInput" id="capInput2" name="front2" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput3">
-              <div class="caprib" name="front3-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput3" name="front3" ></div>
-            </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput4">
-              <div class="caprib" name="front4-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput4" name="front4" ></div>
-            </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput5">
-              <div class="caprib" name="front5-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput5" name="front5" ></div>
-            </span>
-        </div>
+          <article id="ifPlugin">
+            <h2>2. Only if - if plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
+                        &lt;span>
+                          &lt;input name='weather' placeholder="What's the weather like?" autofocus></input>
+                        &lt;/span>
+                        &lt;label if="weather" >Weather has been entered
+                          &lt;span name="weather"></span>
+                        &lt;/label>
+                              
+                        &lt;script type='module' src='../node_modules/binder/dist/go.js'>&lt;/script>
+                      </pre>
+                  </code>
 
-        <div showhide="capshow" class="hide">
-            <span if="capInput6">
-              <div class="caprib"  name="mid1-ribbon" mover="captain" ></div>
-              <div class="capInput" id="capInput6" name="mid1" ></div>
-            </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput7">
-              <div class="caprib"  name="mid2-ribbon" mover="captain" ></div>
-              <div class="capInput" id="capInput7" name="mid2" ></div>
-            </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput8">
-              <div class="caprib" name="mid3-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput8" name="mid3" ></div>
-            </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput9">
-              <div class="caprib"  name="mid4-ribbon" mover="captain" ></div>
-              <div class="capInput" id="capInput9" name="mid4" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-            <span if="capInput10">
-              <div class="caprib"  name="mid5-ribbon" mover="captain" ></div>
-              <div class="capInput" id="capInput10" name="mid5" ></div>
-            </span>
-        </div>
+                </div>
+                <div>
+                  <span>
+                    <input name='weather' placeholder="What's the weather like?" autofocus></input>
+                  </span>
+                  <br>
+                  <br>
+                  <label if="weather" >Weather has been entered
+                    <span name="weather"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </article>
 
-        <div showhide="capshow" class="hide">
-            <span if="capInput11">
-              <div class="caprib" name="back1-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput11" name="back1" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-          <span if="capInput12">
-              <div class="caprib" name="back2-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput12" name="back2" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-          <span if="capInput13">
-            <div class="caprib"  name="back3-ribbon"  mover="captain" ></div>
-            <div class="capInput" id="capInput13" name="back3" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-          <span if="capInput14">
-              <div class="caprib" name="back4-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput14" name="back4" ></div>
-          </span>
-        </div>
-        <div showhide="capshow" class="hide">
-          <span if="capInput15">
-              <div class="caprib" name="back5-ribbon"  mover="captain" ></div>
-              <div class="capInput" id="capInput15" name="back5" ></div>
-          </span>
-        </div>
-         
-        <span showhide="team, capshow">
-          <div if="front1" id="front1-ribbon" name="front1-ribbon" ></div>
-          <button  id="front1" class="posInput" swapper="formation" name="front1" ></button>
-        </span>
 
-        <span showhide="team, capshow">
-          <div if="front2" id="front2-ribbon" name="front2-ribbon" ></div>  
-          <button id="front2" class="posInput" swapper="formation" na+me="front2" ></button>
-        </span>
+          <article id="repeaterPlugin">
+            <h2>3. Table - table plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
 
-        <span showhide="team, capshow">
-          <div if="front3" id="front3-ribbon" name="front3-ribbon" ></div>  
-          <button id="front3" showhide="team, capshow" class="posInput" swapper="formation" name="front3" ></button>
-        </span>
+                        &lt;div class="data" >
+                          &lt;div click="sortNo">&lt;strong>No.  &lt;/strong> &lt;/div>
+                          &lt;div click="sortName">&lt;strong>Name&lt;/strong>&lt;/div>
+                          &lt;div click="sortCounty">&lt;strong>County&lt;/strong>&lt;/div>
+                          &lt;div click="sort2001" >&lt;strong>Census 2001-04-29&lt;/strong>&lt;/div>
+                          &lt;div click="sort2011" >&lt;strong>Census 2011-03-27&lt;/strong>&lt;/div>
+                          &lt;div click="sort2018" >&lt;strong>Estimate 2018-06-30&lt;/strong>&lt;/div>
+                        &lt;/div>
+                        &lt;div class="table-content">
+                            &lt;div class="data" table="pops">
+                              &lt;div place="$index">&lt;/div>
+                              &lt;div place="Name">&lt;/div>
+                              &lt;div place="County">&lt;/div>
+                              &lt;div place="Census 2001-04-29">&lt;/div>
+                              &lt;div place="Census 2011-03-27">&lt;/div>
+                              &lt;div place="Estimate 2018-06-30">&lt;/div>
+                            &lt;/div>
+                        &lt;/div>
+
+
+                        &lt;script type='module'>
+
+                            import { go, tools } from "./dist/index.js";
+                            import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
+                            import data from "./data.js";
+
+                            const setupData = () => {
+                              const pops = data();
+                              return pops.map(list => {
+                                return {
+                                  "Name": list[0],
+                                  "County": list[1],
+                                  "Census 2001-04-29": list[2],
+                                  "Census 2011-03-27": list[3],
+                                  "Estimate 2018-06-30": list[4]
+                                };
+                              });
+                            };
+                            addSetup("pops",setupData);
+                            
+                            go(tablePlugin);
+
+                        &lt;/script>
+
+                      </pre>
+                  </code>
+                </div>
+                <div class="repeat">
+                    <div class="data" >
+                      <div click="sortNo"><strong>No.&nbsp;&nbsp;&nbsp;</strong> </div>
+                      <div click="sortName"><strong>Name</strong></div>
+                      <div click="sortCounty"><strong>County</strong></div>
+                      <div click="sort2001" class="text-end"><strong>Census 2001-04-29</strong></div>
+                      <div click="sort2011" class="text-end"><strong>Census 2011-03-27</strong></div>
+                      <div click="sort2018" class="text-end"><strong>Estimate 2018-06-30</strong></div>
+                    </div>
+                    <div class="table-content">
+                        <div class="data" table="pops">
+                          <div place="$index"></div>
+                          <div place="Name"></div>
+                          <div place="County"></div>
+                          <div class="text-end" place="Census 2001-04-29"></div>
+                          <div class="text-end" place="Census 2011-03-27"></div>
+                          <div class="text-end" place="Estimate 2018-06-30"></div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+
+
+          <article id="clickPlugin">
+            <h2>4. A little more - click plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
+                        &lt;body>
+                            &lt;span>
+                            I can dance for &lt;span name='danceFor' >&lt;/span> hours
+                            &lt;/span>
         
-        <span showhide="team, capshow">
-          <div if="front4" id="front4-ribbon" name="front4-ribbon" ></div>  
-          <button id="front4" showhide="team, capshow" class="posInput" swapper="formation" name="front4" ></button>
-        </span>
-        
-        <span showhide="team, capshow">
-          <div if="front5" id="front5-ribbon" name="front5-ribbon" ></div>  
-          <button id="front5" showhide="team, capshow" class="posInput" swapper="formation" name="front5" ></button>
-        </span>
+                            &lt;button click='addHour' >Longer&lt;/button>
+                            &lt;button click='takeHour' >Less&lt;/button>
+                        &lt;/body>
+                        
+                        &lt;script type='module'>
 
-    
-        <span showhide="team, capshow">
-          <div name="mid1-ribbon" id="mid1-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="mid1"  ></button>
-        </span>
-        
-        <span showhide="team, capshow">
-          <div name="mid2-ribbon" id="mid2-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="mid2"   ></button>
-        </span>
-        
-        <span showhide="team, capshow">
-          <div name="mid3-ribbon" id="mid3-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="mid3"   ></button>
-        </span>
-        
-        <span showhide="team, capshow">
-          <div name="mid4-ribbon" id="mid4-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="mid4"   ></button>
-        </span>
-        
-        <span showhide="team, capshow">
-          <div name="mid5-ribbon" id="mid5-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="mid5"   ></button>
-        </span>
-        
+                            import { go, tools } from "./dist/index.js";
+                            import { clickPlugin, addClickFunction } from "./dist/plugins/clickPlugin.js";
+                        
+                            go(clickPlugin);
 
+                            tools.setByName("danceFor", 0);
 
-        <span showhide="team, capshow">
-          <div name="back1-ribbon" id="back1-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="back1"  ></button>
-        </span>
-        
-        <span showhide="team, capshow">
-          <div name="back2-ribbon" id="back2-ribbon"></div>  
-          <button showhide="team, capshow" class="posInput" swapper="formation" name="back2"  ></button>
-        </span>
-        
-          <span showhide="team, capshow">
-              <div name="back3-ribbon" id="back3-ribbon"></div>  
-              <button showhide="team, capshow" class="posInput" swapper="formation" name="back3"  ></button>
-          </span>
-        
-          <span showhide="team, capshow">
-              <div name="back4-ribbon" id="back4-ribbon"></div>  
-              <button showhide="team, capshow" class="posInput" swapper="formation" name="back4"  ></button>
-          </span>
-        
-          <span showhide="team, capshow">
-              <div name="back5-ribbon" id="back5-ribbon"></div>  
-              <button showhide="team, capshow" class="posInput" swapper="formation" name="back5"  ></button>
-          </span>
+                            const changeHours = amount => {
+                              const hours = parseInt(tools.getByName("danceFor"));
+                              tools.setByName("danceFor", hours+amount);
+                            }
+                            addClickFunction("addHour",(tools, ev) => changeHours(1));
+                            addClickFunction("takeHour",(tools, ev) => changeHours(-1));
+                        
+                        &lt;/script>
+                    </pre>
+                  </code>
 
-            <input showhide="team" class="posInput hide" name="front1" ></input>
-            <input showhide="team" class="posInput hide" name="front2"  ></input>
-            <input showhide="team" class="posInput hide" name="front3" ></input>
-            <input showhide="team" class="posInput hide" name="front4" ></input>
-            <input showhide="team" class="posInput hide" name="front5" ></input>
-            <input showhide="team" class="posInput hide" name="mid1"   ></input>
-            <input showhide="team" class="posInput hide" name="mid2"   ></input>
-            <input showhide="team" class="posInput hide" name="mid3"   ></input>
-            <input showhide="team" class="posInput hide" name="mid4"   ></input>
-            <input showhide="team" class="posInput hide" name="mid5"   ></input>
-            <input showhide="team" class="posInput hide" name="back1" ></input>
-            <input showhide="team" class="posInput hide" name="back2" ></input>
-            <input showhide="team" class="posInput hide" name="back3" ></input>
-            <input showhide="team" class="posInput hide" name="back4" ></input>
-            <input showhide="team" class="posInput hide" name="back5" ></input>
+                </div>
+                <div>
+                  <span>
+                    I can dance for <span name='danceFor' ></span> hours
+                  </span>
+                  <br>
+                  <br>
+                  <button click='takeHour'>Less</button>
+                  <button click='addHour'>Longer</button>
+                </div>
+              </div>
+            </div>
+          </article>
 
-            <div></div>
-            <div></div>
-            <input showhide="team" class="posInput hide" name="goalie" id="goalie"></input>
-            <button showhide="team" class="posInput" swapper="formation" name="goalie" id="d-goalie"></button>
-            <div dis="bang" class="posInput" swapper="formation" name="goalie" id="goalie"></div>
-            <div></div>
-            <div></div>
-    </div>
-      <div class="sub">BENCH</div>
-        <div class="bench" >
-          <button swapper="formation" name="bench1" ></button>
-          <button swapper="formation" name="bench2" ></button>
-          <button swapper="formation" name="bench3" ></button>
-          <button swapper="formation" name="bench4" ></button>
-          <button swapper="formation" name="bench5" ></button>
-        </div>
-      </div>
-    </div>
-    <div class="results">
-      <div class="sub">Time</div>
-      <div class="sub">Event</div>
-    </div>
-    <div id="results"></div>
-    <button class="finished" name="finished" id="finished">Final Whistle</button>
-  </body>
-  <script type="module" src="./tester.js"></script>
+          <nav>
+                <a href="#simple">Simple Start</a>
+              <br />
+          </nav>
+        </section>
 
-</html>
+      </main>
+      <footer>&copy; Alien Poop 2020 &nbsp;&nbsp;</footer>
+    </body>
+    <script type="module" src="./main.js"></script>
+    </html>
+  
