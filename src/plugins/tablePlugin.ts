@@ -5,6 +5,15 @@ let binder: BinderTools;
 const done = Array<String>();
 
 const setupFuncs = new Map<string, Function>();
+const sortFuncs = new Map<string, Function>();
+const tables = new Map<string, TableData>();
+interface TableData {
+  div: Element;
+  name: string;
+  template: string;
+  mapList: any[];
+  save: boolean;
+}
 
 const getSetupData = (name: string): Array<any> => {
   const fn = setupFuncs.get(name);
@@ -39,6 +48,16 @@ export const addSetup = (name: string, setupFn: Function) => {
   setupFuncs.set(name, setupFn);
 };
 
+export const addSort = (name: string, sortFn: Function) => {
+  const tableData: TableData | undefined = tables.get(name);
+  sortFuncs.set(name, sortFn);
+  if (tableData != undefined){
+    tableData.save = true;
+    processData(tableData);
+  }
+};
+
+
 export const tablePlugin: BinderPlugin = (tools: BinderTools) => {
   binder = tools;
   console.log("** Table plugin **");
@@ -53,14 +72,14 @@ export const tablePlugin: BinderPlugin = (tools: BinderTools) => {
         console.error("TABLE: No worker, what old browser are you using!?!");
         return false;
       }
-      kickoffWorker(binder, name, div);
+      const data = generateData(binder, name, div);
+      processData(data);
       return true;
     },
   };
 };
 
-const kickoffWorker = (binder: BinderTools, name: string, div: Element) => {
-  const tableWorker = new Worker("./dist/plugins/tablePluginWorker.js");
+const generateData = (binder: BinderTools, name: string, div: Element):TableData => {
   //const tableWorker = new Worker("./tablePluginWorker.js");
   const children = Array.prototype.slice.call(div.children);
   const templateRows = children.map((child) => child.outerHTML);
@@ -68,15 +87,27 @@ const kickoffWorker = (binder: BinderTools, name: string, div: Element) => {
 
   const setupData = getSetupData(name);
   const storedData = getStoredData(name, binder);
-  const mapList = storedData.length > 0 ? storedData : setupData;
+  const mapList: any[] = storedData.length > 0 ? storedData : setupData;
   const save = storedData.length === 0;
 
-  const data = [name, template, mapList];
+  return {name, div, template, mapList, save};
+}
 
-  tableWorker.postMessage(data);
+const processData = (data:TableData) =>{
+  const tableWorker = new Worker("./dist/plugins/tablePluginWorker.js");
+  //const tableWorker = new Worker("./tablePluginWorker.js");
+  const sortFn = sortFuncs.get(data.name);
+  if (sortFn){
+    data.mapList = data.mapList.sort((a,b)=> sortFn(a,b));
+  }
+
+  tables.set(data.name, data);
+
+  const workerData = [name, data.template, data.mapList];
+  tableWorker.postMessage(workerData);
 
   tableWorker.onmessage = (mess) => {
-    populateTemplate(name, mess, div, save);
+    populateTemplate(name, mess, data.div, data.save);
   };
 };
 

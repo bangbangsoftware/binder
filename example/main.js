@@ -15,7 +15,18 @@ import data from "./data.js";
 console.log("Demo Page ");
 
 
-// 4.  table - table plugin
+// 3.  repeater - repeater plugin
+const setupHeader = () => {
+  const headers = [
+    "No.",
+    "Name",
+    "Type",
+    "Census 2001-04-29",
+    "Census 2011-03-27",
+    "Estimate 2018-06-30"
+  ];
+  return headers;
+};
 const setupData = () => {
   const pops = data();
   return pops.map(list => {
@@ -28,6 +39,7 @@ const setupData = () => {
     };
   });
 };
+addSetup("headers",setupHeader);
 addSetup("pops",setupData);
 
 
@@ -41,21 +53,8 @@ const clearSport = (tools, ev) => {
 addClickFunction("clearSport", clearSport);
 
 
-// 3. A little more - click plugin
-const changeHours = amount => {
-  const hours = parseInt(tools.getByName("danceFor"));
-  const calculate = hours + amount;
-  const result = calculate < 0 ? 0 : calculate;
-  tools.setByName("danceFor", result);
-};
 
-addClickFunction("addHour", (tools, ev) => changeHours(1));
-addClickFunction("takeHour", (tools, ev) => changeHours(-1));
-
-tools.setByName("danceFor", 0);
-
-
-// 4. table - extra
+// 3. table - extra
 const sorter = (field, fn) => direction => (a,b) =>{
   const first = fn(a[field]);
   const sec = fn(b[field]);
@@ -79,3 +78,19 @@ const sort = (tools, ev) =>{
 };
 
 addClickFunction("sorter", sort);
+
+
+
+// 4. A little more - click plugin
+const changeHours = amount => {
+  const hours = parseInt(tools.getByName("danceFor"));
+  const calculate = hours + amount;
+  const result = calculate < 0 ? 0 : calculate;
+  tools.setByName("danceFor", result);
+};
+
+addClickFunction("addHour", (tools, ev) => changeHours(1));
+addClickFunction("takeHour", (tools, ev) => changeHours(-1));
+
+tools.setByName("danceFor", 0);
+

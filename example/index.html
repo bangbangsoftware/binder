@@ -79,90 +79,8 @@
             </div>
           </article>
 
-
-          <article id="repeaterPlugin">
-            <h2>3. Table - table plugin</h2>
-  
-            <div class="codegrid">
-                <div>
-                  <code> 
-                      <pre class="code">
-
-                        &lt;div class="data" >
-                          &lt;div click="sortNo">&lt;strong>No.  &lt;/strong> &lt;/div>
-                          &lt;div click="sortName">&lt;strong>Name&lt;/strong>&lt;/div>
-                          &lt;div click="sortCounty">&lt;strong>County&lt;/strong>&lt;/div>
-                          &lt;div click="sort2001" >&lt;strong>Census 2001-04-29&lt;/strong>&lt;/div>
-                          &lt;div click="sort2011" >&lt;strong>Census 2011-03-27&lt;/strong>&lt;/div>
-                          &lt;div click="sort2018" >&lt;strong>Estimate 2018-06-30&lt;/strong>&lt;/div>
-                        &lt;/div>
-                        &lt;div class="table-content">
-                            &lt;div class="data" table="pops">
-                              &lt;div place="$index">&lt;/div>
-                              &lt;div place="Name">&lt;/div>
-                              &lt;div place="County">&lt;/div>
-                              &lt;div place="Census 2001-04-29">&lt;/div>
-                              &lt;div place="Census 2011-03-27">&lt;/div>
-                              &lt;div place="Estimate 2018-06-30">&lt;/div>
-                            &lt;/div>
-                        &lt;/div>
-
-
-                        &lt;script type='module'>
-
-                            import { go, tools } from "./dist/index.js";
-                            import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
-                            import data from "./data.js";
-
-                            const setupData = () => {
-                              const pops = data();
-                              return pops.map(list => {
-                                return {
-                                  "Name": list[0],
-                                  "County": list[1],
-                                  "Census 2001-04-29": list[2],
-                                  "Census 2011-03-27": list[3],
-                                  "Estimate 2018-06-30": list[4]
-                                };
-                              });
-                            };
-                            addSetup("pops",setupData);
-                            
-                            go(tablePlugin);
-
-                        &lt;/script>
-
-                      </pre>
-                  </code>
-                </div>
-                <div class="repeat">
-                    <div class="data" >
-                      <div click="sortNo"><strong>No.&nbsp;&nbsp;&nbsp;</strong> </div>
-                      <div click="sortName"><strong>Name</strong></div>
-                      <div click="sortCounty"><strong>County</strong></div>
-                      <div click="sort2001" class="text-end"><strong>Census 2001-04-29</strong></div>
-                      <div click="sort2011" class="text-end"><strong>Census 2011-03-27</strong></div>
-                      <div click="sort2018" class="text-end"><strong>Estimate 2018-06-30</strong></div>
-                    </div>
-                    <div class="table-content">
-                        <div class="data" table="pops">
-                          <div place="$index"></div>
-                          <div place="Name"></div>
-                          <div place="County"></div>
-                          <div class="text-end" place="Census 2001-04-29"></div>
-                          <div class="text-end" place="Census 2011-03-27"></div>
-                          <div class="text-end" place="Estimate 2018-06-30"></div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-
-
           <article id="clickPlugin">
-            <h2>4. A little more - click plugin</h2>
+            <h2>3. A little more - click plugin</h2>
   
             <div class="codegrid">
                 <div>
@@ -210,6 +128,89 @@
               </div>
             </div>
           </article>
+
+
+          <article id="repeaterPlugin">
+            <h2>4. Table - table plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
+
+                        &lt;div class="data" >
+                          &lt;div click="sortNo">&lt;strong click="sorter">No.  &lt;/strong click="sorter"> &lt;/div>
+                          &lt;div click="sortName">&lt;strong click="sorter">Name&lt;/strong click="sorter">&lt;/div>
+                          &lt;div click="sortCounty">&lt;strong click="sorter">County&lt;/strong click="sorter">&lt;/div>
+                          &lt;div click="sort2001" >&lt;strong click="sorter">Census 2001-04-29&lt;/strong click="sorter">&lt;/div>
+                          &lt;div click="sort2011" >&lt;strong click="sorter">Census 2011-03-27&lt;/strong click="sorter">&lt;/div>
+                          &lt;div click="sort2018" >&lt;strong click="sorter">Estimate 2018-06-30&lt;/strong click="sorter">&lt;/div>
+                        &lt;/div>
+                        &lt;div class="table-content">
+                            &lt;div class="data" table="pops">
+                              &lt;div place="$index">&lt;/div>
+                              &lt;div place="Name">&lt;/div>
+                              &lt;div place="County">&lt;/div>
+                              &lt;div place="Census 2001-04-29">&lt;/div>
+                              &lt;div place="Census 2011-03-27">&lt;/div>
+                              &lt;div place="Estimate 2018-06-30">&lt;/div>
+                            &lt;/div>
+                        &lt;/div>
+
+
+                        &lt;script type='module'>
+
+                            import { go, tools } from "./dist/index.js";
+                            import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
+                            import data from "./data.js";
+
+                            const setupData = () => {
+                              const pops = data();
+                              return pops.map(list => {
+                                return {
+                                  "Name": list[0],
+                                  "County": list[1],
+                                  "Census 2001-04-29": list[2],
+                                  "Census 2011-03-27": list[3],
+                                  "Estimate 2018-06-30": list[4]
+                                };
+                              });
+                            };
+                            addSetup("pops",setupData);
+                            
+                            go(tablePlugin);
+
+                        &lt;/script>
+
+                      </pre>
+                  </code>
+                </div>
+                <div class="repeat">
+                    <div class="data" >
+                      <div ><strong click="sorter">No.&nbsp;&nbsp;&nbsp;</strong> </div>
+                      <div ><strong click="sorter">Name</strong></div>
+                      <div ><strong click="sorter">County</strong></div>
+                      <div  class="text-end"><strong click="sorter">Census 2001-04-29</strong></div>
+                      <div  class="text-end"><strong click="sorter">Census 2011-03-27</strong></div>
+                      <div  class="text-end"><strong click="sorter">Estimate 2018-06-30</strong></div>
+                    </div>
+                    <div class="table-content">
+                        <div class="data" table="pops">
+                          <div place="$index"></div>
+                          <div place="Name"></div>
+                          <div place="County"></div>
+                          <div class="text-end" place="Census 2001-04-29"></div>
+                          <div class="text-end" place="Census 2011-03-27"></div>
+                          <div class="text-end" place="Estimate 2018-06-30"></div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+
+
 
           <nav>
                 <a href="#simple">Simple Start</a>

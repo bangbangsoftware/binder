@@ -1,6 +1,8 @@
 let binder;
 const done = Array();
 const setupFuncs = new Map();
+const sortFuncs = new Map();
+const tables = new Map();
 const getSetupData = (name) => {
     const fn = setupFuncs.get(name);
     return fn === undefined ? [] : fn();
@@ -31,6 +33,14 @@ const getStoredData = (name, binder) => {
 export const addSetup = (name, setupFn) => {
     setupFuncs.set(name, setupFn);
 };
+export const addSort = (name, sortFn) => {
+    const tableData = tables.get(name);
+    sortFuncs.set(name, sortFn);
+    if (tableData != undefined) {
+        tableData.save = true;
+        processData(tableData);
+    }
+};
 export const tablePlugin = (tools) => {
     binder = tools;
     console.log("** Table plugin **");
@@ -45,13 +55,13 @@ export const tablePlugin = (tools) => {
                 console.error("TABLE: No worker, what old browser are you using!?!");
                 return false;
             }
-            kickoffWorker(binder, name, div);
+            const data = generateData(binder, name, div);
+            processData(data);
             return true;
         },
     };
 };
-const kickoffWorker = (binder, name, div) => {
-    const tableWorker = new Worker("./dist/plugins/tablePluginWorker.js");
+const generateData = (binder, name, div) => {
     //const tableWorker = new Worker("./tablePluginWorker.js");
     const children = Array.prototype.slice.call(div.children);
     const templateRows = children.map((child) => child.outerHTML);
@@ -60,10 +70,20 @@ const kickoffWorker = (binder, name, div) => {
     const storedData = getStoredData(name, binder);
     const mapList = storedData.length > 0 ? storedData : setupData;
     const save = storedData.length === 0;
-    const data = [name, template, mapList];
-    tableWorker.postMessage(data);
+    return { name, div, template, mapList, save };
+};
+const processData = (data) => {
+    const tableWorker = new Worker("./dist/plugins/tablePluginWorker.js");
+    //const tableWorker = new Worker("./tablePluginWorker.js");
+    const sortFn = sortFuncs.get(data.name);
+    if (sortFn) {
+        data.mapList = data.mapList.sort((a, b) => sortFn(a, b));
+    }
+    tables.set(data.name, data);
+    const workerData = [name, data.template, data.mapList];
+    tableWorker.postMessage(workerData);
     tableWorker.onmessage = (mess) => {
-        populateTemplate(name, mess, div, save);
+        populateTemplate(name, mess, data.div, data.save);
     };
 };
 const populateTemplate = (name, workerData, div, save) => {
