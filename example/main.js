@@ -70,7 +70,10 @@ const sorter = (field, fn) => direction => (a,b) =>{
 let direction = 1;
 const sort = (tools, ev) =>{
   console.log("sort ",ev);
-  const est = sorter("Estimate 2018-06-30", s => (parseInt(s)));
+  const field = ev.target.textContent;
+  const number = field.indexOf("-") > -1;
+  const parseFn = number ? (s => (parseInt(s))) : s => s;
+  const est = sorter(ev.target.textContent, parseFn);
   direction = direction * -1;
   console.log("direction ",direction);
   const fn = est(direction);

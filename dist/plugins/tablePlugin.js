@@ -80,7 +80,7 @@ const processData = (data) => {
         data.mapList = data.mapList.sort((a, b) => sortFn(a, b));
     }
     tables.set(data.name, data);
-    const workerData = [name, data.template, data.mapList];
+    const workerData = [data.name, data.template, data.mapList];
     tableWorker.postMessage(workerData);
     tableWorker.onmessage = (mess) => {
         populateTemplate(name, mess, data.div, data.save);

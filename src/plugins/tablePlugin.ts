@@ -103,7 +103,7 @@ const processData = (data:TableData) =>{
 
   tables.set(data.name, data);
 
-  const workerData = [name, data.template, data.mapList];
+  const workerData = [data.name, data.template, data.mapList];
   tableWorker.postMessage(workerData);
 
   tableWorker.onmessage = (mess) => {
