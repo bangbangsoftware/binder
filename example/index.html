@@ -79,8 +79,52 @@
             </div>
           </article>
 
+          <article id="hideshowPlugin">
+            <h2>3. Hide / Show Plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
+                        &lt;button class="swap" showhide-trigger="peekaboo">Hide / show&lt;/button>
+                        &lt;div name="hider" showhide="peekaboo">PEEK-A-BOO&lt;/div>
+                       </pre>
+                  </code>
+
+                </div>
+                <div class="swapgrid">
+                  <div><button class="swap" showhide-trigger="peekaboo">Hide / show</button>
+                  <div name="hider" class="hide" showhide="peekaboo">PEEK-A-BOO</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article id="swapperPlugin">
+            <h2>3. Swapper Plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
+                        &lt;button class="swap" name='weather' swapper="sporther"></button>
+                        &lt;button class="swap" name='sport' swapper="sporther"></button>
+                        &lt;button class="swap" name='third' swapper="sporther"></button>
+                      </pre>
+                  </code>
+
+                </div>
+                <div class="swapgrid">
+                  <div>1. Weather </div><button class="swap" name='weather' swapper="sporther"></button>
+                  <div>2. Sport   </div><button class="swap" name='sport' swapper="sporther"></button>
+                  <div>3. Blanker </div><button class="swap" name='third' swapper="sporther"></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
           <article id="clickPlugin">
-            <h2>3. A little more - click plugin</h2>
+            <h2>4. A little more - click plugin</h2>
   
             <div class="codegrid">
                 <div>
@@ -131,7 +175,7 @@
 
 
           <article id="repeaterPlugin">
-            <h2>4. Table - table plugin</h2>
+            <h2>5. Table - table plugin</h2>
   
             <div class="codegrid">
                 <div>
@@ -164,6 +208,8 @@
                             import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
                             import data from "./data.js";
 
+                            go(tablePlugin);
+
                             const setupData = () => {
                               const pops = data();
                               return pops.map(list => {
@@ -178,7 +224,6 @@
                             };
                             addSetup("pops",setupData);
                             
-                            go(tablePlugin);
 
                         &lt;/script>
 
@@ -196,13 +241,19 @@
                     </div>
                     <div class="table-content">
                         <div class="data" table="pops">
-                          <div place="$index"></div>
+                          <div click="take" place="$index"></div>
                           <div place="Name"></div>
-                          <div place="County"></div>
+                          <div click="county" place="County"></div>
                           <div class="text-end" place="Census 2001-04-29"></div>
                           <div class="text-end" place="Census 2011-03-27"></div>
                           <div class="text-end" place="Estimate 2018-06-30"></div>
                         </div>
+                    </div>
+                    <div class="right">
+                      <br>
+                      <br>
+                      <button class="fadey" click='addTown'>Add Town</button>
+                      <button class="fadey" click='takeTop'>Take top</button>
                     </div>
                 </div>
               </div>

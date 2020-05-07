@@ -1,9 +1,9 @@
 export interface ToolGet {
-  (key:string): RegEntry;
+  (key: string): RegEntry;
 }
 
 export interface ValueGet {
-  (key:string): string;
+  (key: string): string;
 }
 
 export interface ToolPut {
@@ -15,11 +15,15 @@ export interface ToolPuts {
 }
 
 export interface ToolGetValue {
-  (element: Element):string| null;
+  (element: Element): string | null;
 }
 
 export interface ToolSetValue {
   (element: Element, value: String);
+}
+
+export interface ClickFunction {
+  (e: Event, tools: BinderTools): void;
 }
 
 export interface ToolSetName {
@@ -27,7 +31,7 @@ export interface ToolSetName {
 }
 
 export interface ClickListener {
-  (element: Element, fn: Function, modes?:Array<string>);
+  (element: Element, fn: Function, modes?: Array<string>);
 }
 
 export interface StateListener {
@@ -35,11 +39,11 @@ export interface StateListener {
 }
 
 export interface Checker {
-  (element: HTMLElement)
+  (element: HTMLElement);
 }
 
 export interface IDFixer {
-  (element: HTMLElement, name: string): HTMLElement
+  (element: HTMLElement, name: string): HTMLElement;
 }
 
 export interface BinderTools {
@@ -50,7 +54,7 @@ export interface BinderTools {
   setValue: ToolSetValue;
   setByName: ToolSetName;
   clickListener: ClickListener;
-  stateListener: StateListener; 
+  stateListener: StateListener;
   fixID: IDFixer;
   getByName: ValueGet;
 }
@@ -60,8 +64,8 @@ export interface BinderPlugin {
 }
 
 export interface BinderPluginLogic {
-  attributes: Array<string>, 
-  process: BinderPluginProcessor
+  attributes: Array<string>;
+  process: BinderPluginProcessor;
 }
 
 export interface BinderPluginProcessor {

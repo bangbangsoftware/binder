@@ -1,0 +1,6 @@
+{
+    "zenMode.centerLayout": false,
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true,
+    "files.autoSaveDelay": 5000
+}

@@ -1,11 +1,9 @@
 let binder;
 const done = Array();
-const setupFuncs = new Map();
 const sortFuncs = new Map();
 const tables = new Map();
-const getSetupData = (name) => {
-    const fn = setupFuncs.get(name);
-    return fn === undefined ? [] : fn();
+const next = (name, keys, row) => {
+    return name + "-" + keys[0] + "-" + row;
 };
 const getStoredData = (name, binder) => {
     const keysJSON = binder.getByName(name + "-table-keys");
@@ -19,19 +17,57 @@ const getStoredData = (name, binder) => {
     }
     const dataMap = Array();
     let rowInt = 0;
-    while (binder.getByName(keys[0] + "-" + rowInt)) {
-        const row = keys.map((key) => {
-            const col = {};
-            col[key] = binder.getByName(key + "-" + rowInt);
-            return col;
+    while (binder.getByName(next(name, keys, rowInt))) {
+        const row = {};
+        keys.forEach((key) => {
+            row[key] = binder.getByName(name + "-" + key + "-" + rowInt);
         });
         dataMap.push(row);
         rowInt++;
     }
     return dataMap;
 };
-export const addSetup = (name, setupFn) => {
-    setupFuncs.set(name, setupFn);
+export const addSetup = (name, setupData) => {
+    if (setupData == undefined) {
+        return;
+    }
+    const tableData = tables.get(name);
+    const storedData = getStoredData(name, binder);
+    const mapList = storedData.length > 0 ? storedData : setupData;
+    if (tableData != undefined) {
+        tableData.mapList = mapList;
+        processData(tableData);
+    }
+};
+export const addRow = (name, rowData) => {
+    if (rowData == undefined) {
+        return;
+    }
+    const tableData = tables.get(name);
+    if (tableData != undefined) {
+        tableData.mapList.push(rowData);
+        processData(tableData);
+    }
+};
+export const takeRow = (name, index) => {
+    if (index < 0) {
+        return;
+    }
+    const tableData = tables.get(name);
+    if (tableData != undefined && tableData.mapList.length - 1 > index) {
+        delete tableData.mapList[index];
+        processData(tableData);
+    }
+};
+export const overWrite = (name, setupData) => {
+    if (setupData == undefined) {
+        return;
+    }
+    const tableData = tables.get(name);
+    if (tableData != undefined) {
+        tableData.mapList = setupData;
+        processData(tableData);
+    }
 };
 export const addSort = (name, sortFn) => {
     const tableData = tables.get(name);
@@ -66,9 +102,8 @@ const generateData = (binder, name, div) => {
     const children = Array.prototype.slice.call(div.children);
     const templateRows = children.map((child) => child.outerHTML);
     const template = templateRows.join("\n");
-    const setupData = getSetupData(name);
     const storedData = getStoredData(name, binder);
-    const mapList = storedData.length > 0 ? storedData : setupData;
+    const mapList = storedData.length > 0 ? storedData : [];
     const save = storedData.length === 0;
     return { name, div, template, mapList, save };
 };
@@ -83,7 +118,7 @@ const processData = (data) => {
     const workerData = [data.name, data.template, data.mapList];
     tableWorker.postMessage(workerData);
     tableWorker.onmessage = (mess) => {
-        populateTemplate(name, mess, data.div, data.save);
+        populateTemplate(data.name, mess, data.div, data.save);
     };
 };
 const populateTemplate = (name, workerData, div, save) => {

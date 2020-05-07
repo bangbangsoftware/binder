@@ -3,13 +3,17 @@ import {
   RegEntry,
   BinderTools,
   BinderPluginLogic,
+  ClickFunction,
 } from "./binderTypes";
 
+// yuk so much state....
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
 const listeners = new Map<string, Array<Function>>();
 const statelisteners = new Map<string, Array<Function>>();
-const clickers = new Map<string, Function>();
+const idClickers = new Map<string, Function>();
+const nameClickers = new Map<String, Function>();
+let plugins = new Array<BinderPluginLogic>();
 
 const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
@@ -38,8 +42,8 @@ export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
 export const getByName = (key: string): string => {
   const regEntry: RegEntry = get(key);
-  return regEntry == null? "" : regEntry.currentValue;
-}
+  return regEntry == null ? "" : regEntry.currentValue;
+};
 
 export const getValue = (element: HTMLElement): string => {
   if (isInput(element)) {
@@ -126,6 +130,55 @@ export const setByName = (fieldname: string, value: string) => {
   storage.setItem(dataKey, reg);
 };
 
+export const addClickFunction = (name: string, fn: ClickFunction) => {
+  console.log("Added click for ", name);
+  nameClickers.set(name, fn);
+};
+
+const generateRunner = (name: string) => (ev: Event) => {
+  const fn = nameClickers.get(name);
+  if (fn != null) {
+    fn(tools, ev);
+    return;
+  }
+
+  console.error("No click function for " + name);
+  console.error("Need to add some code like:");
+  console.error(
+    '%c import { go, tools, addClickFunction } from "./dist/index.js"; ',
+    "background: #222; color: #bada55"
+  );
+  console.error("");
+  console.error(
+    '%c addClickFunction("' + name + '", (tools, ev) => { ',
+    "background: #222; color: #bada55"
+  );
+  console.error(
+    '%c       alert("BOOOOM!"); ',
+    "background: #222; color: #bada55"
+  );
+  console.error("%c });", "background: #222; color: #bada55");
+};
+
+export const clickPlugin: BinderPluginLogic = {
+  attributes: ["click"],
+  process: (element: Element, clickFunctionName: string): boolean => {
+    console.log(
+      "Found click element ",
+      element,
+      " with function named ",
+      clickFunctionName
+    );
+    if (!clickFunctionName) {
+      console.error("No click function name defined ", element);
+      return false;
+    }
+    const runner = generateRunner(clickFunctionName);
+    clickListener(element, (ev: Event) => runner(ev));
+    return true;
+  },
+};
+
 export function putElements(
   elements: Array<HTMLElement>,
   values: Array<string>
@@ -146,10 +199,7 @@ export function putElements(
   storage.setItem(dataKey, reg);
 }
 
-const putElement = (
-  element: HTMLElement,
-  currentValue = getValue(element)
-) => {
+const putElement = (element: HTMLElement, currentValue = getValue(element)) => {
   const fieldname = getName(element);
   const data = updateEntry(fieldname, element, currentValue);
 
@@ -162,11 +212,10 @@ const updateEntry = (
   element: HTMLElement,
   currentValue: string
 ): RegEntry => {
-
   // get registry entry and update
   const storedEntry = get(fieldname);
   if (!storedEntry) {
-//    setValue(element, currentValue);
+    //    setValue(element, currentValue);
     const entry = {
       elements: [element],
       currentValue,
@@ -218,17 +267,26 @@ export function bagItAndTagIt(plugs = Array<BinderPlugin>(), key = "reg") {
   hide(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
   for (const field in registry) delete registry[field];
   setup();
-  const plugins = plugs.map((setupPlugin) => setupPlugin(tools));
-  const everything = doc.querySelectorAll("*");
-  let results = new Array<Usage>();
-  everything.forEach((element: HTMLElement) => {
-    results = registerAll(element, plugins, results);
-  });
+  const everything: NodeListOf<HTMLElement> = doc.querySelectorAll("*");
+  plugins = plugs.map((setupPlugin) => setupPlugin(tools));
+  plugins.push(clickPlugin);
+
+  const results = registerElements(everything);
   console.log("Detected.....");
   results.forEach((result) => console.log(result.name + " - " + result.qty));
   console.log(".............");
   show(<HTMLElement>doc.getElementsByTagName("BODY")[0]);
 }
+
+const registerElements = (
+  everything: NodeListOf<HTMLElement>
+): Array<Usage> => {
+  let results = new Array<Usage>();
+  everything.forEach((element: HTMLElement) => {
+    results = registerAll(element, results);
+  });
+  return results;
+};
 
 export const setMode = (newMode: string): string => {
   const oldMode = mode + "";
@@ -243,15 +301,15 @@ export const getMode = (): string => {
 const clickListener = (e: Element, fn: Function, modes: Array<string> = []) => {
   const changed = (e: Element) => fn(e);
   childIDs(e)
-    .filter((id) => !clickers.has(id))
-    .forEach((id) => clickers.set(id, changed));
+    .filter((id) => !idClickers.has(id))
+    .forEach((id) => idClickers.set(id, changed));
 
   modes.forEach((modeInList) => {
     childIDs(e)
-      .filter((id) => !clickers.has(modeInList + "-" + id))
-      .forEach((id) => clickers.set(modeInList + "-" + id, changed));
+      .filter((id) => !idClickers.has(modeInList + "-" + id))
+      .forEach((id) => idClickers.set(modeInList + "-" + id, changed));
   });
-  console.log("clickers", clickers);
+  console.log("clickers", idClickers);
 };
 
 const stateListener = (fieldID: string, fn: Function) => {
@@ -331,9 +389,14 @@ const react = (e: Event, mapper: Map<string, Function>) => {
   }
   const element = <Element>e.target;
   const id = element.id;
+  const clickName = element.getAttribute("click");
+
   const key = mode.length === 0 ? element.id : mode + "-" + element.id;
   const fn = mapper.get(key);
-  if (fn == null) {
+  if (fn != null) {
+    fn(e);
+  }
+  if (!clickName || clickName.length == 0) {
     console.error(
       "ACTION: " +
         key +
@@ -347,7 +410,7 @@ const react = (e: Event, mapper: Map<string, Function>) => {
     //    console.log(element);
     return;
   }
-  fn(e);
+  generateRunner(clickName)(e);
 };
 
 const listen = (field: Element, fn: Function) => {
@@ -367,7 +430,7 @@ const setupListener = () => {
   doc.addEventListener("onpaste", (e) => reactAll(e, listeners));
   doc.addEventListener("keyup", (e) => reactAll(e, listeners));
   doc.addEventListener("onin", (e) => reactAll(e, listeners));
-  doc.addEventListener("click", (e) => react(e, clickers));
+  doc.addEventListener("click", (e) => react(e, idClickers));
 
   doc.addEventListener("statechange", (e) => stateReact(e, statelisteners));
 };
@@ -428,24 +491,20 @@ const updateUsage = (
 
 const registerAll = (
   element: HTMLElement,
-  plugins = Array<BinderPluginLogic>(),
   usage: Array<Usage>
 ): Array<Usage> => {
   if (element == null) {
     return usage;
   }
 
-  const pluginsForElement: Array<BinderPluginLogic> = register(
-    element,
-    plugins
-  );
+  const pluginsForElement: Array<BinderPluginLogic> = register(element);
   usage = updateUsage(usage, pluginsForElement);
 
   // recurrsive calls....
   for (var i = 0, max = element.childNodes.length; i < max; i++) {
     const node = element.childNodes[i];
     if (node instanceof HTMLElement) {
-      return registerAll(node, plugins, usage);
+      return registerAll(node, usage);
     }
   }
   return usage;
@@ -467,10 +526,7 @@ const getPlugins = (
   return plugins.filter((plugin) => hasAttribute(plugin, element));
 };
 
-const register = (
-  element: HTMLElement,
-  plugins = Array<BinderPluginLogic>()
-): Array<BinderPluginLogic> => {
+const register = (element: HTMLElement): Array<BinderPluginLogic> => {
   const name = getName(element);
   if (name) {
     fixID(element, name);

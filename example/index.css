@@ -25,7 +25,7 @@ footer {
   text-align: end;
 }
 
-.bolder { 
+.bolder {
   font-weight: bold;
 }
 
@@ -37,6 +37,30 @@ footer {
 
 .data .scroller {
   height: 1200px;
+}
+
+.swap-selected {
+  background-color: red;
+}
+
+.right {
+  text-align: right;
+}
+
+.fadey {
+  opacity: 0.7;
+  border: 0;
+}
+
+.swap {
+  min-width: 100px;
+  min-height: 25px;
+  max-width: 200px;
+}
+
+.swapgrid {
+  display: grid;
+  grid-template-columns: 1fr 11fr;
 }
 
 .top-container {

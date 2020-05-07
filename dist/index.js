@@ -7,11 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+// yuk so much state....
 const namesDone = new Array();
 const pluginsDone = new Array();
 const listeners = new Map();
 const statelisteners = new Map();
-const clickers = new Map();
+const idClickers = new Map();
+const nameClickers = new Map();
+let plugins = new Array();
 const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
 // Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
@@ -101,6 +104,37 @@ export const setByName = (fieldname, value) => {
     const reg = JSON.stringify(keyvalue);
     storage.setItem(dataKey, reg);
 };
+export const addClickFunction = (name, fn) => {
+    console.log("Added click for ", name);
+    nameClickers.set(name, fn);
+};
+const generateRunner = (name) => (ev) => {
+    const fn = nameClickers.get(name);
+    if (fn != null) {
+        fn(tools, ev);
+        return;
+    }
+    console.error("No click function for " + name);
+    console.error("Need to add some code like:");
+    console.error('%c import { go, tools, addClickFunction } from "./dist/index.js"; ', "background: #222; color: #bada55");
+    console.error("");
+    console.error('%c addClickFunction("' + name + '", (tools, ev) => { ', "background: #222; color: #bada55");
+    console.error('%c       alert("BOOOOM!"); ', "background: #222; color: #bada55");
+    console.error("%c });", "background: #222; color: #bada55");
+};
+export const clickPlugin = {
+    attributes: ["click"],
+    process: (element, clickFunctionName) => {
+        console.log("Found click element ", element, " with function named ", clickFunctionName);
+        if (!clickFunctionName) {
+            console.error("No click function name defined ", element);
+            return false;
+        }
+        const runner = generateRunner(clickFunctionName);
+        clickListener(element, (ev) => runner(ev));
+        return true;
+    },
+};
 export function putElements(elements, values) {
     elements.forEach((element, index) => {
         try {
@@ -174,17 +208,22 @@ export function bagItAndTagIt(plugs = Array(), key = "reg") {
     for (const field in registry)
         delete registry[field];
     setup();
-    const plugins = plugs.map((setupPlugin) => setupPlugin(tools));
     const everything = doc.querySelectorAll("*");
-    let results = new Array();
-    everything.forEach((element) => {
-        results = registerAll(element, plugins, results);
-    });
+    plugins = plugs.map((setupPlugin) => setupPlugin(tools));
+    plugins.push(clickPlugin);
+    const results = registerElements(everything);
     console.log("Detected.....");
     results.forEach((result) => console.log(result.name + " - " + result.qty));
     console.log(".............");
     show(doc.getElementsByTagName("BODY")[0]);
 }
+const registerElements = (everything) => {
+    let results = new Array();
+    everything.forEach((element) => {
+        results = registerAll(element, results);
+    });
+    return results;
+};
 export const setMode = (newMode) => {
     const oldMode = mode + "";
     mode = newMode;
@@ -196,14 +235,14 @@ export const getMode = () => {
 const clickListener = (e, fn, modes = []) => {
     const changed = (e) => fn(e);
     childIDs(e)
-        .filter((id) => !clickers.has(id))
-        .forEach((id) => clickers.set(id, changed));
+        .filter((id) => !idClickers.has(id))
+        .forEach((id) => idClickers.set(id, changed));
     modes.forEach((modeInList) => {
         childIDs(e)
-            .filter((id) => !clickers.has(modeInList + "-" + id))
-            .forEach((id) => clickers.set(modeInList + "-" + id, changed));
+            .filter((id) => !idClickers.has(modeInList + "-" + id))
+            .forEach((id) => idClickers.set(modeInList + "-" + id, changed));
     });
-    console.log("clickers", clickers);
+    console.log("clickers", idClickers);
 };
 const stateListener = (fieldID, fn) => {
     const changed = (e) => fn(e);
@@ -271,9 +310,13 @@ const react = (e, mapper) => {
     }
     const element = e.target;
     const id = element.id;
+    const clickName = element.getAttribute("click");
     const key = mode.length === 0 ? element.id : mode + "-" + element.id;
     const fn = mapper.get(key);
-    if (fn == null) {
+    if (fn != null) {
+        fn(e);
+    }
+    if (!clickName || clickName.length == 0) {
         console.error("ACTION: " +
             key +
             " :: no action for '" +
@@ -285,7 +328,7 @@ const react = (e, mapper) => {
         //    console.log(element);
         return;
     }
-    fn(e);
+    generateRunner(clickName)(e);
 };
 const listen = (field, fn) => {
     const changed = (e) => fn(e);
@@ -302,7 +345,7 @@ const setupListener = () => {
     doc.addEventListener("onpaste", (e) => reactAll(e, listeners));
     doc.addEventListener("keyup", (e) => reactAll(e, listeners));
     doc.addEventListener("onin", (e) => reactAll(e, listeners));
-    doc.addEventListener("click", (e) => react(e, clickers));
+    doc.addEventListener("click", (e) => react(e, idClickers));
     doc.addEventListener("statechange", (e) => stateReact(e, statelisteners));
 };
 const childIDs = (element, ids = new Array()) => {
@@ -348,17 +391,17 @@ const updateUsage = (usage, pluginsForElement) => {
     });
     return usage;
 };
-const registerAll = (element, plugins = Array(), usage) => {
+const registerAll = (element, usage) => {
     if (element == null) {
         return usage;
     }
-    const pluginsForElement = register(element, plugins);
+    const pluginsForElement = register(element);
     usage = updateUsage(usage, pluginsForElement);
     // recurrsive calls....
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
         const node = element.childNodes[i];
         if (node instanceof HTMLElement) {
-            return registerAll(node, plugins, usage);
+            return registerAll(node, usage);
         }
     }
     return usage;
@@ -373,7 +416,7 @@ const hasAttribute = (plug, element) => {
 const getPlugins = (plugins, element) => {
     return plugins.filter((plugin) => hasAttribute(plugin, element));
 };
-const register = (element, plugins = Array()) => {
+const register = (element) => {
     const name = getName(element);
     if (name) {
         fixID(element, name);
