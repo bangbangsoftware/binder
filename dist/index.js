@@ -315,6 +315,7 @@ const react = (e, mapper) => {
     const fn = mapper.get(key);
     if (fn != null) {
         fn(e);
+        return;
     }
     if (!clickName || clickName.length == 0) {
         console.error("ACTION: " +
