@@ -8,17 +8,44 @@ import {
   addRow,
   takeRow,
 } from "./dist/plugins/tablePlugin.js";
-import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
+import { swapDataPlugin } from "./dist/plugins/swapDataPlugin.js";
 import { showHidePlugin } from "./dist/plugins/showhidePlugin.js";
-
+import { togglePlugin } from "./dist/plugins/togglePlugin.js";
 import { moverPlugin } from "./dist/plugins/moverPlugin.js";
+import { swapElementPlugin } from "./dist/plugins/swapElementPlugin.js";
 
 import data from "./data.js";
 
-console.log("Demo Page ");
+console.log(
+  "%cBinder Demo Page....",
+  "background: red; color: yellow; font-size: x-large"
+);
+
+/** 
+ * TODO
+ *
+ * From Binder... 
+
+import { bagItAndTagIt, put, get, setMode, getMode, tools } from "binder";   - TODO 
+import { togglePlugin } from "binder/dist/plugins/togglePlugin";                                 - DONE
+import { showHidePlugin } from "binder/dist/plugins/showhidePlugin";                             - DONE
+import { ifPlugin } from "binder/dist/plugins/ifPlugin";                                         - DONE
+import { swapPlugin, actionMover } from "binder/dist/plugins/swapPlugin.js"; - TODO (swapElement)
+11
+ *  change swapper to swapValue and swapElement
+ * 
+ */
 
 // Go!
-go([ifPlugin, moverPlugin, tablePlugin, swapperPlugin, showHidePlugin]);
+go([
+  ifPlugin,
+  moverPlugin,
+  tablePlugin,
+  swapDataPlugin,
+  showHidePlugin,
+  togglePlugin,
+  swapElementPlugin,
+]);
 
 // 1. Simple start - extra
 const clearSport = (tools, ev) => {

@@ -17,29 +17,21 @@
                   <code > <pre class="code">
                       &lt;body>
                           &lt;input name='sport' autofocus>&lt;/input>
-                          &lt;div name='sport' >&lt;/div>
+                          Your sport is &lt;span name='sport' >&lt;/span>
                       &lt;/body>
                       
-                      &lt;script type='module' src='../node_modules/binder/dist/go.js'>&lt;/script>
+                      &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
                       </pre>
                   </code>
                 </div>
-                <div>
-                    <br>
-                    <br>
+                <div class="mid-text">
                     Enter your favourite sport &emsp;
                     <input name='sport' autofocus></input>
-                  
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                  <br>
                     <span>
                         Your sport is <span name='sport' ></span>
                     </span>
-                    <br>
-                    <br>
-                    <button class="right" click="clearSport"> Clear sport</button>                
+                    <button class="right" click="clearSport">Clear sport</button>                
                 </div>
             </div>
             <p>Did you notice if you press <a href=".">refresh</a> this page the state stays, even works off line</p>
@@ -60,7 +52,7 @@
                           &lt;span name="weather"></span>
                         &lt;/label>
                               
-                        &lt;script type='module' src='../node_modules/binder/dist/go.js'>&lt;/script>
+                        &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
                       </pre>
                   </code>
 
@@ -71,7 +63,7 @@
                   </span>
                   <br>
                   <br>
-                  <label if="weather" >Weather has been entered
+                  <label class="mid-text" if="weather" >Weather has been entered
                     <span name="weather"></span>
                   </label>
                 </div>
@@ -92,39 +84,71 @@
                   </code>
 
                 </div>
-                <div class="swapgrid">
-                  <div><button class="swap" showhide-trigger="peekaboo">Hide / show</button>
-                  <div name="hider" class="hide" showhide="peekaboo">PEEK-A-BOO</div>
-                </div>
+                <div class="peekgrid">
+                  <button class="swap" showhide-trigger="peekaboo">Hide / show</button>
+                  <div name="hider" class="hide peek" showhide="peekaboo">PEEK-A-BOO</div>
               </div>
             </div>
           </article>
 
-          <article id="swapperPlugin">
-            <h2>3. Swapper Plugin</h2>
+          <article id="swapDataPlugin">
+            <h2>4. Swap data Plugin</h2>
   
             <div class="codegrid">
                 <div>
                   <code> 
                       <pre class="code">
-                        &lt;button class="swap" name='weather' swapper="sporther"></button>
-                        &lt;button class="swap" name='sport' swapper="sporther"></button>
-                        &lt;button class="swap" name='third' swapper="sporther"></button>
+                        &lt;button class="swap" name='weather' swap-data="sporther"></button>
+                        &lt;button class="swap" name='sport' swap-data"sporther"></button>
+                        &lt;button class="swap" name='third' swap-data="sporther"></button>
                       </pre>
                   </code>
 
                 </div>
                 <div class="swapgrid">
-                  <div>1. Weather </div><button class="swap" name='weather' swapper="sporther"></button>
-                  <div>2. Sport   </div><button class="swap" name='sport' swapper="sporther"></button>
-                  <div>3. Blanker </div><button class="swap" name='third' swapper="sporther"></button>
+                  <div>1. Weather </div><button class="swap" name='weather' swap-data="sporther"></button>
+                  <div>2. Sport   </div><button class="swap" name='sport' swap-data="sporther"></button>
+                  <div>3. Blanker </div><button class="swap" name='third' swap-data="sporther"></button>
                 </div>
               </div>
             </div>
           </article>
 
+
+          <article id="swapElementPlugin">
+            <h2>4. Swap element Plugin</h2>
+  
+            <div class="codegrid">
+                <div>
+                  <code> 
+                      <pre class="code">
+                        &lt;button class="swap" name='weather' swap-element="sporther"></button>
+                        &lt;button class="swap" name='sport' swap-element"sporther"></button>
+                        &lt;button class="swap" name='third' swap-element="sporther"></button>
+                        &lt;button class="swap" name='four' swap-element="sporther"></button>
+                      </pre>
+                  </code>
+
+                </div>
+                <div >
+                  <div>
+                     <button class="swap" name='four' swap-element="sporther"></button>
+                  </div>
+                  <div>
+                    <button class="swap" name='weather' swap-element="sporther"></button>
+                  </div>
+                  <div>
+                    <button class="swap" name='sport' swap-element="sporther"></button>
+                  </div>
+                  <div>
+                    <button class="swap" name='third' swap-element="sporther"></button>
+                  </div>
+              </div>
+            </div>
+          </article>
+
           <article id="clickPlugin">
-            <h2>4. A little more - click plugin</h2>
+            <h2>5. A little more - click plugin</h2>
   
             <div class="codegrid">
                 <div>
@@ -140,11 +164,8 @@
                         &lt;/body>
                         
                         &lt;script type='module'>
-
-                            import { go, tools } from "./dist/index.js";
-                            import { clickPlugin, addClickFunction } from "./dist/plugins/clickPlugin.js";
-                        
-                            go(clickPlugin);
+                            import { go, tools, addClickFunction } from "./dist/index.js";
+                            go();
 
                             tools.setByName("danceFor", 0);
 
@@ -153,14 +174,13 @@
                               tools.setByName("danceFor", hours+amount);
                             }
                             addClickFunction("addHour",(tools, ev) => changeHours(1));
-                            addClickFunction("takeHour",(tools, ev) => changeHours(-1));
-                        
+                            addClickFunction("takeHour",(tools, ev) => changeHours(-1));                   
                         &lt;/script>
                     </pre>
                   </code>
 
                 </div>
-                <div>
+                <div class="big-text">
                   <span>
                     I can dance for <span name='danceFor' ></span> hours
                   </span>
@@ -175,20 +195,20 @@
 
 
           <article id="repeaterPlugin">
-            <h2>5. Table - table plugin</h2>
+            <h2>6. Table - table plugin</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
                   <code> 
                       <pre class="code">
 
                         &lt;div class="data" >
-                          &lt;div click="sortNo">&lt;strong click="sorter">No.  &lt;/strong click="sorter"> &lt;/div>
-                          &lt;div click="sortName">&lt;strong click="sorter">Name&lt;/strong click="sorter">&lt;/div>
-                          &lt;div click="sortCounty">&lt;strong click="sorter">County&lt;/strong click="sorter">&lt;/div>
-                          &lt;div click="sort2001" >&lt;strong click="sorter">Census 2001-04-29&lt;/strong click="sorter">&lt;/div>
-                          &lt;div click="sort2011" >&lt;strong click="sorter">Census 2011-03-27&lt;/strong click="sorter">&lt;/div>
-                          &lt;div click="sort2018" >&lt;strong click="sorter">Estimate 2018-06-30&lt;/strong click="sorter">&lt;/div>
+                          &lt;div>&lt;strong click="sorter">No.  &lt;/strong> &lt;/div>
+                          &lt;div>&lt;strong click="sorter">Name&lt;/strong>&lt;/div>
+                          &lt;div>&lt;strong click="sorter">County&lt;/strong>&lt;/div>
+                          &lt;div>&lt;strong click="sorter">Census 2001-04-29&lt;/strong>&lt;/div>
+                          &lt;div>&lt;strong click="sorter">Census 2011-03-27&lt;/strong>&lt;/div>
+                          &lt;div>&lt;strong click="sorter">Estimate 2018-06-30&lt;/strong>&lt;/div>
                         &lt;/div>
                         &lt;div class="table-content">
                             &lt;div class="data" table="pops">
@@ -201,7 +221,6 @@
                             &lt;/div>
                         &lt;/div>
 
-
                         &lt;script type='module'>
 
                             import { go, tools } from "./dist/index.js";
@@ -210,20 +229,14 @@
 
                             go(tablePlugin);
 
-                            const setupData = () => {
-                              const pops = data();
-                              return pops.map(list => {
-                                return {
-                                  "Name": list[0],
-                                  "County": list[1],
-                                  "Census 2001-04-29": list[2],
-                                  "Census 2011-03-27": list[3],
-                                  "Estimate 2018-06-30": list[4]
-                                };
-                              });
-                            };
-                            addSetup("pops",setupData);
-                            
+                            const setupData = data().map((list) => ({
+                              Name: list[0],
+                              County: list[1],
+                              "Census 2001-04-29": list[2],
+                              "Census 2011-03-27": list[3],
+                              "Estimate 2018-06-30": list[4],
+                            }));
+                            addSetup("pops", setupData);                            
 
                         &lt;/script>
 
@@ -259,9 +272,6 @@
               </div>
             </div>
           </article>
-
-
-
 
           <nav>
                 <a href="#simple">Simple Start</a>

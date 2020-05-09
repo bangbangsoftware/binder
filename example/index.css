@@ -4,21 +4,34 @@ body {
 
 .codegrid {
   display: grid;
-  grid-template-columns: 6fr 5fr;
+  grid-template-columns: auto auto;
   background-color: burlywood;
   align-items: center;
+  width: 100%;
+}
+
+.repeatgrid {
+  display: grid;
+  background-color: burlywood;
+  align-items: center;
+  width: 100%;
+}
+
+.repeat {
+  background-color: burlywood;
 }
 
 footer {
   position: absolute;
-  width: 100%;
+  width: 85%;
   text-align: right;
   height: 2.5rem; /* Footer height */
 }
 
 .right {
-  margin-left: 80%;
+  margin-left: 64%;
   margin-bottom: 10px;
+  padding-right: 10px;
 }
 
 .text-end {
@@ -39,12 +52,47 @@ footer {
   height: 1200px;
 }
 
-.swap-selected {
+.mid-text {
+  font-size: 30px;
+}
+
+input {
+  background-color: #dfcdb6;
+  font-size: 20px;
+}
+.big-text {
+  font-size: 70px;
+}
+
+button {
+  border-color: #ad7575;
+  background-color: #d4913a;
+  min-width: 200px;
+  color: #f8efef;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.swap-data-selected {
   background-color: red;
 }
 
-.right {
-  text-align: right;
+.swap-element-selected {
+  background-color: red;
+}
+
+.peek {
+  color: red;
+  font-size: 50px;
+}
+
+body {
+  margin: 100px;
+}
+
+.peekgrid {
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 .fadey {
@@ -54,13 +102,13 @@ footer {
 
 .swap {
   min-width: 100px;
-  min-height: 25px;
+  min-height: 39px;
   max-width: 200px;
 }
 
 .swapgrid {
   display: grid;
-  grid-template-columns: 1fr 11fr;
+  grid-template-columns: 2fr 10fr;
 }
 
 .top-container {
