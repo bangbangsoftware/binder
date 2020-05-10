@@ -77,6 +77,13 @@ input:focus {
   text-align: center;
 }
 
+h1 {
+  background-color: burlywood;
+  border-radius: 25px;
+  text-align: center;
+  padding: 10px;
+}
+
 button {
   border-color: #ad7575;
   background-color: #d4913a;

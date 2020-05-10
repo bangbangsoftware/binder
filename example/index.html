@@ -6,7 +6,7 @@
     </head>
     <body class="fade-in">
       <main>
-        <header><h1>The Binder Example Page</h1></header>
+        <header><h1>B I N D E R</h1></header>
         <section>
           <article id="simple">
             <h2>0. Install</h2>
@@ -51,14 +51,14 @@
                 <div>
                   <code> 
 <pre class="code">
-&lt;input name='weather' placeholder="What's the weather like?">
-&lt;/input>
+    &lt;input name='weather' placeholder="What's the weather like?">&lt;/input>
 
-&lt;label if="weather" >Weather has been entered
-  &lt;span name="weather">&lt;/span>
-&lt;/label>
-      
-&lt;script type='module' src='binder/dist/go.js'>&lt;/script>
+    &lt;label if="weather" >
+          Weather has been entered 
+          &lt;b name="weather">&lt;/b>
+    &lt;/label>
+          
+    &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
 </pre>
 </code>
 
@@ -70,7 +70,7 @@
                   <br>
                   <br>
                   <label  if="weather" >Weather has been entered
-                    <span name="weather"></span>
+                    <b name="weather"></b>
                   </label>
                   <br>
                   <br>
@@ -87,11 +87,11 @@
                 <div>
                   <code> 
 <pre class="code">
-&lt;button class="swap" showhide-trigger="peekaboo">
- Hide / show
-&lt;/button>
+    &lt;button class="swap" showhide-trigger="peekaboo"> Hide / show &lt;/button>
 
-&lt;div name="hider" showhide="peekaboo">PEEK-A-BOO&lt;/div>
+    &lt;div name="hider" showhide="peekaboo">PEEK-A-BOO&lt;/div>
+              
+    &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
 </pre>
                   </code>
 
@@ -110,9 +110,11 @@
                 <div>
                   <code> 
 <pre class="code">
-  &lt;button class="swap" name='weather' swap-data="sporther"></button>
-  &lt;button class="swap" name='sport'   swap-data="sporther"></button>
-  &lt;button class="swap" name='third'   swap-data="sporther"></button>
+    &lt;button class="swap" name='weather' swap-data="sporther"></button>
+    &lt;button class="swap" name='sport'   swap-data="sporther"></button>
+    &lt;button class="swap" name='third'   swap-data="sporther"></button>
+
+    &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
 </pre>
                   </code>
 
@@ -138,6 +140,8 @@
   &lt;button class="swap" name='sport'   swap-element="sporther"></button>
   &lt;button class="swap" name='third'   swap-element="sporther"></button>
   &lt;button class="swap" name='four'    swap-element="sporther"></button>
+
+  &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
 </pre>
                   </code>
 
@@ -167,7 +171,7 @@
                   <code> 
 <pre class="code">
   &lt;body>
-      I can dance for &lt;span name='danceFor' >&lt;/span> hours
+      I can dance for &lt;b name='danceFor' >&lt;/b> hours
 
       &lt;button click='addHour' >Longer&lt;/button>
       &lt;button click='takeHour' >Less&lt;/button>
@@ -191,7 +195,7 @@
 
                 </div>
                 <div class="big-text padbot">
-                    I can dance for <span name='danceFor' ></span> hours
+                    I can dance for <b name='danceFor' ></b> hours
                       <button click='takeHour'>Less</button>
                       <button click='addHour'>Longer</button>
                 </div>
@@ -209,38 +213,35 @@
 <pre class="code">
 
 &lt;div class="data" >
-  &lt;div>&lt;strong click="sorter">No.  &lt;/strong> &lt;/div>
-  &lt;div>&lt;strong click="sorter">Name&lt;/strong>&lt;/div>
-  &lt;div>&lt;strong click="sorter">County&lt;/strong>&lt;/div>
-  &lt;div>&lt;strong click="sorter">Census 2001-04-29&lt;/strong>&lt;/div>
-  &lt;div>&lt;strong click="sorter">Census 2011-03-27&lt;/strong>&lt;/div>
-  &lt;div>&lt;strong click="sorter">Estimate 2018-06-30&lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter"> No.                 &lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter"> Name                &lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter"> County              &lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter"> Census 2001-04-29   &lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter"> Census 2011-03-27   &lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter"> Estimate 2018-06-30 &lt;/strong>&lt;/div>
 &lt;/div>
-&lt;div class="table-content">
-    &lt;div class="data" table="pops">
-      &lt;div place="$index">&lt;/div>
-      &lt;div place="Name">&lt;/div>
-      &lt;div place="County">&lt;/div>
-      &lt;div place="Census 2001-04-29">&lt;/div>
-      &lt;div place="Census 2011-03-27">&lt;/div>
-      &lt;div place="Estimate 2018-06-30">&lt;/div>
-    &lt;/div>
+&lt;div table="pops">
+  &lt;div place="$index">             &lt;/div>
+  &lt;div place="Name">               &lt;/div>
+  &lt;div place="County">             &lt;/div>
+  &lt;div place="Census 2001-04-29">  &lt;/div>
+  &lt;div place="Census 2011-03-27">  &lt;/div>
+  &lt;div place="Estimate 2018-06-30">&lt;/div>
 &lt;/div>
 
 &lt;script type='module'>
 
     import { go, tools } from "./dist/index.js";
-    import { tablePlugin, addSetup } 
-      from './dist/plugins/tablePlugin.js';
+    import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
     import data from "./data.js";
 
     go(tablePlugin);
 
     const setupData = data().map((list) => ({
-      Name: list[0],
-      County: list[1],
-      "Census 2001-04-29": list[2],
-      "Census 2011-03-27": list[3],
+      "Name":                list[0],
+      "County":              list[1],
+      "Census 2001-04-29":   list[2],
+      "Census 2011-03-27":   list[3],
       "Estimate 2018-06-30": list[4],
     }));
     addSetup("pops", setupData);
