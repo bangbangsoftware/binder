@@ -4,35 +4,41 @@
       <link rel="stylesheet" type="text/css" href="index.css" />
       <title>Binder Examples</title>
     </head>
-    <body>
+    <body class="fade-in">
       <main>
         <header><h1>The Binder Example Page</h1></header>
         <section>
-
+          <article id="simple">
+            <h2>0. Install</h2>
+            npm i git+https://github.com/bangbangsoftware/binder.git
+          </article>
           <article id="simple">
             <h2>1. Simple start</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
-                  <code > <pre class="code">
-                      &lt;body>
-                          &lt;input name='sport' autofocus>&lt;/input>
-                          Your sport is &lt;span name='sport' >&lt;/span>
-                      &lt;/body>
-                      
-                      &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
-                      </pre>
+                  <code > 
+<pre class="code">
+      &lt;input name='sport' autofocus>&lt;/input>
+
+      Your sport is &lt;b name='sport'>&lt;/b>
+
+      &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
+</pre>
                   </code>
                 </div>
                 <div class="mid-text">
-                    Enter your favourite sport &emsp;
+                    Your favourite sport &emsp;
                     <input name='sport' autofocus></input>
                   <br>
+                  <br>
                     <span>
-                        Your sport is <span name='sport' ></span>
-                    </span>
-                    <button class="right" click="clearSport">Clear sport</button>                
-                </div>
+                        Your sport is <b name='sport' ></b>
+                        <button  click="clearSport">Clear sport</button>                
+                      </span>
+                  <br>
+                  <br>
+                    </div>
             </div>
             <p>Did you notice if you press <a href=".">refresh</a> this page the state stays, even works off line</p>
           </article>
@@ -41,31 +47,34 @@
           <article id="ifPlugin">
             <h2>2. Only if - if plugin</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
                   <code> 
-                      <pre class="code">
-                        &lt;span>
-                          &lt;input name='weather' placeholder="What's the weather like?" autofocus></input>
-                        &lt;/span>
-                        &lt;label if="weather" >Weather has been entered
-                          &lt;span name="weather"></span>
-                        &lt;/label>
-                              
-                        &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
-                      </pre>
-                  </code>
+<pre class="code">
+&lt;input name='weather' placeholder="What's the weather like?">
+&lt;/input>
+
+&lt;label if="weather" >Weather has been entered
+  &lt;span name="weather">&lt;/span>
+&lt;/label>
+      
+&lt;script type='module' src='binder/dist/go.js'>&lt;/script>
+</pre>
+</code>
 
                 </div>
-                <div>
+                <div class="mid-text" >
                   <span>
                     <input name='weather' placeholder="What's the weather like?" autofocus></input>
                   </span>
                   <br>
                   <br>
-                  <label class="mid-text" if="weather" >Weather has been entered
+                  <label  if="weather" >Weather has been entered
                     <span name="weather"></span>
                   </label>
+                  <br>
+                  <br>
+
                 </div>
               </div>
             </div>
@@ -74,18 +83,21 @@
           <article id="hideshowPlugin">
             <h2>3. Hide / Show Plugin</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
                   <code> 
-                      <pre class="code">
-                        &lt;button class="swap" showhide-trigger="peekaboo">Hide / show&lt;/button>
-                        &lt;div name="hider" showhide="peekaboo">PEEK-A-BOO&lt;/div>
-                       </pre>
+<pre class="code">
+&lt;button class="swap" showhide-trigger="peekaboo">
+ Hide / show
+&lt;/button>
+
+&lt;div name="hider" showhide="peekaboo">PEEK-A-BOO&lt;/div>
+</pre>
                   </code>
 
                 </div>
                 <div class="peekgrid">
-                  <button class="swap" showhide-trigger="peekaboo">Hide / show</button>
+                  <button class="full" showhide-trigger="peekaboo">Hide / show</button>
                   <div name="hider" class="hide peek" showhide="peekaboo">PEEK-A-BOO</div>
               </div>
             </div>
@@ -94,14 +106,14 @@
           <article id="swapDataPlugin">
             <h2>4. Swap data Plugin</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
                   <code> 
-                      <pre class="code">
-                        &lt;button class="swap" name='weather' swap-data="sporther"></button>
-                        &lt;button class="swap" name='sport' swap-data"sporther"></button>
-                        &lt;button class="swap" name='third' swap-data="sporther"></button>
-                      </pre>
+<pre class="code">
+  &lt;button class="swap" name='weather' swap-data="sporther"></button>
+  &lt;button class="swap" name='sport' swap-data"sporther"></button>
+  &lt;button class="swap" name='third' swap-data="sporther"></button>
+</pre>
                   </code>
 
                 </div>
@@ -116,32 +128,32 @@
 
 
           <article id="swapElementPlugin">
-            <h2>4. Swap element Plugin</h2>
+            <h2>5. Swap element Plugin</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
                   <code> 
-                      <pre class="code">
-                        &lt;button class="swap" name='weather' swap-element="sporther"></button>
-                        &lt;button class="swap" name='sport' swap-element"sporther"></button>
-                        &lt;button class="swap" name='third' swap-element="sporther"></button>
-                        &lt;button class="swap" name='four' swap-element="sporther"></button>
-                      </pre>
+<pre class="code">
+  &lt;button class="swap" name='weather' swap-element="sporther"></button>
+  &lt;button class="swap" name='sport' swap-element"sporther"></button>
+  &lt;button class="swap" name='third' swap-element="sporther"></button>
+  &lt;button class="swap" name='four' swap-element="sporther"></button>
+</pre>
                   </code>
 
                 </div>
                 <div >
                   <div>
-                     <button class="swap" name='four' swap-element="sporther"></button>
+                     <button class="full" name='four' swap-element="sporther"></button>
                   </div>
                   <div>
-                    <button class="swap" name='weather' swap-element="sporther"></button>
+                    <button class="full" name='weather' swap-element="sporther"></button>
                   </div>
                   <div>
-                    <button class="swap" name='sport' swap-element="sporther"></button>
+                    <button class="full" name='sport' swap-element="sporther"></button>
                   </div>
                   <div>
-                    <button class="swap" name='third' swap-element="sporther"></button>
+                    <button class="full" name='third' swap-element="sporther"></button>
                   </div>
               </div>
             </div>
@@ -150,44 +162,38 @@
           <article id="clickPlugin">
             <h2>5. A little more - click plugin</h2>
   
-            <div class="codegrid">
+            <div class="repeatgrid">
                 <div>
                   <code> 
-                      <pre class="code">
-                        &lt;body>
-                            &lt;span>
-                            I can dance for &lt;span name='danceFor' >&lt;/span> hours
-                            &lt;/span>
-        
-                            &lt;button click='addHour' >Longer&lt;/button>
-                            &lt;button click='takeHour' >Less&lt;/button>
-                        &lt;/body>
-                        
-                        &lt;script type='module'>
-                            import { go, tools, addClickFunction } from "./dist/index.js";
-                            go();
+<pre class="code">
+  &lt;body>
+      I can dance for &lt;span name='danceFor' >&lt;/span> hours
 
-                            tools.setByName("danceFor", 0);
+      &lt;button click='addHour' >Longer&lt;/button>
+      &lt;button click='takeHour' >Less&lt;/button>
+  &lt;/body>
+  
+  &lt;script type='module'>
+      import { go, tools, addClickFunction } from "./dist/index.js";
+      go();
 
-                            const changeHours = amount => {
-                              const hours = parseInt(tools.getByName("danceFor"));
-                              tools.setByName("danceFor", hours+amount);
-                            }
-                            addClickFunction("addHour",(tools, ev) => changeHours(1));
-                            addClickFunction("takeHour",(tools, ev) => changeHours(-1));                   
-                        &lt;/script>
-                    </pre>
+      tools.setByName("danceFor", 0);
+
+      const changeHours = amount => {
+        const hours = parseInt(tools.getByName("danceFor"));
+        tools.setByName("danceFor", hours+amount);
+      }
+      addClickFunction("addHour",(tools, ev) => changeHours(1));
+      addClickFunction("takeHour",(tools, ev) => changeHours(-1));
+  &lt;/script>
+</pre>
                   </code>
 
                 </div>
                 <div class="big-text">
-                  <span>
                     I can dance for <span name='danceFor' ></span> hours
-                  </span>
-                  <br>
-                  <br>
-                  <button click='takeHour'>Less</button>
-                  <button click='addHour'>Longer</button>
+                      <button click='takeHour'>Less</button>
+                      <button click='addHour'>Longer</button>
                 </div>
               </div>
             </div>
@@ -200,47 +206,48 @@
             <div class="repeatgrid">
                 <div>
                   <code> 
-                      <pre class="code">
+<pre class="code">
 
-                        &lt;div class="data" >
-                          &lt;div>&lt;strong click="sorter">No.  &lt;/strong> &lt;/div>
-                          &lt;div>&lt;strong click="sorter">Name&lt;/strong>&lt;/div>
-                          &lt;div>&lt;strong click="sorter">County&lt;/strong>&lt;/div>
-                          &lt;div>&lt;strong click="sorter">Census 2001-04-29&lt;/strong>&lt;/div>
-                          &lt;div>&lt;strong click="sorter">Census 2011-03-27&lt;/strong>&lt;/div>
-                          &lt;div>&lt;strong click="sorter">Estimate 2018-06-30&lt;/strong>&lt;/div>
-                        &lt;/div>
-                        &lt;div class="table-content">
-                            &lt;div class="data" table="pops">
-                              &lt;div place="$index">&lt;/div>
-                              &lt;div place="Name">&lt;/div>
-                              &lt;div place="County">&lt;/div>
-                              &lt;div place="Census 2001-04-29">&lt;/div>
-                              &lt;div place="Census 2011-03-27">&lt;/div>
-                              &lt;div place="Estimate 2018-06-30">&lt;/div>
-                            &lt;/div>
-                        &lt;/div>
+&lt;div class="data" >
+  &lt;div>&lt;strong click="sorter">No.  &lt;/strong> &lt;/div>
+  &lt;div>&lt;strong click="sorter">Name&lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter">County&lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter">Census 2001-04-29&lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter">Census 2011-03-27&lt;/strong>&lt;/div>
+  &lt;div>&lt;strong click="sorter">Estimate 2018-06-30&lt;/strong>&lt;/div>
+&lt;/div>
+&lt;div class="table-content">
+    &lt;div class="data" table="pops">
+      &lt;div place="$index">&lt;/div>
+      &lt;div place="Name">&lt;/div>
+      &lt;div place="County">&lt;/div>
+      &lt;div place="Census 2001-04-29">&lt;/div>
+      &lt;div place="Census 2011-03-27">&lt;/div>
+      &lt;div place="Estimate 2018-06-30">&lt;/div>
+    &lt;/div>
+&lt;/div>
 
-                        &lt;script type='module'>
+&lt;script type='module'>
 
-                            import { go, tools } from "./dist/index.js";
-                            import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
-                            import data from "./data.js";
+    import { go, tools } from "./dist/index.js";
+    import { tablePlugin, addSetup } 
+      from './dist/plugins/tablePlugin.js';
+    import data from "./data.js";
 
-                            go(tablePlugin);
+    go(tablePlugin);
 
-                            const setupData = data().map((list) => ({
-                              Name: list[0],
-                              County: list[1],
-                              "Census 2001-04-29": list[2],
-                              "Census 2011-03-27": list[3],
-                              "Estimate 2018-06-30": list[4],
-                            }));
-                            addSetup("pops", setupData);                            
+    const setupData = data().map((list) => ({
+      Name: list[0],
+      County: list[1],
+      "Census 2001-04-29": list[2],
+      "Census 2011-03-27": list[3],
+      "Estimate 2018-06-30": list[4],
+    }));
+    addSetup("pops", setupData);                            
 
-                        &lt;/script>
+&lt;/script>
 
-                      </pre>
+</pre>
                   </code>
                 </div>
                 <div class="repeat">

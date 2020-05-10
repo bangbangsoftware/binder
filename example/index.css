@@ -54,14 +54,24 @@ footer {
 
 .mid-text {
   font-size: 30px;
+  text-align: center;
 }
 
 input {
   background-color: #dfcdb6;
   font-size: 20px;
+  border-radius: 25px;
+  padding: 10px;
 }
+
+input:focus {
+  outline: none;
+  background-color: #72f777;
+}
+
 .big-text {
   font-size: 70px;
+  text-align: center;
 }
 
 button {
@@ -71,6 +81,7 @@ button {
   color: #f8efef;
   margin: 10px;
   font-size: 20px;
+  border-radius: 25px;
 }
 
 .swap-data-selected {
@@ -86,13 +97,29 @@ button {
   font-size: 50px;
 }
 
+.code {
+  color: #40fc48;
+  background-color: #2a231d;
+  margin: 37px;
+  padding: 25px;
+  border-radius: 25px;
+}
+
 body {
-  margin: 100px;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+.full {
+  min-width: 80%;
+  max-width: 80%;
+  margin-left: 10%;
+  min-height: 39px;
 }
 
 .peekgrid {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 6fr 6fr;
 }
 
 .fadey {
@@ -136,4 +163,71 @@ body {
 
 .sticky + .content {
   padding-top: 102px;
+}
+
+.fade-in {
+  animation: fadeIn ease 5s;
+  -webkit-animation: fadeIn ease 5s;
+  -moz-animation: fadeIn ease 5s;
+  -o-animation: fadeIn ease 5s;
+  -ms-animation: fadeIn ease 5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* The style below is just for the appearance of the example div */
+
+.style {
+  width: 90vw;
+  height: 90vh;
+  text-align: center;
+  margin-left: 5vw;
+  background-color: #000;
+}
+.style p {
+  color: #fff;
+  font-size: 50px;
 }

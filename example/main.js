@@ -30,7 +30,7 @@ import { bagItAndTagIt, put, get, setMode, getMode, tools } from "binder";   - T
 import { togglePlugin } from "binder/dist/plugins/togglePlugin";                                 - DONE
 import { showHidePlugin } from "binder/dist/plugins/showhidePlugin";                             - DONE
 import { ifPlugin } from "binder/dist/plugins/ifPlugin";                                         - DONE
-import { swapPlugin, actionMover } from "binder/dist/plugins/swapPlugin.js"; - TODO (swapElement)
+import { swapPlugin, actionMover } from "binder/dist/plugins/swapPlugin.js";                     - DONE
 11
  *  change swapper to swapValue and swapElement
  * 
