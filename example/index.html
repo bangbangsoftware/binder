@@ -96,7 +96,7 @@
                   </code>
 
                 </div>
-                <div class="peekgrid">
+                <div class="peekgrid padbot">
                   <button class="full" showhide-trigger="peekaboo">Hide / show</button>
                   <div name="hider" class="hide peek" showhide="peekaboo">PEEK-A-BOO</div>
               </div>
@@ -111,16 +111,16 @@
                   <code> 
 <pre class="code">
   &lt;button class="swap" name='weather' swap-data="sporther"></button>
-  &lt;button class="swap" name='sport' swap-data"sporther"></button>
-  &lt;button class="swap" name='third' swap-data="sporther"></button>
+  &lt;button class="swap" name='sport'   swap-data="sporther"></button>
+  &lt;button class="swap" name='third'   swap-data="sporther"></button>
 </pre>
                   </code>
 
                 </div>
-                <div class="swapgrid">
-                  <div>1. Weather </div><button class="swap" name='weather' swap-data="sporther"></button>
-                  <div>2. Sport   </div><button class="swap" name='sport' swap-data="sporther"></button>
-                  <div>3. Blanker </div><button class="swap" name='third' swap-data="sporther"></button>
+                <div class="swapgrid padbot mid-text">
+                  <div>Weather </div><button class="swap" name='weather' swap-data="sporther"></button>
+                  <div>Sport   </div><button class="swap" name='sport' swap-data="sporther"></button>
+                  <div>Blanker </div><button class="swap" name='third' swap-data="sporther"></button>
                 </div>
               </div>
             </div>
@@ -135,14 +135,14 @@
                   <code> 
 <pre class="code">
   &lt;button class="swap" name='weather' swap-element="sporther"></button>
-  &lt;button class="swap" name='sport' swap-element"sporther"></button>
-  &lt;button class="swap" name='third' swap-element="sporther"></button>
-  &lt;button class="swap" name='four' swap-element="sporther"></button>
+  &lt;button class="swap" name='sport'   swap-element="sporther"></button>
+  &lt;button class="swap" name='third'   swap-element="sporther"></button>
+  &lt;button class="swap" name='four'    swap-element="sporther"></button>
 </pre>
                   </code>
 
                 </div>
-                <div >
+                <div class="padbot">
                   <div>
                      <button class="full" name='four' swap-element="sporther"></button>
                   </div>
@@ -190,7 +190,7 @@
                   </code>
 
                 </div>
-                <div class="big-text">
+                <div class="big-text padbot">
                     I can dance for <span name='danceFor' ></span> hours
                       <button click='takeHour'>Less</button>
                       <button click='addHour'>Longer</button>
@@ -243,8 +243,7 @@
       "Census 2011-03-27": list[3],
       "Estimate 2018-06-30": list[4],
     }));
-    addSetup("pops", setupData);                            
-
+    addSetup("pops", setupData);
 &lt;/script>
 
 </pre>
