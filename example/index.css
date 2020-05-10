@@ -89,7 +89,6 @@ button {
 
 button:focus {
   outline: none;
-  background-color: #dc9d4c;
 }
 
 .swap-data-selected {

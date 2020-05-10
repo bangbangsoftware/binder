@@ -41,6 +41,10 @@
     "ts-jest": "^24.0.0",
     "typescript": "^3.7.5",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+
+    "minimist": ">=1.2.3",
+    "acorn": ">=5.7.4",
+    "kind-of": ">=6.0.3"
   }
 }
