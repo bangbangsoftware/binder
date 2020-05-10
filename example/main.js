@@ -53,7 +53,7 @@ const clearSport = (tools, ev) => {
 };
 addClickFunction("clearSport", clearSport);
 
-// 4. A little more - click plugin
+// 6. Click away
 const changeHours = (amount) => {
   const hours = parseInt(tools.getByName("danceFor"));
   const calculate = hours + amount;
@@ -65,7 +65,7 @@ addClickFunction("addHour", (tools, ev) => changeHours(1));
 addClickFunction("takeHour", (tools, ev) => changeHours(-1));
 tools.setByName("danceFor", 0);
 
-// 5. Table - table plugin
+// 7. Bring it to the table - table plugin
 const pops = data().map((list) => ({
   Name: list[0],
   County: list[1],
