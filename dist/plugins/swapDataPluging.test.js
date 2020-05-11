@@ -45,6 +45,7 @@ const binder = {
     fixID: (element, name) => {
         return element;
     },
+    getMode: () => "",
 };
 describe("swapDataPlugin.test", () => {
     let plugin;

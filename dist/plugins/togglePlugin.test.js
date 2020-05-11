@@ -7,18 +7,23 @@ mockElement.setAttribute("toggle", "rugby, long jump, crime");
 describe("togglePlugin.test", () => {
     const binder = {
         getValue: () => mockElement.innerText,
-        getByName: s => mockElement.innerText,
+        getByName: (s) => mockElement.innerText,
         put: () => { },
         putElements: () => { },
         get: (k) => {
             const blank = { currentValue: "", elements: Array() };
             return blank;
         },
-        setValue: (el, value) => { mockElement.innerText = value; },
+        setValue: (el, value) => {
+            mockElement.innerText = value;
+        },
         setByName: (name, value) => { },
         clickListener: (element, fn) => { },
         stateListener: (id, fn) => { },
-        fixID: (element, name) => { return element; }
+        fixID: (element, name) => {
+            return element;
+        },
+        getMode: () => "",
     };
     let plugin;
     test("Plugin can be set up", () => {
@@ -26,16 +31,16 @@ describe("togglePlugin.test", () => {
     });
     test("Can register ", () => {
         plugin.process(mockElement);
-        expect(mockElement.innerText).toBe('rugby');
+        expect(mockElement.innerText).toBe("rugby");
         click(mockElement);
-        expect(mockElement.innerText).toBe('long jump');
+        expect(mockElement.innerText).toBe("long jump");
         click(mockElement);
-        expect(mockElement.innerText).toBe('crime');
+        expect(mockElement.innerText).toBe("crime");
         click(mockElement);
-        expect(mockElement.innerText).toBe('rugby');
+        expect(mockElement.innerText).toBe("rugby");
         mockElement.innerText = "wrongone";
         click(mockElement);
-        expect(mockElement.innerText).toBe('rugby');
+        expect(mockElement.innerText).toBe("rugby");
     });
 });
 //# sourceMappingURL=togglePlugin.test.js.map

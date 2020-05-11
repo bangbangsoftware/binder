@@ -10,18 +10,23 @@ mockElement.setAttribute("toggle", "rugby, long jump, crime");
 describe("togglePlugin.test", () => {
   const binder: BinderTools = {
     getValue: () => mockElement.innerText,
-    getByName: s => mockElement.innerText,
+    getByName: (s) => mockElement.innerText,
     put: () => {},
     putElements: () => {},
     get: (k: string): RegEntry => {
       const blank = { currentValue: "", elements: Array<Element>() };
       return blank;
     },
-    setValue:(el:Element,value:string) => {mockElement.innerText = value;},
-    setByName: (name:string, value: string) =>{},
+    setValue: (el: Element, value: string) => {
+      mockElement.innerText = value;
+    },
+    setByName: (name: string, value: string) => {},
     clickListener: (element: Element, fn: Function) => {},
     stateListener: (id: string, fn: Function) => {},
-    fixID: (element: HTMLElement, name: string): HTMLElement => {return element}
+    fixID: (element: HTMLElement, name: string): HTMLElement => {
+      return element;
+    },
+    getMode: () => "",
   };
   let plugin;
 
@@ -29,21 +34,21 @@ describe("togglePlugin.test", () => {
     plugin = togglePlugin(binder);
   });
 
-  test("Can register ", () =>{
+  test("Can register ", () => {
     plugin.process(mockElement);
-    expect(mockElement.innerText).toBe('rugby');
+    expect(mockElement.innerText).toBe("rugby");
 
     click(mockElement);
-    expect(mockElement.innerText).toBe('long jump');
+    expect(mockElement.innerText).toBe("long jump");
 
     click(mockElement);
-    expect(mockElement.innerText).toBe('crime');
+    expect(mockElement.innerText).toBe("crime");
 
     click(mockElement);
-    expect(mockElement.innerText).toBe('rugby');
+    expect(mockElement.innerText).toBe("rugby");
 
     mockElement.innerText = "wrongone";
     click(mockElement);
-    expect(mockElement.innerText).toBe('rugby');
-  })
+    expect(mockElement.innerText).toBe("rugby");
+  });
 });

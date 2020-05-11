@@ -54,6 +54,7 @@ const binder: BinderTools = {
   fixID: (element: HTMLElement, name: string): HTMLElement => {
     return element;
   },
+  getMode: () => "",
 };
 
 describe("swapDataPlugin.test", () => {

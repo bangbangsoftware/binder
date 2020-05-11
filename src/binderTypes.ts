@@ -6,6 +6,10 @@ export interface ValueGet {
   (key: string): string;
 }
 
+export interface Get {
+  (): string;
+}
+
 export interface ToolPut {
   (element: Element);
 }
@@ -57,6 +61,7 @@ export interface BinderTools {
   stateListener: StateListener;
   fixID: IDFixer;
   getByName: ValueGet;
+  getMode: Get;
 }
 
 export interface BinderPlugin {

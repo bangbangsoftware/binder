@@ -271,6 +271,7 @@ export const tools = {
     get,
     getValue,
     setValue,
+    getMode,
     setByName,
     getByName,
     clickListener,
