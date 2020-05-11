@@ -8,16 +8,29 @@
       <main>
         <header><h1>B I N D E R</h1></header>
         <section>
-          <article id="install">
-            <h2>0. Install</h2>
-            <div class="install">   npm i git+https://github.com/bangbangsoftware/binder.git -D</div>
-          </article>
-          <article id="simple">
-            <h2>1. Simple start</h2>
-  
-            <div class="repeatgrid">
+
+            <nav>
+              <a href="#install">Install</a>, 
+              <a href="#simple">Simple Start</a>,
+              <a href="#ifPlugin">If plugin</a>,
+              <a href="#hideshowPlugin">Hide/show plugin</a>,
+              <a href="#swapDataPlugin">Swap data plugin</a>,
+              <a href="#swapElementPlugin">Swap element plugin</a>,
+              <a href="#click">Click</a>,
+              <a href="#tablePlugin">Table plugin</a>
+          </nav>
+          <div>
+            <article id="install">
+                <h2>0. Install</h2>
+                <div class="install">   npm i git+https://github.com/bangbangsoftware/binder.git -D</div>
+            </article>
+
+
+            <article id="simple">
+              <h2>1. Simple start</h2>
+              <div class="repeatgrid">
                 <div>
-                  <code > 
+                    <code> 
 <pre class="code">
       &lt;input name='sport' autofocus>&lt;/input>
 
@@ -25,30 +38,30 @@
 
       &lt;script type='module' src='binder/dist/go.js'>&lt;/script>
 </pre>
-                  </code>
+                    </code>
                 </div>
                 <div class="mid-text">
-                    Your favourite sport &emsp;
-                    <input name='sport' autofocus></input>
+                  Your favourite sport &emsp;
+                  <input name='sport' autofocus></input>
                   <br>
                   <br>
-                    <span>
-                        Your sport is <b name='sport' ></b>
-                        <button  click="clearSport">Clear sport</button>                
-                      </span>
+                  <span>
+                      Your sport is <b name='sport' ></b>
+                      <button  click="clearSport">Clear sport</button>                
+                  </span>
                   <br>
                   <br>
-                    </div>
-            </div>
-            <p>Did you notice if you press <a href=".">refresh</a> this page the state stays, even works off line</p>
-          </article>
+                </div>
+              </div>
+              <p class="right-text">Did you notice, pressing <a href=".">refresh</a> and the state stays, even works off line</p>
+            </article>
  
 
           <article id="ifPlugin">
             <h2>2. Only if - if plugin</h2>
   
             <div class="repeatgrid">
-                <div>
+              <div>
                   <code> 
 <pre class="code">
     &lt;input name='weather' placeholder="What's the weather like?">&lt;/input>
@@ -62,8 +75,8 @@
 </pre>
 </code>
 
-                </div>
-                <div class="mid-text" >
+              </div>
+              <div class="mid-text" >
                   <span>
                     <input name='weather' placeholder="What's the weather like?" autofocus></input>
                   </span>
@@ -75,10 +88,10 @@
                   <br>
                   <br>
 
-                </div>
               </div>
             </div>
           </article>
+
 
           <article id="hideshowPlugin">
             <h2>3. Hide / Show Plugin</h2>
@@ -103,6 +116,7 @@
             </div>
           </article>
 
+
           <article id="swapDataPlugin">
             <h2>4. Swap data Plugin</h2>
   
@@ -125,7 +139,6 @@
                   <div>Blanker </div><button class="swap" name='third' swap-data="sporther"></button>
                 </div>
               </div>
-            </div>
           </article>
 
 
@@ -163,7 +176,8 @@
             </div>
           </article>
 
-          <article id="clickPlugin">
+
+          <article id="click">
             <h2>6. Click away</h2>
   
             <div class="repeatgrid">
@@ -200,11 +214,10 @@
                       <button click='addHour'>Longer</button>
                 </div>
               </div>
-            </div>
           </article>
 
 
-          <article id="repeaterPlugin">
+          <article id="tablePlugin">
             <h2>7. Bring it to the table - table plugin</h2>
   
             <div class="repeatgrid">
@@ -279,11 +292,8 @@
               </div>
             </div>
           </article>
+        </div>
 
-          <nav>
-                <a href="#simple">Simple Start</a>
-              <br />
-          </nav>
         </section>
 
       </main>

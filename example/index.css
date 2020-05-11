@@ -130,6 +130,36 @@ button:focus {
   margin: 30px;
 }
 
+section {
+  display: grid;
+  grid-template-columns: 12fr;
+}
+
+nav {
+  text-align: center;
+}
+
+a:link {
+  color: #8d1212;
+  text-decoration: none;
+}
+
+a:visited {
+  color: green;
+}
+
+a:hover {
+  color: hotpink;
+}
+
+a:active {
+  color: blue;
+}
+
+.right-text {
+  text-align: right;
+}
+
 @media (min-width: 100px) {
   .code {
     font-size: 10px;
