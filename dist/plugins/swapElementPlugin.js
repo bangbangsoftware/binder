@@ -77,6 +77,11 @@ export const click = (element, tools) => {
         clickAction(element);
         return;
     }
+    const modeName = element.getAttribute("swap-element-mode");
+    if (modeName != null && modeName != tools.getMode()) {
+        console.warn("Wrong mode to swap");
+        return;
+    }
     const key = "swap-element-all-" + groupName;
     const idSelected = storage.getItem(key);
     if (!idSelected) {
