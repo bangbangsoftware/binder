@@ -25,7 +25,9 @@ export const swapElementPlugin = (tools) => {
             registerMover(tools, element);
             storage.setItem(PREFIX + element.id, JSON.stringify(pids));
             if (groupName) {
-                tools.clickListener(element, (e) => click(element), [groupName]);
+                tools.clickListener(element, (e) => click(element, tools), [
+                    groupName,
+                ]);
             }
             else {
                 console.error("SWAP PLUGIN:No group name??! ", element);
@@ -43,12 +45,12 @@ export const getParentIds = (element, tools) => {
     const parentIDs = storage.getItem(PREFIX + element.id);
     if (parentIDs) {
         const storedPIDs = JSON.parse(parentIDs);
-        checkSwap(element, storedPIDs);
+        checkSwap(element, storedPIDs, tools);
         return storedPIDs;
     }
     return pids;
 };
-export const checkSwap = (element, pids) => {
+export const checkSwap = (element, pids, tools) => {
     const found = swapped.findIndex((storedPids) => pids.originParentID === storedPids.pids.originParentID ||
         pids.currentParentID === storedPids.pids.originParentID ||
         pids.originParentID === storedPids.pids.currentParentID ||
@@ -58,8 +60,8 @@ export const checkSwap = (element, pids) => {
         return;
     }
     const other = swapped.splice(found, 1);
-    click(element);
-    click(other[0].element);
+    click(element, tools);
+    click(other[0].element, tools);
 };
 export const sortParentID = (element, tools) => {
     const parent = element.parentElement;
@@ -69,7 +71,7 @@ export const sortParentID = (element, tools) => {
     const parentWithID = tools.fixID(parent, PREFIX + element.id);
     return parentWithID.id;
 };
-export const click = (element) => {
+export const click = (element, tools) => {
     const groupName = element.getAttribute("swap-element");
     if (groupName == null) {
         clickAction(element);
