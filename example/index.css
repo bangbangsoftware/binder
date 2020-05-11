@@ -121,8 +121,20 @@ button:focus {
   min-width: 60%;
 }
 
-@media (min-width: 600px) {
+.install {
+  color: #40fc48;
+  background-color: #2a231d;
+  font-size: 25px;
+  padding: 20px;
+  border-radius: 25px;
+  margin: 30px;
+}
+
+@media (min-width: 100px) {
   .code {
+    font-size: 10px;
+  }
+  .install {
     font-size: 10px;
   }
 }
@@ -131,11 +143,17 @@ button:focus {
   .code {
     font-size: 12px;
   }
+  .install {
+    font-size: 12px;
+  }
 }
 
 @media (min-width: 1450px) {
   .code {
     font-size: 20px;
+  }
+  .install {
+    font-size: 25px;
   }
 }
 
