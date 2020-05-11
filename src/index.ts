@@ -143,7 +143,7 @@ const setMap = (
   const haveAlready = map.get(key);
   const fns = haveAlready ? haveAlready : [];
   fns.push(fn);
-  map.set(name, fns);
+  map.set(key, fns);
 };
 
 const generateRunner = (name: string) => (ev: Event) => {
