@@ -106,12 +106,18 @@ export const setByName = (fieldname, value) => {
 };
 export const addClickFunction = (name, fn) => {
     console.log("Added click for ", name);
-    nameClickers.set(name, fn);
+    setMap(nameClickers, name, fn);
+};
+const setMap = (map, key, fn) => {
+    const haveAlready = map.get(key);
+    const fns = haveAlready ? haveAlready : [];
+    fns.push(fn);
+    map.set(name, fns);
 };
 const generateRunner = (name) => (ev) => {
-    const fn = nameClickers.get(name);
-    if (fn != null) {
-        fn(tools, ev);
+    const fns = nameClickers.get(name);
+    if (fns != null) {
+        fns.forEach((fn) => fn(tools, ev));
         return;
     }
     console.error("No click function for " + name);
@@ -236,11 +242,11 @@ const clickListener = (e, fn, modes = []) => {
     const changed = (e) => fn(e);
     childIDs(e)
         .filter((id) => !idClickers.has(id))
-        .forEach((id) => idClickers.set(id, changed));
+        .forEach((id) => setMap(idClickers, id, changed));
     modes.forEach((modeInList) => {
         childIDs(e)
             .filter((id) => !idClickers.has(modeInList + "-" + id))
-            .forEach((id) => idClickers.set(modeInList + "-" + id, changed));
+            .forEach((id) => setMap(idClickers, modeInList + "-" + id, changed));
     });
     console.log("clickers", idClickers);
 };
@@ -312,9 +318,9 @@ const react = (e, mapper) => {
     const id = element.id;
     const clickName = element.getAttribute("click");
     const key = mode.length === 0 ? element.id : mode + "-" + element.id;
-    const fn = mapper.get(key);
-    if (fn != null) {
-        fn(e);
+    const fns = mapper.get(key);
+    if (fns != null) {
+        fns.forEach((fn) => fn(tools, e));
         return;
     }
     if (!clickName || clickName.length == 0) {
