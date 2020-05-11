@@ -239,7 +239,7 @@ export const getMode = () => {
     return mode;
 };
 const clickListener = (e, fn, modes = []) => {
-    const changed = (e) => fn(e);
+    const changed = (e) => fn(tools, e);
     childIDs(e)
         .filter((id) => !idClickers.has(id))
         .forEach((id) => setMap(idClickers, id, changed));

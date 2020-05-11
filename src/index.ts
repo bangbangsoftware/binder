@@ -310,7 +310,7 @@ export const getMode = (): string => {
 };
 
 const clickListener = (e: Element, fn: Function, modes: Array<string> = []) => {
-  const changed = (e: Element) => fn(e);
+  const changed = (e: Element) => fn(tools, e);
   childIDs(e)
     .filter((id) => !idClickers.has(id))
     .forEach((id) => setMap(idClickers, id, changed));

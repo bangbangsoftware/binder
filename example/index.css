@@ -171,17 +171,17 @@ a:active {
   .code {
     font-size: 10px;
   }
+}
+
+@media (min-width: 600px) {
   .install {
-    font-size: 10px;
+    font-size: 8px;
   }
 }
 
-@media (min-width: 800px) {
-  .code {
-    font-size: 12px;
-  }
+@media (min-width: 1300px) {
   .install {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 
