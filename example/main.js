@@ -47,6 +47,19 @@ go([
   swapElementPlugin,
 ]);
 
+// 0. install copy...
+addClickFunction("copy", async () => {
+  const copyText = document.getElementById("npm");
+  try {
+    await navigator.clipboard.writeText(copyText.innerText);
+    console.log("Copied to clipbopard");
+    const mess = document.getElementById("message");
+    mess.innerText = "Copied to the clipboard";
+  } catch (err) {
+    console.error("Could not copy text: ", err);
+  }
+});
+
 // 1. Simple start - extra
 const clearSport = (tools, ev) => {
   tools.setByName("sport", "");

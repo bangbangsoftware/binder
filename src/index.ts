@@ -11,8 +11,8 @@ const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
 const listeners = new Map<string, Array<Function>>();
 const statelisteners = new Map<string, Array<Function>>();
-const idClickers = new Map<string, Function>();
-const nameClickers = new Map<String, Function>();
+const idClickers = new Map<string, Array<Function>>();
+const nameClickers = new Map<String, Array<Function>>();
 let plugins = new Array<BinderPluginLogic>();
 
 const hide = (element: HTMLElement) => (element.style.display = "none");
@@ -132,13 +132,24 @@ export const setByName = (fieldname: string, value: string) => {
 
 export const addClickFunction = (name: string, fn: ClickFunction) => {
   console.log("Added click for ", name);
-  nameClickers.set(name, fn);
+  setMap(nameClickers, name, fn);
+};
+
+const setMap = (
+  map: Map<String, Array<Function>>,
+  key: string,
+  fn: Function
+) => {
+  const haveAlready = map.get(key);
+  const fns = haveAlready ? haveAlready : [];
+  fns.push(fn);
+  map.set(name, fns);
 };
 
 const generateRunner = (name: string) => (ev: Event) => {
-  const fn = nameClickers.get(name);
-  if (fn != null) {
-    fn(tools, ev);
+  const fns = nameClickers.get(name);
+  if (fns != null) {
+    fns.forEach((fn) => fn(tools, ev));
     return;
   }
 
@@ -302,12 +313,12 @@ const clickListener = (e: Element, fn: Function, modes: Array<string> = []) => {
   const changed = (e: Element) => fn(e);
   childIDs(e)
     .filter((id) => !idClickers.has(id))
-    .forEach((id) => idClickers.set(id, changed));
+    .forEach((id) => setMap(idClickers, id, changed));
 
   modes.forEach((modeInList) => {
     childIDs(e)
       .filter((id) => !idClickers.has(modeInList + "-" + id))
-      .forEach((id) => idClickers.set(modeInList + "-" + id, changed));
+      .forEach((id) => setMap(idClickers, modeInList + "-" + id, changed));
   });
   console.log("clickers", idClickers);
 };
@@ -383,7 +394,7 @@ const reactAll = (e: Event, mapper: Map<string, Array<Function>>) => {
   fns.forEach((fn: Function) => fn(element));
 };
 
-const react = (e: Event, mapper: Map<string, Function>) => {
+const react = (e: Event, mapper: Map<string, Array<Function>>) => {
   if (e.target == null) {
     return;
   }
@@ -392,9 +403,9 @@ const react = (e: Event, mapper: Map<string, Function>) => {
   const clickName = element.getAttribute("click");
 
   const key = mode.length === 0 ? element.id : mode + "-" + element.id;
-  const fn = mapper.get(key);
-  if (fn != null) {
-    fn(e);
+  const fns = mapper.get(key);
+  if (fns != null) {
+    fns.forEach((fn) => fn(tools, e));
     return;
   }
   if (!clickName || clickName.length == 0) {

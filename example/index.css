@@ -130,13 +130,20 @@ button:focus {
   margin: 30px;
 }
 
-section {
+.copygrid {
   display: grid;
-  grid-template-columns: 12fr;
+  grid-template-columns: 11fr 1fr;
+  align-items: center;
 }
 
 nav {
   text-align: center;
+}
+
+.copy {
+  font-size: 20px;
+  min-width: 40px;
+  max-height: 40px;
 }
 
 a:link {
