@@ -117,14 +117,14 @@ const setMap = (map, key, fn) => {
 const generateRunner = (name) => (ev) => {
     const fns = nameClickers.get(name);
     if (fns != null) {
-        fns.forEach((fn) => fn(tools, ev));
+        fns.forEach((fn) => fn(ev));
         return;
     }
     console.error("No click function for " + name);
     console.error("Need to add some code like:");
     console.error('%c import { go, tools, addClickFunction } from "./dist/index.js"; ', "background: #222; color: #bada55");
     console.error("");
-    console.error('%c addClickFunction("' + name + '", (tools, ev) => { ', "background: #222; color: #bada55");
+    console.error('%c addClickFunction("' + name + '", (event) => { ', "background: #222; color: #bada55");
     console.error('%c       alert("BOOOOM!"); ', "background: #222; color: #bada55");
     console.error("%c });", "background: #222; color: #bada55");
 };
@@ -238,13 +238,13 @@ export const setMode = (newMode) => {
 export const getMode = () => {
     return mode;
 };
-const clickListener = (e, fn, modes = []) => {
-    const changed = (e) => fn(tools, e);
-    childIDs(e)
+const clickListener = (element, fn, modes = []) => {
+    const changed = (event) => fn(event);
+    childIDs(element)
         .filter((id) => !idClickers.has(id))
         .forEach((id) => setMap(idClickers, id, changed));
     modes.forEach((modeInList) => {
-        childIDs(e)
+        childIDs(element)
             .filter((id) => !idClickers.has(modeInList + "-" + id))
             .forEach((id) => setMap(idClickers, modeInList + "-" + id, changed));
     });
@@ -311,17 +311,17 @@ const reactAll = (e, mapper) => {
     }
     fns.forEach((fn) => fn(element));
 };
-const react = (e, mapper) => {
-    if (e.target == null) {
+const react = (event, mapper) => {
+    if (event.target == null) {
         return;
     }
-    const element = e.target;
+    const element = event.target;
     const id = element.id;
     const clickName = element.getAttribute("click");
     const key = mode.length === 0 ? element.id : mode + "-" + element.id;
     const fns = mapper.get(key);
     if (fns != null) {
-        fns.forEach((fn) => fn(tools, e));
+        fns.forEach((fn) => fn(event));
         return;
     }
     if (!clickName || clickName.length == 0) {
@@ -336,7 +336,7 @@ const react = (e, mapper) => {
         //    console.log(element);
         return;
     }
-    generateRunner(clickName)(e);
+    generateRunner(clickName)(event);
 };
 const listen = (field, fn) => {
     const changed = (e) => fn(e);

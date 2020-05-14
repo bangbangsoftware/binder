@@ -149,7 +149,7 @@ const setMap = (
 const generateRunner = (name: string) => (ev: Event) => {
   const fns = nameClickers.get(name);
   if (fns != null) {
-    fns.forEach((fn) => fn(tools, ev));
+    fns.forEach((fn) => fn(ev));
     return;
   }
 
@@ -161,7 +161,7 @@ const generateRunner = (name: string) => (ev: Event) => {
   );
   console.error("");
   console.error(
-    '%c addClickFunction("' + name + '", (tools, ev) => { ',
+    '%c addClickFunction("' + name + '", (event) => { ',
     "background: #222; color: #bada55"
   );
   console.error(
@@ -309,14 +309,18 @@ export const getMode = (): string => {
   return mode;
 };
 
-const clickListener = (e: Element, fn: Function, modes: Array<string> = []) => {
-  const changed = (e: Element) => fn(tools, e);
-  childIDs(e)
+const clickListener = (
+  element: Element,
+  fn: Function,
+  modes: Array<string> = []
+) => {
+  const changed = (event: Event) => fn(event);
+  childIDs(element)
     .filter((id) => !idClickers.has(id))
     .forEach((id) => setMap(idClickers, id, changed));
 
   modes.forEach((modeInList) => {
-    childIDs(e)
+    childIDs(element)
       .filter((id) => !idClickers.has(modeInList + "-" + id))
       .forEach((id) => setMap(idClickers, modeInList + "-" + id, changed));
   });
@@ -395,18 +399,18 @@ const reactAll = (e: Event, mapper: Map<string, Array<Function>>) => {
   fns.forEach((fn: Function) => fn(element));
 };
 
-const react = (e: Event, mapper: Map<string, Array<Function>>) => {
-  if (e.target == null) {
+const react = (event: Event, mapper: Map<string, Array<Function>>) => {
+  if (event.target == null) {
     return;
   }
-  const element = <Element>e.target;
+  const element = <Element>event.target;
   const id = element.id;
   const clickName = element.getAttribute("click");
 
   const key = mode.length === 0 ? element.id : mode + "-" + element.id;
   const fns = mapper.get(key);
   if (fns != null) {
-    fns.forEach((fn) => fn(tools, e));
+    fns.forEach((fn) => fn(event));
     return;
   }
   if (!clickName || clickName.length == 0) {
@@ -423,7 +427,7 @@ const react = (e: Event, mapper: Map<string, Array<Function>>) => {
     //    console.log(element);
     return;
   }
-  generateRunner(clickName)(e);
+  generateRunner(clickName)(event);
 };
 
 const listen = (field: Element, fn: Function) => {
