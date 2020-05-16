@@ -24,7 +24,12 @@ export const swapDataPlugin = (tools) => {
         attributes: ["swap-data", "swap-data-action"],
         process: (element, name) => {
             registerMover(tools, element);
-            tools.clickListener(element, (e) => click(element), [name]);
+            const modes = [name];
+            const modeName = element.getAttribute("swap-element-mode");
+            if (modeName != null) {
+                modes.push(modeName);
+            }
+            tools.clickListener(element, (e) => click(element), modes);
             return true;
         },
     };

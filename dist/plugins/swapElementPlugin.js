@@ -22,12 +22,15 @@ export const swapElementPlugin = (tools) => {
             if (!pids) {
                 return false;
             }
+            const modes = [groupName];
+            const modeName = element.getAttribute("swap-element-mode");
+            if (modeName != null) {
+                modes.push(modeName);
+            }
             registerMover(tools, element);
             storage.setItem(PREFIX + element.id, JSON.stringify(pids));
             if (groupName) {
-                tools.clickListener(element, (e) => click(element, tools), [
-                    groupName,
-                ]);
+                tools.clickListener(element, (e) => click(element, tools), modes);
             }
             else {
                 console.error("SWAP PLUGIN:No group name??! ", element);
@@ -75,11 +78,6 @@ export const click = (element, tools) => {
     const groupName = element.getAttribute("swap-element");
     if (groupName == null) {
         clickAction(element);
-        return;
-    }
-    const modeName = element.getAttribute("swap-element-mode");
-    if (modeName != null && modeName != tools.getMode()) {
-        console.warn("Wrong mode to swap");
         return;
     }
     const key = "swap-element-all-" + groupName;

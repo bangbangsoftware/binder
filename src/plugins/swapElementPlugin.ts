@@ -44,12 +44,19 @@ export const swapElementPlugin: BinderPlugin = (tools) => {
       if (!pids) {
         return false;
       }
+      const modes = [groupName];
+      const modeName = element.getAttribute("swap-element-mode");
+      if (modeName != null) {
+        modes.push(modeName);
+      }
       registerMover(tools, element);
       storage.setItem(PREFIX + element.id, JSON.stringify(pids));
       if (groupName) {
-        tools.clickListener(element, (e: Event) => click(element, tools), [
-          groupName,
-        ]);
+        tools.clickListener(
+          element,
+          (e: Event) => click(element, tools),
+          modes
+        );
       } else {
         console.error("SWAP PLUGIN:No group name??! ", element);
       }
@@ -112,11 +119,6 @@ export const click = (element: Element, tools: BinderTools) => {
     return;
   }
 
-  const modeName = element.getAttribute("swap-element-mode");
-  if (modeName != null && modeName != tools.getMode()) {
-    console.warn("Wrong mode to swap");
-    return;
-  }
   const key = "swap-element-all-" + groupName;
   const idSelected = storage.getItem(key);
   if (!idSelected) {
