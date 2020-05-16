@@ -31,7 +31,7 @@ import { togglePlugin } from "binder/dist/plugins/togglePlugin";                
 import { showHidePlugin } from "binder/dist/plugins/showhidePlugin";                             - DONE
 import { ifPlugin } from "binder/dist/plugins/ifPlugin";                                         - DONE
 import { swapPlugin, actionMover } from "binder/dist/plugins/swapPlugin.js";                     - DONE
-11
+
  *  change swapper to swapValue and swapElement
  * 
  */
@@ -54,7 +54,10 @@ addClickFunction("copy", async () => {
     await navigator.clipboard.writeText(copyText.innerText);
     console.log("Copied to clipbopard");
     const mess = document.getElementById("message");
+    mess.innerText = "";
+    mess.classList = ["fade-in"];
     mess.innerText = "Copied to the clipboard";
+    mess.classList = ["fade-out"];
   } catch (err) {
     console.error("Could not copy text: ", err);
   }
