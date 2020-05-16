@@ -4,11 +4,7 @@ import { clickPlugin, addClickFunction } from "./dist/plugins/clickPlugin.js";
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";
 import { tablePlugin, addSetup, addSort } from "./dist/plugins/tablePlugin.js";
 
-import {
-  moverPlugin,
-  moverValue,
-  moverCallback,
-} from "./dist/plugins/moverPlugin.js";
+import { moverPlugin } from "./dist/plugins/moverPlugin.js";
 
 import data from "./data.js";
 
@@ -46,8 +42,8 @@ const changeHours = (amount) => {
   tools.setByName("danceFor", result);
 };
 
-addClickFunction("addHour", (tools, ev) => changeHours(1));
-addClickFunction("takeHour", (tools, ev) => changeHours(-1));
+addClickFunction("addHour", () => changeHours(1));
+addClickFunction("takeHour", () => changeHours(-1));
 
 tools.setByName("danceFor", 0);
 
@@ -65,7 +61,7 @@ const sorter = (field, fn) => (direction) => (a, b) => {
 };
 
 let direction = 1;
-const sort = (tools, ev) => {
+const sort = (ev) => {
   console.log("sort ", ev);
   const est = sorter("Estimate 2018-06-30", (s) => parseInt(s));
   direction = direction * -1;

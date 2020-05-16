@@ -2,7 +2,7 @@ import { go, tools } from "./dist/index.js";
 import { clickPlugin, addClickFunction } from "./dist/plugins/clickPlugin.js";
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";
 import { tablePlugin, addSetup, addSort } from "./dist/plugins/tablePlugin.js";
-import { moverPlugin, } from "./dist/plugins/moverPlugin.js";
+import { moverPlugin } from "./dist/plugins/moverPlugin.js";
 import data from "./data.js";
 console.log("Demo Page ");
 // 4.  table - table plugin
@@ -33,8 +33,8 @@ const changeHours = (amount) => {
     const result = calculate < 0 ? 0 : calculate;
     tools.setByName("danceFor", result);
 };
-addClickFunction("addHour", (tools, ev) => changeHours(1));
-addClickFunction("takeHour", (tools, ev) => changeHours(-1));
+addClickFunction("addHour", () => changeHours(1));
+addClickFunction("takeHour", () => changeHours(-1));
 tools.setByName("danceFor", 0);
 // 4. table - extra
 const sorter = (field, fn) => (direction) => (a, b) => {
@@ -49,7 +49,7 @@ const sorter = (field, fn) => (direction) => (a, b) => {
     return 0;
 };
 let direction = 1;
-const sort = (tools, ev) => {
+const sort = (ev) => {
     console.log("sort ", ev);
     const est = sorter("Estimate 2018-06-30", (s) => parseInt(s));
     direction = direction * -1;

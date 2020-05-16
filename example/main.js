@@ -61,7 +61,7 @@ addClickFunction("copy", async () => {
 });
 
 // 1. Simple start - extra
-const clearSport = (tools, ev) => {
+const clearSport = () => {
   tools.setByName("sport", "");
 };
 addClickFunction("clearSport", clearSport);
@@ -74,8 +74,8 @@ const changeHours = (amount) => {
   tools.setByName("danceFor", result);
 };
 
-addClickFunction("addHour", (tools, ev) => changeHours(1));
-addClickFunction("takeHour", (tools, ev) => changeHours(-1));
+addClickFunction("addHour", () => changeHours(1));
+addClickFunction("takeHour", () => changeHours(-1));
 tools.setByName("danceFor", 0);
 
 // 7. Bring it to the table - table plugin
@@ -102,26 +102,26 @@ const sorter = (field, fn) => (direction) => (a, b) => {
 };
 
 let direction = 1;
-const sort = (tools, ev) => {
-  console.log("sort ", ev);
-  const field = ev.target.textContent;
+const sort = (event) => {
+  console.log("sort ", event);
+  const field = event.target.textContent;
   const number = field.indexOf("-") > -1;
   const parseFn = number ? (s) => parseInt(s) : (s) => s;
-  const est = sorter(ev.target.textContent, parseFn);
+  const est = sorter(event.target.textContent, parseFn);
   direction = direction * -1;
   console.log("direction ", direction);
   const fn = est(direction);
   addSort("pops", (a, b) => fn(a, b));
 };
 
-const take = (tools, ev) => {
-  const id = ev.target.id + "";
+const take = (event) => {
+  const id = event.target.id + "";
   const startIndex = parseInt(id.lastIndexOf("-")) + 1;
   const remove = parseInt(id.substring(startIndex));
   takeRow("pops", remove);
 };
 
 addClickFunction("sorter", sort);
-addClickFunction("addTown", (tools, ev) => addRow("pops", pops[0]));
-addClickFunction("takeTop", (tools, ev) => takeRow("pops", 0));
+addClickFunction("addTown", () => addRow("pops", pops[0]));
+addClickFunction("takeTop", () => takeRow("pops", 0));
 addClickFunction("take", take);
