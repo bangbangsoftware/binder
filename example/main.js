@@ -48,16 +48,20 @@ go([
 ]);
 
 // 0. install copy...
-addClickFunction("copy", async () => {
+addClickFunction("copy", async (event) => {
   const copyText = document.getElementById("npm");
   try {
     await navigator.clipboard.writeText(copyText.innerText);
     console.log("Copied to clipbopard");
     const mess = document.getElementById("message");
-    mess.innerText = "";
-    mess.classList = ["fade-in"];
     mess.innerText = "Copied to the clipboard";
-    mess.classList = ["fade-out"];
+    mess.classList.add("fade-out");
+
+    const copyButton = document.getElementById("copy-butt");
+    copyButton.classList.add("fade-out");
+    setTimeout(function () {
+      copyButton.parentElement.removeChild(copyButton);
+    }, 5 * 10000);
   } catch (err) {
     console.error("Could not copy text: ", err);
   }

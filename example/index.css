@@ -321,9 +321,12 @@ body {
   -moz-animation: fadeOut ease 5s;
   -o-animation: fadeOut ease 5s;
   -ms-animation: fadeOut ease 5s;
+  opacity: 0;
+}
+
+.message {
   text-align: center;
   color: red;
-  opacity: 0;
 }
 
 @keyframes fadeOut {
