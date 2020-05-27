@@ -60,6 +60,12 @@ footer {
   text-align: center;
 }
 
+.left-text {
+  font-size: 30px;
+  text-align: left;
+  padding: 30px;
+}
+
 input {
   background-color: #dfcdb6;
   font-size: 20px;
