@@ -24,6 +24,15 @@ body {
   padding-right: 20px;
 }
 
+.repeatgrid {
+  display: grid;
+  grid-template-rows: auto auto;
+  background-color: burlywood;
+  align-items: center;
+  width: 100%;
+  border-radius: 25px;
+}
+
 pre {
   font-size: 12px;
   border-radius: 25px;
