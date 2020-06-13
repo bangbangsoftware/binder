@@ -25,10 +25,11 @@ body {
 }
 
 pre {
-  font-size: 15px;
+  font-size: 12px;
   border-radius: 25px;
   color: #40fc48;
   background-color: #2a231d;
+  box-shadow: 3px 3px darkgrey;
 }
 
 .drawing {
@@ -37,7 +38,7 @@ pre {
 }
 
 h3 {
-  font-size: 25px;
+  font-size: 21px;
   font-weight: normal;
   padding-left: 2px;
 }
@@ -80,12 +81,12 @@ footer {
 }
 
 .mid-text {
-  font-size: 30px;
+  font-size: 21px;
   text-align: center;
 }
 
 .left-text {
-  font-size: 30px;
+  font-size: 21px;
   text-align: left;
   padding: 30px;
 }
@@ -220,7 +221,7 @@ a:active {
     font-size: 20px;
   }
   .install {
-    font-size: 25px;
+    font-size: 21px;
   }
 }
 
