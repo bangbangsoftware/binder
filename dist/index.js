@@ -18,7 +18,6 @@ let plugins = new Array();
 const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
 // Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
-let mode = "";
 let dataKey = "reg";
 // More dodgy mutable variables, but used for testing
 let storage = window.localStorage;
@@ -200,6 +199,7 @@ export function put(element) {
         keyvalue[key] = register[key].currentValue;
     });
     const reg = JSON.stringify(keyvalue);
+    111111111111111;
     storage.setItem(dataKey, reg);
     return registry;
 }
@@ -230,24 +230,11 @@ const registerElements = (everything) => {
     });
     return results;
 };
-export const setMode = (newMode) => {
-    const oldMode = mode + "";
-    mode = newMode;
-    return oldMode;
-};
-export const getMode = () => {
-    return mode;
-};
-const clickListener = (element, fn, modes = []) => {
+const clickListener = (element, fn) => {
     const changed = (event) => fn(event);
     childIDs(element)
         .filter((id) => !idClickers.has(id))
         .forEach((id) => setMap(idClickers, id, changed));
-    modes.forEach((modeInList) => {
-        childIDs(element)
-            .filter((id) => !idClickers.has(modeInList + "-" + id))
-            .forEach((id) => setMap(idClickers, modeInList + "-" + id, changed));
-    });
     console.log("clickers", idClickers);
 };
 const stateListener = (fieldID, fn) => {
@@ -271,7 +258,6 @@ export const tools = {
     get,
     getValue,
     setValue,
-    getMode,
     setByName,
     getByName,
     clickListener,
@@ -318,20 +304,14 @@ const react = (event, mapper) => {
     const element = event.target;
     const id = element.id;
     const clickName = element.getAttribute("click");
-    const key = mode.length === 0 ? element.id : mode + "-" + element.id;
+    const key = element.id;
     const fns = mapper.get(key);
     if (fns != null) {
         fns.forEach((fn) => fn(event));
         return;
     }
     if (!clickName || clickName.length == 0) {
-        console.error("ACTION: " +
-            key +
-            " :: no action for '" +
-            id +
-            "' in the mode '" +
-            mode +
-            "'.");
+        console.error("ACTION: " + key + " :: no action for '" + id + "'.");
         //    console.log(mapper);
         //    console.log(element);
         return;

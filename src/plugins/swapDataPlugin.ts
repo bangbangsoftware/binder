@@ -36,12 +36,7 @@ export const swapDataPlugin: BinderPlugin = (tools: BinderTools) => {
     attributes: ["swap-data", "swap-data-action"],
     process: (element: Element, name: string): boolean => {
       registerMover(tools, element);
-      const modes = [name];
-      const modeName = element.getAttribute("swap-data-mode");
-      if (modeName != null) {
-        modes.push(modeName);
-      }
-      tools.clickListener(element, (e: Event) => click(element), modes);
+      tools.clickListener(element, (e: Event) => click(element));
       return true;
     },
   };

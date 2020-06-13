@@ -10,12 +10,36 @@ body {
   width: 100%;
 }
 
-.repeatgrid {
-  display: grid;
+.flexing {
+  display: flex;
+  flex-wrap: wrap;
   background-color: burlywood;
   align-items: center;
   width: 100%;
   border-radius: 25px;
+}
+
+.sketch {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+pre {
+  font-size: 15px;
+  border-radius: 25px;
+  color: #40fc48;
+  background-color: #2a231d;
+}
+
+.drawing {
+  color: #656668;
+  background-color: #fffdfc;
+}
+
+h3 {
+  font-size: 25px;
+  font-weight: normal;
+  padding-left: 2px;
 }
 
 .repeat {

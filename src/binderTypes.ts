@@ -35,7 +35,7 @@ export interface ToolSetName {
 }
 
 export interface ClickListener {
-  (element: Element, fn: Function, modes?: Array<string>);
+  (element: Element, fn: Function);
 }
 
 export interface StateListener {
@@ -61,7 +61,6 @@ export interface BinderTools {
   stateListener: StateListener;
   fixID: IDFixer;
   getByName: ValueGet;
-  getMode: Get;
 }
 
 export interface BinderPlugin {

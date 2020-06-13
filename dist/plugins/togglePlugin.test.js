@@ -23,7 +23,6 @@ describe("togglePlugin.test", () => {
         fixID: (element, name) => {
             return element;
         },
-        getMode: () => "",
     };
     let plugin;
     test("Plugin can be set up", () => {

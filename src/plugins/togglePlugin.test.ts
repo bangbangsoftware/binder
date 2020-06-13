@@ -26,7 +26,6 @@ describe("togglePlugin.test", () => {
     fixID: (element: HTMLElement, name: string): HTMLElement => {
       return element;
     },
-    getMode: () => "",
   };
   let plugin;
 

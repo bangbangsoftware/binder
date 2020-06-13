@@ -4,23 +4,24 @@ let binder: BinderTools;
 
 export const togglePlugin = (tools: BinderTools) => {
   binder = tools;
-  return {attributes:["toggle"], process:(element: Element, name: string):boolean => {
-    tools.clickListener(element, (e:Event) => click(element), [name]);
-    return true;
-  }};
+  return {
+    attributes: ["toggle"],
+    process: (element: Element, name: string): boolean => {
+      tools.clickListener(element, (e: Event) => click(element));
+      return true;
+    },
+  };
 };
 
 export const click = (element: Element) => {
   const listString = element.getAttribute("toggle") || "";
-  const list = listString.split(/,/).map(t => t.trim());
+  const list = listString.split(/,/).map((t) => t.trim());
   const value = binder.getValue(element);
   const index = <number>list
-    .map(
-      (l: string, index: number): number | boolean => {
-        const v = l.trim();
-        return v === value ? index : false;
-      }
-    )
+    .map((l: string, index: number): number | boolean => {
+      const v = l.trim();
+      return v === value ? index : false;
+    })
     .find((k: number | boolean) => k !== false);
   if (index === undefined) {
     console.error("Cannot find element with value '" + value + "'");

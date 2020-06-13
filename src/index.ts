@@ -12,6 +12,7 @@ const pluginsDone = new Array<string>();
 const listeners = new Map<string, Array<Function>>();
 const statelisteners = new Map<string, Array<Function>>();
 const idClickers = new Map<string, Array<Function>>();
+
 const nameClickers = new Map<String, Array<Function>>();
 let plugins = new Array<BinderPluginLogic>();
 
@@ -19,7 +20,6 @@ const hide = (element: HTMLElement) => (element.style.display = "none");
 const show = (element: HTMLElement) => (element.style.display = "block");
 
 // Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
-let mode: string = "";
 let dataKey = "reg";
 
 // More dodgy mutable variables, but used for testing
@@ -264,6 +264,7 @@ export function put(element: HTMLElement): { [key: string]: RegEntry } {
     keyvalue[key] = register[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
+  111111111111111;
   storage.setItem(dataKey, reg);
   return registry;
 }
@@ -299,31 +300,12 @@ const registerElements = (
   return results;
 };
 
-export const setMode = (newMode: string): string => {
-  const oldMode = mode + "";
-  mode = newMode;
-  return oldMode;
-};
-
-export const getMode = (): string => {
-  return mode;
-};
-
-const clickListener = (
-  element: Element,
-  fn: Function,
-  modes: Array<string> = []
-) => {
+const clickListener = (element: Element, fn: Function) => {
   const changed = (event: Event) => fn(event);
   childIDs(element)
     .filter((id) => !idClickers.has(id))
     .forEach((id) => setMap(idClickers, id, changed));
 
-  modes.forEach((modeInList) => {
-    childIDs(element)
-      .filter((id) => !idClickers.has(modeInList + "-" + id))
-      .forEach((id) => setMap(idClickers, modeInList + "-" + id, changed));
-  });
   console.log("clickers", idClickers);
 };
 
@@ -353,7 +335,6 @@ export const tools: BinderTools = {
   get,
   getValue,
   setValue,
-  getMode,
   setByName,
   getByName,
   clickListener,
@@ -407,22 +388,14 @@ const react = (event: Event, mapper: Map<string, Array<Function>>) => {
   const id = element.id;
   const clickName = element.getAttribute("click");
 
-  const key = mode.length === 0 ? element.id : mode + "-" + element.id;
+  const key = element.id;
   const fns = mapper.get(key);
   if (fns != null) {
     fns.forEach((fn) => fn(event));
     return;
   }
   if (!clickName || clickName.length == 0) {
-    console.error(
-      "ACTION: " +
-        key +
-        " :: no action for '" +
-        id +
-        "' in the mode '" +
-        mode +
-        "'."
-    );
+    console.error("ACTION: " + key + " :: no action for '" + id + "'.");
     //    console.log(mapper);
     //    console.log(element);
     return;

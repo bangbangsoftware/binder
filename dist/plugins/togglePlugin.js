@@ -1,14 +1,17 @@
 let binder;
 export const togglePlugin = (tools) => {
     binder = tools;
-    return { attributes: ["toggle"], process: (element, name) => {
-            tools.clickListener(element, (e) => click(element), [name]);
+    return {
+        attributes: ["toggle"],
+        process: (element, name) => {
+            tools.clickListener(element, (e) => click(element));
             return true;
-        } };
+        },
+    };
 };
 export const click = (element) => {
     const listString = element.getAttribute("toggle") || "";
-    const list = listString.split(/,/).map(t => t.trim());
+    const list = listString.split(/,/).map((t) => t.trim());
     const value = binder.getValue(element);
     const index = list
         .map((l, index) => {

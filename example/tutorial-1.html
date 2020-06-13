@@ -9,29 +9,183 @@
         <h1>B I N D E R &nbsp;&nbsp;&nbsp;&nbsp; T U T O R I A L</h1>
       </header>
       <section>
-        <nav><a href="#aim">Aim</a>,<a href="#setup">Setup</a>,</nav>
+        <nav>
+          <a href="#aim">Aim</a>, <a href="#setup">Setup</a>,
+          <a href="#whistleblown">Whistle Blown</a>,
+          <a href="index.html">Quick Start</a>
+        </nav>
         <article id="aim">
           <h2>0. Aim</h2>
-          <div class="repeatgrid">
+          <div class="flexing">
             <div class="left-text">
               This article steps through how to create a football score card for
               parents who wanna keep a track of their kids footy game. This will
-              be consist of two screens: <b>Setup</b> and <b>Kick off</b>.
+              be consist of three screens: <b>Setup</b> and <b>Kick off</b> and
+              <b>whistle blown</b> screen.
             </div>
           </div>
         </article>
 
         <article id="setup">
           <h2>1. Setup</h2>
-          <div class="repeatgrid">
+          <div class="flexing">
             <div class="left-text">
-              The features of setup screen will include:
+              Setup screen will include:
               <ul>
-                <li>home/away toggle</li>
-                <li>Both teams names</li>
-                <li>input players name and position</li>
-                etc... Sorry, not done it yet
+                <li>Home / Away toggle</li>
+                <li>Edit both teams names</li>
+                <li>Kick off buttons</li>
+                <li>
+                  Input players name and position
+                  <br />
+                  (including goal and bench)
+                </li>
+                <li>Publish players formation button</li>
+                <li>A list of events with undo and share buttons</li>
               </ul>
+            </div>
+            <div class="sketch">
+              <h3>Quick Sketch</h3>
+              <pre class="drawing">
+
+                  [HOME/AWAY]
+
+          [OUR TEAM] VRS [OPPOSITION] 
+
+          [EDIT]  [PUBLISH]  [KICK OFF]
+
+  [pos. 1] [pos. 2] [pos. 3] [pos. 4] [pos. 5] 
+  [pos. 6] [pos. 7] [pos. 8] [pos. 9] [pos.10] 
+  [pos.11] [pos.12] [pos.13] [pos.14] [pos.15] 
+  [pos.16] [pos.17] [pos.18] [pos.19] [pos.20] 
+                    
+                    [ goal ] 
+
+  [ben. 1] [ben. 2] [ben. 3] [ben. 4] [ben. 5] 
+
+  TIME     EVENT                 UNDO     SEND  
+            </pre
+              >
+            </div>
+            <div class="sketch">
+              <h3>Mark up</h3>
+              <pre>
+                
+  &lt;section id="size">
+
+      &lt;place-toggle>&lt;/place-toggle>
+
+      &lt;team-names>&lt;/team-names>
+
+      &lt;div class="butBar">
+            &lt;Button id="EditBut">EDIT&lt;/Button> 
+            &lt;button id="PublishBut">Publish&lt;/button> 
+            &lt;button id="KickoffBut">Kick Off&lt;/button>   
+      &lt;/div>
+
+      &lt;formation-edit mode="move">&lt;formation-edit>
+
+      &lt;events-list>&lt;events-list>
+
+  &lt;/section>
+            </pre
+              >
+            </div>
+          </div>
+        </article>
+
+        <article id="kickoff">
+          <h2>2. Kick Off</h2>
+          <div class="flexing">
+            <div class="left-text">
+              Kick off screen will include:
+              <ul>
+                <li>
+                  Both teams names with scores
+                  <br />- opposition name button for concede a goal
+                </li>
+                <li>Clock</li>
+                <li>whistle blown button</li>
+                <li>
+                  Players name and position scoring buttons
+                  <br />
+                  (including goal and bench)
+                </li>
+                <li>A list of events with undo and share buttons</li>
+              </ul>
+            </div>
+            <div class="sketch">
+              <h3>Quick Sketch</h3>
+              <pre class="drawing">
+
+          [OUR TEAM] VRS [OPPOSITION] 
+
+           [score]  [clock]  [score] 
+
+         [EDIT]   [WHISTLE]  [KICK OFF]
+
+         [pos. 2]              [pos. 4]  
+         [pos. 7]   [pos. 8]   [pos. 9]  
+
+   [pos.16] [pos.17] [pos.18] [pos.19] [pos.20] 
+                  
+                     [ goal ] 
+
+   [ben. 1] [ben. 2] [ben. 3] [ben. 4] [ben. 5] 
+
+   TIME     EVENT                 UNDO     SEND 
+            </pre
+              >
+            </div>
+          </div>
+        </article>
+
+        <article id="whistleblown">
+          <h2>3. Whistle Blown</h2>
+          <div class="flexing">
+            <div class="left-text">
+              Whistle Blown screen will include:
+              <ul>
+                <li>Home / Away toggle</li>
+                <li>Final Whistle</li>
+                <li>
+                  Both teams names (editable) and score
+                </li>
+                <li>
+                  Input players name and position
+                  <br />
+                  (including goal and bench)
+                </li>
+                <li>Rest clock Button (Half time)</li>
+                <li>Play on Button</li>
+                <li>Publish players formation button</li>
+                <li>A list of events with undo and share buttons</li>
+              </ul>
+            </div>
+            <div class="sketch">
+              <h3>Quick Sketch</h3>
+              <pre class="drawing">
+
+                  [HOME/AWAY]
+
+          [OUR TEAM] VRS [OPPOSITION] 
+
+            [score]  [clock]  [score] 
+
+      [EDIT]  [RESET] [PUBLISH]  [PLAY ON]
+
+  [pos. 1] [pos. 2] [pos. 3] [pos. 4] [pos. 5] 
+  [pos. 6] [pos. 7] [pos. 8] [pos. 9] [pos.10] 
+  [pos.11] [pos.12] [pos.13] [pos.14] [pos.15] 
+  [pos.16] [pos.17] [pos.18] [pos.19] [pos.20] 
+                    
+                    [ goal ] 
+
+  [ben. 1] [ben. 2] [ben. 3] [ben. 4] [ben. 5] 
+
+  TIME     EVENT                 UNDO     SEND 
+            </pre
+              >
             </div>
           </div>
         </article>
