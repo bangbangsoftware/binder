@@ -264,7 +264,6 @@ export function put(element: HTMLElement): { [key: string]: RegEntry } {
     keyvalue[key] = register[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
-  111111111111111;
   storage.setItem(dataKey, reg);
   return registry;
 }
@@ -392,6 +391,7 @@ const react = (event: Event, mapper: Map<string, Array<Function>>) => {
   const fns = mapper.get(key);
   if (fns != null) {
     fns.forEach((fn) => fn(event));
+    event.stopImmediatePropagation();
     return;
   }
   if (!clickName || clickName.length == 0) {

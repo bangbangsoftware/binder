@@ -1,0 +1,31 @@
+h1 {
+  text-align: center;
+  background-color: green;
+  color: white;
+}
+
+.place {
+  width: 50%;
+  height: 42px;
+  margin-left: 25%;
+  font-size: 30px;
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+button {
+  margin: 5px;
+}
+
+.edit {
+  background-color: green;
+  color: white;
+}
+
+.center {
+  text-align: center;
+  font-size: 30px;
+}

@@ -199,7 +199,6 @@ export function put(element) {
         keyvalue[key] = register[key].currentValue;
     });
     const reg = JSON.stringify(keyvalue);
-    111111111111111;
     storage.setItem(dataKey, reg);
     return registry;
 }
@@ -308,6 +307,7 @@ const react = (event, mapper) => {
     const fns = mapper.get(key);
     if (fns != null) {
         fns.forEach((fn) => fn(event));
+        event.stopImmediatePropagation();
         return;
     }
     if (!clickName || clickName.length == 0) {

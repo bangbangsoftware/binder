@@ -1,0 +1,227 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <title>Binder Tutorial</title>
+  </head>
+  <body class="fade-in">
+    <main>
+      <header>
+        <h1>B I N D E R &nbsp;&nbsp;&nbsp;&nbsp; T U T O R I A L</h1>
+      </header>
+      <section>
+        <nav>
+          <a href="#components">components</a>, 
+          <a href="#place-toggle">Place toggle</a>, 
+          <a href="#team-names">Team Names</a>, 
+          <a href="#button-bar">Button bar</a>, 
+          <a href="#formation">Formation</a>, 
+          <a href="#event-list">Event List</a>, 
+          <a href="tutorial-1.html">Tutorial</a>
+          <a href="index.html">Quick Start</a>
+        </nav>
+        <article id="components">
+          <h2>0. Components</h2>
+          <div class="repeatgrid">
+            <div class="left-text">
+              The setup screen consists of five components: <b>place-toggle</b>, <b>team-names</b>, <b>the button bar</b>, <b>formation</b>
+              and <b>events-list<b>. 
+              </div>
+          </div>
+        </article>
+        <br />
+        <br />
+
+        <article id="place-toggle">
+          <h2>1. Place Toggle</h2>
+          <div class="repeatgrid">
+            <div class="left-text">
+              Place component does not need to be big. In fact, there's no point making it a web component at all, just a button.
+              <br />
+              <br />
+              <a target="_blank" href="tutorial-setup-1.html">Go to running site</a>
+            </div>
+            <div class="sketch">
+              <h3>Code</h3>
+              <pre class="drawing">
+
+ import "./dist/go.js";
+                </pre
+              >
+            </div>
+            <div class="sketch">
+              <h3>Mark up</h3>
+              <pre>
+
+    &lt;html>
+
+    &lt;head>
+      &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-1.css" />
+      &lt;title>Footswell&lt;/title>
+    &lt;/head>
+
+    &lt;body class="fade-in">
+      &lt;main>
+
+        &lt;header>
+
+          &lt;h1> F O O T S W E L L &lt;/h1>
+
+        &lt;/header>
+
+        &lt;section>
+  
+              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+  
+              &lt;team-names mode="edit">&lt;/team-names>
+  
+              &lt;nav class="nav" >
+                  &lt;Button id="EditBut">Edit&lt;/Button> 
+                  &lt;Button id="PublishBut">Publish&lt;/button> 
+                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
+              &lt;/nav>
+  
+              &lt;formation-edit mode="move">&lt;formation-edit>
+  
+              &lt;events-list>&lt;events-list>
+  
+        &lt;/section>
+     
+      &lt;/main>
+    &lt;/body>
+
+    &lt;script type="module" src="tutorial-setup-1.js">&lt;/script>
+
+    &lt;/html>
+                          </pre
+              >
+              </div>
+            <div class="sketch">
+              <h3>Css</h3>
+              <pre class="drawing">
+
+    h1 {
+      text-align: center;
+      background-color: green;
+      color: white;
+    }
+
+    .place {
+      width: 50%;
+      height: 42px;
+      margin-left: 25%;
+      font-size: 30px;
+    }
+
+    .nav {
+      display: none;
+    }
+
+                </pre
+              >
+            </div>
+
+          </div>
+          
+        </article>
+        <br />
+        <br />
+
+        <article id="team-input">
+          <h2>2. Edit both teams names</h2>
+          <div class="repeatgrid">
+            <div class="left-text">
+              Name edit component takes one prop mode for edit or display
+              <br />
+              <br />
+              <a target="_blank" href="tutorial-setup-2.html">Go to running site</a>
+            </div>
+            <div class="sketch">
+              <h3>Code</h3>
+              <pre class="drawing">
+
+ import "./dist/go.js";
+                </pre
+              >
+            </div>
+            <div class="sketch">
+              <h3>Mark up</h3>
+              <pre>
+
+    &lt;html>
+
+    &lt;head>
+      &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-1.css" />
+      &lt;title>Footswell&lt;/title>
+    &lt;/head>
+
+    &lt;body class="fade-in">
+      &lt;main>
+
+        &lt;header>
+
+          &lt;h1> F O O T S W E L L &lt;/h1>
+
+        &lt;/header>
+
+        &lt;section>
+  
+              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+  
+              &lt;team-names mode="edit">&lt;/team-names>
+  
+              &lt;nav class="nav" >
+                  &lt;Button id="EditBut">Edit&lt;/Button> 
+                  &lt;Button id="PublishBut">Publish&lt;/button> 
+                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
+              &lt;/nav>
+  
+              &lt;formation-edit mode="move">&lt;formation-edit>
+  
+              &lt;events-list>&lt;events-list>
+  
+        &lt;/section>
+     
+      &lt;/main>
+    &lt;/body>
+
+    &lt;script type="module" src="tutorial-setup-1.js">&lt;/script>
+
+    &lt;/html>
+                          </pre
+              >
+              </div>
+            <div class="sketch">
+              <h3>Css</h3>
+              <pre class="drawing">
+
+    h1 {
+      text-align: center;
+      background-color: green;
+      color: white;
+    }
+
+    .place {
+      width: 50%;
+      height: 42px;
+      margin-left: 25%;
+      font-size: 30px;
+    }
+
+    .nav {
+      display: none;
+    }
+
+                </pre
+              >
+            </div>
+
+          </div>
+          
+        </article>
+        <br />
+        <br />
+
+      </section>
+    </main>
+  </body>
+</html>
