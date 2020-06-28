@@ -203,8 +203,8 @@ export function putElements(
   });
   // Store registry
   const keyvalue = {};
-  Object.keys(register).forEach((key) => {
-    keyvalue[key] = register[key].currentValue;
+  Object.keys(registry).forEach((key) => {
+    keyvalue[key] = registry[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
   storage.setItem(dataKey, reg);
@@ -215,7 +215,7 @@ const putElement = (element: HTMLElement, currentValue = getValue(element)) => {
   const data = updateEntry(fieldname, element, currentValue);
 
   // update memory registory
-  register[fieldname] = data;
+  registry[fieldname] = data;
 };
 
 const updateEntry = (
@@ -260,8 +260,8 @@ export function put(element: HTMLElement): { [key: string]: RegEntry } {
 
   // Store registry
   const keyvalue = {};
-  Object.keys(register).forEach((key) => {
-    keyvalue[key] = register[key].currentValue;
+  Object.keys(registry).forEach((key) => {
+    keyvalue[key] = registry[key].currentValue;
   });
   const reg = JSON.stringify(keyvalue);
   storage.setItem(dataKey, reg);
@@ -355,6 +355,7 @@ const setup = () => {
     Object.keys(reg).forEach(
       (key) => (registry[key] = { currentValue: reg[key], elements: [] })
     );
+    console.log(registry);
   } catch (er) {
     console.error("cannot parse", regString);
     console.error(typeof regString);
@@ -366,7 +367,7 @@ const reactAll = (e: Event, mapper: Map<string, Array<Function>>) => {
   if (e.target == null) {
     return;
   }
-  console.log("Reacting to ", e);
+  //console.log("Reacting to ", e);
   const element = <Element>e.target;
   const id = element.id;
   const fns = mapper.get(id);
@@ -487,7 +488,7 @@ const registerAll = (
     return usage;
   }
 
-  const pluginsForElement: Array<BinderPluginLogic> = register(element);
+  const pluginsForElement: Array<BinderPluginLogic> = registerElement(element);
   usage = updateUsage(usage, pluginsForElement);
 
   // recurrsive calls....
@@ -516,7 +517,7 @@ const getPlugins = (
   return plugins.filter((plugin) => hasAttribute(plugin, element));
 };
 
-const register = (element: HTMLElement): Array<BinderPluginLogic> => {
+const registerElement = (element: HTMLElement): Array<BinderPluginLogic> => {
   const name = getName(element);
   if (name) {
     fixID(element, name);

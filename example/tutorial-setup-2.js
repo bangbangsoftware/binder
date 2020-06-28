@@ -10,12 +10,12 @@ class TeamNames extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = `<div class="center" id="namesInputMode">
+    this.innerHTML = `<div class="center-grid" id="namesInputMode">
                         <input id="teamNameInput" name="teamName" Placeholder="Team Name"></input>
                         VRS
                         <input id="opponentInput" name="opponentName" Placeholder="Opponent Name"></input>
                       </div>  
-                      <div class="hide center" id="namesDisplayMode">
+                      <div class="hide center-grid" id="namesDisplayMode">
                         <label id="teamNameLabel" name="teamName" ></label>
                         - VRS -
                         <label id="opponentLabel" name="opponentName" ></label>

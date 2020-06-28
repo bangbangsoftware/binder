@@ -151,8 +151,8 @@ export function putElements(elements, values) {
     });
     // Store registry
     const keyvalue = {};
-    Object.keys(register).forEach((key) => {
-        keyvalue[key] = register[key].currentValue;
+    Object.keys(registry).forEach((key) => {
+        keyvalue[key] = registry[key].currentValue;
     });
     const reg = JSON.stringify(keyvalue);
     storage.setItem(dataKey, reg);
@@ -161,7 +161,7 @@ const putElement = (element, currentValue = getValue(element)) => {
     const fieldname = getName(element);
     const data = updateEntry(fieldname, element, currentValue);
     // update memory registory
-    register[fieldname] = data;
+    registry[fieldname] = data;
 };
 const updateEntry = (fieldname, element, currentValue) => {
     // get registry entry and update
@@ -195,8 +195,8 @@ export function put(element) {
     putElement(element);
     // Store registry
     const keyvalue = {};
-    Object.keys(register).forEach((key) => {
-        keyvalue[key] = register[key].currentValue;
+    Object.keys(registry).forEach((key) => {
+        keyvalue[key] = registry[key].currentValue;
     });
     const reg = JSON.stringify(keyvalue);
     storage.setItem(dataKey, reg);
@@ -274,6 +274,7 @@ const setup = () => {
     try {
         const reg = JSON.parse(regString);
         Object.keys(reg).forEach((key) => (registry[key] = { currentValue: reg[key], elements: [] }));
+        console.log(registry);
     }
     catch (er) {
         console.error("cannot parse", regString);
@@ -285,7 +286,7 @@ const reactAll = (e, mapper) => {
     if (e.target == null) {
         return;
     }
-    console.log("Reacting to ", e);
+    //console.log("Reacting to ", e);
     const element = e.target;
     const id = element.id;
     const fns = mapper.get(id);
@@ -383,7 +384,7 @@ const registerAll = (element, usage) => {
     if (element == null) {
         return usage;
     }
-    const pluginsForElement = register(element);
+    const pluginsForElement = registerElement(element);
     usage = updateUsage(usage, pluginsForElement);
     // recurrsive calls....
     for (var i = 0, max = element.childNodes.length; i < max; i++) {
@@ -404,7 +405,7 @@ const hasAttribute = (plug, element) => {
 const getPlugins = (plugins, element) => {
     return plugins.filter((plugin) => hasAttribute(plugin, element));
 };
-const register = (element) => {
+const registerElement = (element) => {
     const name = getName(element);
     if (name) {
         fixID(element, name);

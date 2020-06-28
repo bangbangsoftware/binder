@@ -4,6 +4,32 @@ h1 {
   color: white;
 }
 
+button {
+  margin: 5px;
+}
+
+body {
+  background-color: #78c278;
+}
+
+input {
+  background-color: #ffeb3b;
+}
+
+.edit {
+  background-color: green;
+  color: white;
+}
+
+.center-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  text-align: center;
+  font-size: 30px;
+  padding-left: 30%;
+  padding-right: 30%;
+}
+
 .place {
   width: 50%;
   height: 42px;
@@ -14,18 +40,4 @@ h1 {
 .nav {
   display: grid;
   grid-template-columns: auto auto auto;
-}
-
-button {
-  margin: 5px;
-}
-
-.edit {
-  background-color: green;
-  color: white;
-}
-
-.center {
-  text-align: center;
-  font-size: 30px;
 }
