@@ -1,12 +1,12 @@
-import "./dist/go.js";
 import { addClickFunction, go } from "./dist/index.js";
 
-class TeamNames extends HTMLElement {
-  mode = "exit";
+let mode = "edit"; // two modes 'edit' or 'display'
 
+// Define custom element
+class TeamNames extends HTMLElement {
   constructor() {
     super();
-    this.mode = this.getAttribute("mode");
+    mode = this.getAttribute("mode");
   }
 
   connectedCallback() {
@@ -24,20 +24,19 @@ class TeamNames extends HTMLElement {
 }
 customElements.define("team-names", TeamNames);
 
+// Register a function for toggleEdit to use with "click" in mark up
 addClickFunction("toggleEdit", (e) => {
-  const comp = document.getElementById("teamNames");
-  const mode = comp.getAttribute("mode");
+  const editNow = mode === "display"; // toggle mode
 
-  const newMode = mode === "display" ? "edit" : "display";
-  const edit = newMode === "edit";
-  toggle("namesInputMode", edit);
-  toggle("namesDisplayMode", !edit);
-  toggle(e.target.id, !edit, "edit");
+  toggleClass("namesInputMode", editNow); // hide or show
+  toggleClass("namesDisplayMode", !editNow); // hide or show
+  toggleClass(e.target.id, !editNow, "edit"); // Button press display
 
-  comp.setAttribute("mode", newMode);
+  mode = editNow ? "edit" : "display"; // set new mode
 });
 
-const toggle = (id, show, className = "hide") => {
+//helper function for toggling mode
+const toggleClass = (id, show, className = "hide") => {
   const element = document.getElementById(id);
   if (show) {
     element.classList.remove(className);

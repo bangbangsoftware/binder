@@ -6,6 +6,8 @@ import {
   ClickFunction,
 } from "./binderTypes";
 
+import standardPlugins from "./plugins/standard.js";
+
 // yuk so much state....
 const namesDone = new Array<string>();
 const pluginsDone = new Array<string>();
@@ -341,7 +343,8 @@ export const tools: BinderTools = {
   fixID,
 };
 
-export const go = (plugs: Array<BinderPlugin>) => bagItAndTagIt(plugs);
+export const go = (plugs: Array<BinderPlugin> = standardPlugins) =>
+  bagItAndTagIt(plugs);
 
 const setup = () => {
   console.log("Binder getting data from '" + dataKey + "' in local storage");

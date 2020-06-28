@@ -137,56 +137,97 @@
             </div>
             <div class="sketch">
               <h3>Code</h3>
-              <pre class="drawing">
+<pre class="drawing">
 
- import "./dist/go.js";
-                </pre
+  import { addClickFunction, go } from "./dist/index.js";
+
+  let mode = "edit"; // two modes 'edit' or 'display'
+
+  // Define custom element
+  class TeamNames extends HTMLElement {
+    constructor() {
+      super();
+      mode = this.getAttribute("mode");
+    }
+
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
+                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">
+                          &lt;/input>
+                          VRS
+                          &lt;input id="opponentInput" name="opponentName" 
+                          Placeholder="Opponent Name">&lt;/input>
+                        &lt;/div>  
+                        &lt;div class="hide center-grid" id="namesDisplayMode">
+                          &lt;label id="teamNameLabel" name="teamName" >&lt;/label>
+                          - VRS -
+                          &lt;label id="opponentLabel" name="opponentName" >&lt;/label>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("team-names", TeamNames);
+
+  // Register a function for toggleEdit to use with "click" in mark up
+  addClickFunction("toggleEdit", (e) => {
+    const editNow = mode === "display"; // toggle mode
+
+    toggleClass("namesInputMode", editNow); // hide or show
+    toggleClass("namesDisplayMode", !editNow); // hide or show
+    toggleClass(e.target.id, !editNow, "edit"); // Button press display
+
+    mode = editNow ? "edit" : "display"; // set new mode
+  });
+
+  //helper function for toggling mode
+  const toggleClass = (id, show, className = "hide") => {
+    const element = document.getElementById(id);
+    if (show) {
+      element.classList.remove(className);
+    } else {
+      element.classList.add(className);
+    }
+  };
+
+  go();
+                                </pre
               >
             </div>
             <div class="sketch">
               <h3>Mark up</h3>
               <pre>
 
-    &lt;html>
+ &lt;html>
+  &lt;head>
+    &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-2.css" />
+    &lt;title>Footswell&lt;/title>
+  &lt;/head>
+  &lt;body class="fade-in">
+    &lt;main>
+      &lt;header>
+        &lt;h1>F O O T S W E L L&lt;/h1>
+      &lt;/header>
+      &lt;section>
+        &lt;article id="components">
 
-    &lt;head>
-      &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-1.css" />
-      &lt;title>Footswell&lt;/title>
-    &lt;/head>
+            &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
 
-    &lt;body class="fade-in">
-      &lt;main>
+            &lt;team-names id="teamNames" mode="edit">&lt;/team-names>
 
-        &lt;header>
+            &lt;nav class="nav">
+                &lt;button class="edit" click="toggleEdit">Edit&lt;/button> 
+                &lt;button class="hide">Publish&lt;/button> 
+                &lt;button class="hide">Kick Off&lt;/button>   
+            &lt;/nav>
 
-          &lt;h1> F O O T S W E L L &lt;/h1>
+            &lt;formation-edit mode="move">&lt;formation-edit>
 
-        &lt;/header>
+            &lt;events-list>&lt;events-list>
 
-        &lt;section>
-  
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
-  
-              &lt;team-names mode="edit">&lt;/team-names>
-  
-              &lt;nav class="nav" >
-                  &lt;Button id="EditBut">Edit&lt;/Button> 
-                  &lt;Button id="PublishBut">Publish&lt;/button> 
-                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
-              &lt;/nav>
-  
-              &lt;formation-edit mode="move">&lt;formation-edit>
-  
-              &lt;events-list>&lt;events-list>
-  
         &lt;/section>
-     
-      &lt;/main>
-    &lt;/body>
-
-    &lt;script type="module" src="tutorial-setup-1.js">&lt;/script>
-
-    &lt;/html>
+    &lt;/main>
+  &lt;/body>
+  &lt;script type="module" src="tutorial-setup-2.js">&lt;/script>
+ &lt;/html>
                           </pre
               >
               </div>
@@ -199,18 +240,45 @@
       background-color: green;
       color: white;
     }
-
+    
+    button {
+      margin: 5px;
+    }
+    
+    body {
+      background-color: #78c278;
+    }
+    
+    input {
+      background-color: #ffeb3b;
+    }
+    
+    .edit {
+      background-color: green;
+      color: white;
+    }
+    
+    .center-grid {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      text-align: center;
+      font-size: 30px;
+      padding-left: 30%;
+      padding-right: 30%;
+    }
+    
     .place {
       width: 50%;
       height: 42px;
       margin-left: 25%;
       font-size: 30px;
     }
-
+    
     .nav {
-      display: none;
+      display: grid;
+      grid-template-columns: auto auto auto;
     }
-
+                
                 </pre
               >
             </div>

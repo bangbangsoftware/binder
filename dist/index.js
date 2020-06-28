@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import standardPlugins from "./plugins/standard.js";
 // yuk so much state....
 const namesDone = new Array();
 const pluginsDone = new Array();
@@ -263,7 +264,7 @@ export const tools = {
     stateListener,
     fixID,
 };
-export const go = (plugs) => bagItAndTagIt(plugs);
+export const go = (plugs = standardPlugins) => bagItAndTagIt(plugs);
 const setup = () => {
     console.log("Binder getting data from '" + dataKey + "' in local storage");
     const regString = storage.getItem(dataKey);
