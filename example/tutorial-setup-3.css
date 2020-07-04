@@ -1,0 +1,74 @@
+h1 {
+  text-align: center;
+  background-color: green;
+  color: white;
+}
+
+button {
+  margin: 5px;
+  min-height: 100px;
+  max-width: 90%;
+}
+
+body {
+  background-color: #78c278;
+}
+
+input {
+  background-color: #ffeb3b;
+  min-height: 60px;
+  margin: 20px;
+}
+
+.action {
+  min-height: 12px;
+  font-size: 32px;
+}
+
+.vrs {
+  padding-top: 27px;
+}
+
+.teamName {
+  padding-top: 27px;
+}
+
+.edit {
+  background-color: green;
+  color: white;
+}
+
+.swap-data-selected {
+  background-color: green;
+}
+
+.format-grid {
+  display: grid;
+  grid-template-rows: auto auto auto auto auto;
+}
+
+.row-grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+}
+
+.center-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  text-align: center;
+  font-size: 30px;
+  padding-left: 30%;
+  padding-right: 30%;
+}
+
+.place {
+  width: 50%;
+  height: 42px;
+  margin-left: 25%;
+  font-size: 30px;
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}

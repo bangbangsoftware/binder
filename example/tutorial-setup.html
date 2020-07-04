@@ -10,14 +10,23 @@
       </header>
       <section>
         <nav>
-          <a href="#components">components</a>, 
-          <a href="#place-toggle">Place toggle</a>, 
-          <a href="#team-names">Team Names</a>, 
-          <a href="#button-bar">Button bar</a>, 
-          <a href="#formation">Formation</a>, 
-          <a href="#event-list">Event List</a>, 
-          <a href="tutorial-1.html">Tutorial</a>
-          <a href="index.html">Quick Start</a>
+          <a href="#components">Components</a>, 
+          <a href="#place-toggle">Place toggle</a>
+          <a target="_blank" href="tutorial-setup-1.html">(site)</a>,
+
+          <a href="#team-input">Team Names</a>
+          <a target="_blank" href="tutorial-setup-2.html">(site)</a>,
+          
+          <a href="#button-bar">Button Bar</a>, 
+          
+          <a href="#formation">Formation</a>
+          <a target="_blank" href="tutorial-setup-3.html">(site)</a>,
+          
+          <a href="#event-list">Event List</a>
+          <a target="_blank" href="tutorial-setup-4.html">(site)</a>,
+          <br>
+          <a href="tutorial-1.html">Tutorial</a>,
+          <a href="index.html">Quick Start</a>,
         </nav>
         <article id="components">
           <h2>0. Components</h2>
@@ -279,6 +288,116 @@
       grid-template-columns: auto auto auto;
     }
                 
+                </pre
+              >
+            </div>
+
+          </div>
+          
+        </article>
+        <br />
+        <br />
+
+        <article id="button-bar">
+          <h2>3. Button Bar</h2>
+          <div class="repeatgrid">
+            <div class="left-text">
+              "Edit" on the button bar is done, so that leaves "Publish" and "Kick Off". 
+              Kick off is just a link to the kickoff screen and publish cannot be done until formation and event list is done. 
+              <br />
+              <br />
+            </div>
+          </div>
+          
+        </article>
+        <br />
+        <br />
+
+        <article id="formation">
+          <h2>4. Formation</h2>
+          <div class="repeatgrid">
+            <div class="left-text">
+              Formation is a complex component, that has two modes - edit and move.
+              <br />
+              <br />
+              <a target="_blank" href="tutorial-setup-3.html">Go to running site</a>
+            </div>
+            <div class="sketch">
+              <h3>Code</h3>
+              <pre class="drawing">
+
+ import "./dist/go.js";
+                </pre
+              >
+            </div>
+            <div class="sketch">              <h3>Mark up</h3>
+              <pre>
+
+    &lt;html>
+
+    &lt;head>
+      &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-1.css" />
+      &lt;title>Footswell&lt;/title>
+    &lt;/head>
+
+    &lt;body class="fade-in">
+      &lt;main>
+
+        &lt;header>
+
+          &lt;h1> F O O T S W E L L &lt;/h1>
+
+        &lt;/header>
+
+        &lt;section>
+  
+              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+  
+              &lt;team-names mode="edit">&lt;/team-names>
+  
+              &lt;nav class="nav" >
+                  &lt;Button id="EditBut">Edit&lt;/Button> 
+                  &lt;Button id="PublishBut">Publish&lt;/button> 
+                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
+              &lt;/nav>
+  
+              &lt;formation-edit mode="move">&lt;formation-edit>
+  
+              &lt;events-list>&lt;events-list>
+  
+        &lt;/section>
+     
+      &lt;/main>
+    &lt;/body>
+
+    &lt;script type="module" src="tutorial-setup-1.js">&lt;/script>
+
+    &lt;/html>
+                          </pre
+              >
+              </div>
+            <div class="sketch">
+              <h3>Css</h3>
+              
+              <pre class="drawing">
+
+    h1 {
+      text-align: center;
+      background-color: green;
+      color: white;
+    }
+
+    .place {
+      width: 50%;
+      height: 42px;
+      margin-left: 25%;
+      font-size: 30px;
+    }
+
+    .nav {
+      display: none;
+    }
+
                 </pre
               >
             </div>

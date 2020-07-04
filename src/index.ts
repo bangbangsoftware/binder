@@ -306,8 +306,6 @@ const clickListener = (element: Element, fn: Function) => {
   childIDs(element)
     .filter((id) => !idClickers.has(id))
     .forEach((id) => setMap(idClickers, id, changed));
-
-  console.log("clickers", idClickers);
 };
 
 const stateListener = (fieldID: string, fn: Function) => {
