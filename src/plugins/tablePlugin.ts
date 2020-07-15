@@ -158,13 +158,28 @@ export const toggleClass = (name: string, row: number, classname: string) => {
     return;
   }
   const keys = <Array<any>>JSON.parse(keysJSON);
-  const classesJSON = binder.getByName(name + "-table-classes");
-  const classes: Array<any> = classesJSON
-    ? JSON.parse(classesJSON).filter((rc) => rc.row != row)
-    : new Array();
-  classes.push({ row, classname });
+  const classes = adjustClasses(row, classname);
   binder.setByName(name + "-table-classes", JSON.stringify(classes));
   setClass(name, row, classname, keys);
+};
+
+const adjustClasses = (row: number, classname: string) => {
+  const classesJSON = binder.getByName(name + "-table-classes");
+  if (!classesJSON) {
+    return [{ row, classname }];
+  }
+  const classes: Array<any> = JSON.parse(classesJSON);
+  const alreadyHas = classes.find(
+    (rc) => rc.row === row && rc.classname === classname
+  );
+  if (alreadyHas) {
+    // toggle out
+    return classes.filter((rc) => rc.row === row && rc.classname === classname);
+  }
+  // Over write or insert
+  const newClasses = classes.filter((rc) => rc.row != row);
+  newClasses.push({ row, classname });
+  return newClasses;
 };
 
 const setClass = (
