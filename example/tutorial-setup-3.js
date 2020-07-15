@@ -26,8 +26,52 @@ class PosRow extends HTMLElement {
     this.innerHTML = `<span class="row-grid">` + this.innerHTML + `</span>`;
   }
 }
-
 customElements.define("pos-row", PosRow);
+
+class PosGoal extends HTMLElement {
+  start = -1;
+  constructor() {
+    super();
+    this.start = parseInt(this.getAttribute("start"));
+  }
+
+  connectedCallback() {
+    const buttonclass = this.mode === "edit" ? "" : "hide";
+    const inputclass = this.mode === "edit" ? "hide" : "";
+    const html =
+      `<button swap-data="pswap" class="place ${buttonclass}" name="pos-goal" id="pos-goal-button"></button>` +
+      `<input placeholder="Goalie" class="place ${inputclass}" name="pos-goal" id="pos-goal-input"></input>`;
+    this.innerHTML = this.innerHTML + html;
+    posId.push("pos-goal-input");
+    posId.push("pos-goal-button");
+    this.innerHTML = `<span>` + this.innerHTML + `</span>`;
+  }
+}
+customElements.define("pos-goal", PosGoal);
+
+class PosBench extends HTMLElement {
+  start = -1;
+  constructor() {
+    super();
+    this.start = parseInt(this.getAttribute("start"));
+  }
+
+  connectedCallback() {
+    const buttonclass = this.mode === "edit" ? "" : "hide";
+    const inputclass = this.mode === "edit" ? "hide" : "";
+    for (let x = 0; x < 5; x++) {
+      const id = x;
+      const html =
+        `<button swap-data="pswap" class="${buttonclass}" name="pos-bench-${id}" id="pos-bench-button-${id}"></button>` +
+        `<input placeholder="Bench #${id}" class="${inputclass}" name="pos-bench-${id}" id="pos-bench-input-${id}"></input>`;
+      this.innerHTML = this.innerHTML + html;
+      posId.push("pos-bench-input-" + id);
+      posId.push("pos-bench-button-" + id);
+    }
+    this.innerHTML = `<span class="row-grid">` + this.innerHTML + `</span>`;
+  }
+}
+customElements.define("pos-bench", PosBench);
 
 // Define custom element
 class FormationEdit extends HTMLElement {

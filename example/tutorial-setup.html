@@ -317,7 +317,8 @@
           <h2>4. Formation</h2>
           <div class="repeatgrid">
             <div class="left-text">
-              Formation is a complex component, that has two modes - edit and move.
+              Formation is a complex component, that has two modes - edit and move. After doing this, it looking like
+              a refactor is in order as the script is getting a little long.
               <br />
               <br />
               <a target="_blank" href="tutorial-setup-3.html">Go to running site</a>
@@ -326,7 +327,114 @@
               <h3>Code</h3>
               <pre class="drawing">
 
- import "./dist/go.js";
+  import { addClickFunction, go } from "./dist/index.js";
+
+  let mode = "edit"; // two modes 'edit' or 'display'
+  
+  const posId = [];
+  
+  class PosRow extends HTMLElement {
+    start = -1;
+    constructor() {
+      super();
+      this.start = parseInt(this.getAttribute("start"));
+    }
+  
+    connectedCallback() {
+      const buttonclass = this.mode === "edit" ? "" : "hide";
+      const inputclass = this.mode === "edit" ? "hide" : "";
+      for (let x = 0; x < 5; x++) {
+        const id = this.start + x;
+        const html =
+          `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
+          `&lt;input class="${inputclass}" name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
+        this.innerHTML = this.innerHTML + html;
+        posId.push("pos-input-" + id);
+        posId.push("pos-button-" + id);
+      }
+      this.innerHTML = `&lt;span class="row-grid">` + this.innerHTML + `&lt;/span>`;
+    }
+  }
+  
+  customElements.define("pos-row", PosRow);
+  
+  // Define custom element
+  class FormationEdit extends HTMLElement {
+    constructor() {
+      super();
+      mode = this.getAttribute("mode");
+    }
+  
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="format-grid" id="formation">
+                          &lt;pos-row start=1  > &lt;/pos-row>
+                          &lt;pos-row start=6  >&lt;/pos-row>
+                          &lt;pos-row start=11 >&lt;/pos-row>
+                          &lt;pos-row start=16 >&lt;/pos-row>
+                          &lt;pos-goal>&lt;/pos-goal>
+                          &lt;pos-bench>&lt;/pos-bench>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("formation-edit", FormationEdit);
+  
+  // Define custom element
+  class TeamNames extends HTMLElement {
+    constructor() {
+      super();
+      mode = this.getAttribute("mode");
+    }
+  
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
+                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">&Lt;/input>
+                          &lt;div class="vrs"> VRS &Lt;/div>
+                          &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">&Lt;/input>
+                          &lt;/div>  
+                          &lt;div class="hide center-grid" id="namesDisplayMode">
+                          &lt;label class="teamName" id="teamNameLabel" name="teamName" >&Lt;/label>
+                          &lt;div class="vrs">- VRS -&Lt;/div>
+                          &lt;label class="teamName" id="opponentLabel" name="opponentName" >&Lt;/label>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("team-names", TeamNames);
+  
+  // Register a function for toggleEdit to use with "click" in mark up
+  addClickFunction("toggleEdit", (e) => {
+    const editNow = mode === "display"; // toggle mode
+  
+    toggleHide("namesInputMode");
+    toggleHide("namesDisplayMode");
+    changeClass(e.target.id, editNow); // Button press display
+  
+    posId.forEach((id) => toggleHide(id));
+  
+    mode = editNow ? "edit" : "display"; // set new mode
+  });
+  
+  const toggleHide = (id, className = "hide") => {
+    const element = document.getElementById(id);
+    const hiding = element.classList.contains(className);
+    if (hiding) {
+      element.classList.remove(className);
+    } else {
+      element.classList.add(className);
+    }
+  };
+  
+  //helper function for changing class
+  const changeClass = (id, show, className = "edit") => {
+    const element = document.getElementById(id);
+    if (show) {
+      element.classList.remove(className);
+    } else {
+      element.classList.add(className);
+    }
+  };
+  
+  go();
+                
                 </pre
               >
             </div>
@@ -386,19 +494,348 @@
       background-color: green;
       color: white;
     }
-
+    
+    button {
+      margin: 5px;
+      min-height: 100px;
+      max-width: 90%;
+      font-size: 32px;
+    }
+    
+    body {
+      background-color: #78c278;
+    }
+    
+    input {
+      background-color: #ffeb3b;
+      min-height: 100px;
+      font-size: 42px;
+      min-width: 10px;
+    }
+    
+    .action {
+      min-height: 12px;
+      font-size: 32px;
+    }
+    
+    .vrs {
+      padding-top: 27px;
+    }
+    
+    .teamName {
+      padding-top: 27px;
+      padding-bottom: 27px;
+    }
+    
+    .edit {
+      background-color: green;
+      color: white;
+    }
+    
+    .swap-data-selected {
+      background-color: green;
+    }
+    
+    .format-grid {
+      display: grid;
+      grid-template-rows: auto auto auto auto auto;
+    }
+    
+    .row-grid {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto;
+      grid-gap: 5px;
+      margin: 10px;
+    }
+    
+    .center-grid {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      text-align: center;
+      font-size: 30px;
+      padding-left: 30%;
+      padding-right: 30%;
+    }
+    
     .place {
       width: 50%;
       height: 42px;
       margin-left: 25%;
       font-size: 30px;
     }
-
+    
     .nav {
-      display: none;
+      display: grid;
+      grid-template-columns: auto auto auto;
     }
+                                </pre
+              >
+            </div>
 
+          </div>
+          
+        </article>
+        <br />
+        <br />
+
+
+
+        <article id="event-list">
+          <h2>5. Event List</h2>
+          <div class="repeatgrid">
+            <div class="left-text">
+              Event list is a mainly linked to the publication button and might as well put the kick off button in to effect
+              at the same time, but first refactor
+              <br />
+              <br />
+              <a target="_blank" href="tutorial-setup-4.html">Go to running site</a>
+            </div>
+            <div class="sketch">
+              <h3>Code</h3>
+              <pre class="drawing">
+                
+  import { addClickFunction, go } from "./dist/index.js";
+
+  let mode = "edit"; // two modes 'edit' or 'display'
+  
+  const posId = [];
+  
+  class PosRow extends HTMLElement {
+    start = -1;
+    constructor() {
+      super();
+      this.start = parseInt(this.getAttribute("start"));
+    }
+  
+    connectedCallback() {
+      const buttonclass = this.mode === "edit" ? "" : "hide";
+      const inputclass = this.mode === "edit" ? "hide" : "";
+      for (let x = 0; x < 5; x++) {
+        const id = this.start + x;
+        const html =
+          `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
+          `&lt;input class="${inputclass}" name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
+        this.innerHTML = this.innerHTML + html;
+        posId.push("pos-input-" + id);
+        posId.push("pos-button-" + id);
+      }
+      this.innerHTML = `&lt;span class="row-grid">` + this.innerHTML + `&lt;/span>`;
+    }
+  }
+  
+  customElements.define("pos-row", PosRow);
+  
+  // Define custom element
+  class FormationEdit extends HTMLElement {
+    constructor() {
+      super();
+      mode = this.getAttribute("mode");
+    }
+  
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="format-grid" id="formation">
+                          &lt;pos-row start=1  > &lt;/pos-row>
+                          &lt;pos-row start=6  >&lt;/pos-row>
+                          &lt;pos-row start=11 >&lt;/pos-row>
+                          &lt;pos-row start=16 >&lt;/pos-row>
+                          &lt;pos-goal>&lt;/pos-goal>
+                          &lt;pos-bench>&lt;/pos-bench>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("formation-edit", FormationEdit);
+  
+  // Define custom element
+  class TeamNames extends HTMLElement {
+    constructor() {
+      super();
+      mode = this.getAttribute("mode");
+    }
+  
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
+                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">&Lt;/input>
+                          &lt;div class="vrs"> VRS &Lt;/div>
+                          &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">&Lt;/input>
+                          &lt;/div>  
+                          &lt;div class="hide center-grid" id="namesDisplayMode">
+                          &lt;label class="teamName" id="teamNameLabel" name="teamName" >&Lt;/label>
+                          &lt;div class="vrs">- VRS -&Lt;/div>
+                          &lt;label class="teamName" id="opponentLabel" name="opponentName" >&Lt;/label>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("team-names", TeamNames);
+  
+  // Register a function for toggleEdit to use with "click" in mark up
+  addClickFunction("toggleEdit", (e) => {
+    const editNow = mode === "display"; // toggle mode
+  
+    toggleHide("namesInputMode");
+    toggleHide("namesDisplayMode");
+    changeClass(e.target.id, editNow); // Button press display
+  
+    posId.forEach((id) => toggleHide(id));
+  
+    mode = editNow ? "edit" : "display"; // set new mode
+  });
+  
+  const toggleHide = (id, className = "hide") => {
+    const element = document.getElementById(id);
+    const hiding = element.classList.contains(className);
+    if (hiding) {
+      element.classList.remove(className);
+    } else {
+      element.classList.add(className);
+    }
+  };
+  
+  //helper function for changing class
+  const changeClass = (id, show, className = "edit") => {
+    const element = document.getElementById(id);
+    if (show) {
+      element.classList.remove(className);
+    } else {
+      element.classList.add(className);
+    }
+  };
+  
+  go();
+                
                 </pre
+              >
+            </div>
+            <div class="sketch">              <h3>Mark up</h3>
+              <pre>
+
+    &lt;html>
+
+    &lt;head>
+      &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-1.css" />
+      &lt;title>Footswell&lt;/title>
+    &lt;/head>
+
+    &lt;body class="fade-in">
+      &lt;main>
+
+        &lt;header>
+
+          &lt;h1> F O O T S W E L L &lt;/h1>
+
+        &lt;/header>
+
+        &lt;section>
+  
+              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+  
+              &lt;team-names mode="edit">&lt;/team-names>
+  
+              &lt;nav class="nav" >
+                  &lt;Button id="EditBut">Edit&lt;/Button> 
+                  &lt;Button id="PublishBut">Publish&lt;/button> 
+                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
+              &lt;/nav>
+  
+              &lt;formation-edit mode="move">&lt;formation-edit>
+  
+              &lt;events-list>&lt;events-list>
+  
+        &lt;/section>
+     
+      &lt;/main>
+    &lt;/body>
+
+    &lt;script type="module" src="tutorial-setup-1.js">&lt;/script>
+
+    &lt;/html>
+                          </pre
+              >
+              </div>
+            <div class="sketch">
+              <h3>Css</h3>
+              
+              <pre class="drawing">
+
+    h1 {
+      text-align: center;
+      background-color: green;
+      color: white;
+    }
+    
+    button {
+      margin: 5px;
+      min-height: 100px;
+      max-width: 90%;
+      font-size: 32px;
+    }
+    
+    body {
+      background-color: #78c278;
+    }
+    
+    input {
+      background-color: #ffeb3b;
+      min-height: 100px;
+      font-size: 42px;
+      min-width: 10px;
+    }
+    
+    .action {
+      min-height: 12px;
+      font-size: 32px;
+    }
+    
+    .vrs {
+      padding-top: 27px;
+    }
+    
+    .teamName {
+      padding-top: 27px;
+      padding-bottom: 27px;
+    }
+    
+    .edit {
+      background-color: green;
+      color: white;
+    }
+    
+    .swap-data-selected {
+      background-color: green;
+    }
+    
+    .format-grid {
+      display: grid;
+      grid-template-rows: auto auto auto auto auto;
+    }
+    
+    .row-grid {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto;
+      grid-gap: 5px;
+      margin: 10px;
+    }
+    
+    .center-grid {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      text-align: center;
+      font-size: 30px;
+      padding-left: 30%;
+      padding-right: 30%;
+    }
+    
+    .place {
+      width: 50%;
+      height: 42px;
+      margin-left: 25%;
+      font-size: 30px;
+    }
+    
+    .nav {
+      display: grid;
+      grid-template-columns: auto auto auto;
+    }
+                                </pre
               >
             </div>
 

@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="tutorial-setup-4.css" />
+    <title>Footswell</title>
+  </head>
+  <body class="fade-in">
+    <main>
+      <header>
+        <h1>F O O T S W E L L</h1>
+      </header>
+      <section>
+        <article id="components">
+
+            <button class="place action" toggle="HOME,AWAY" id="place-toggle" name="place">HOME</button>   
+
+            <team-names id="teamNames" mode="edit"></team-names>
+
+            <nav class="nav">
+                <button class="action" click="toggleEdit">Edit</button> 
+                <button click="publish" class="action">Publish</button> 
+                <button class="action">Kick Off</button>   
+            </nav>
+
+            <formation-edit mode="move"></formation-edit>
+
+            <events-list></events-list>
+
+        </section>
+    </main>
+  </body>
+  <script type="module" src="tutorial-setup-4.js"></script>
+</html>

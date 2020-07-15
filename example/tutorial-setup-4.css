@@ -4,6 +4,11 @@ h1 {
   color: white;
 }
 
+h2 {
+  background-color: green;
+  color: white;
+}
+
 button {
   margin: 5px;
   min-height: 100px;
@@ -17,9 +22,23 @@ body {
 
 input {
   background-color: #f1e78c;
-  min-height: 100px;
   font-size: 42px;
   min-width: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.crossout {
+  text-decoration: line-through;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr 9fr 1fr 1fr;
+}
+
+.event-text {
+  font-size: 30px;
 }
 
 .action {
@@ -34,6 +53,7 @@ input {
 .teamName {
   padding-top: 27px;
   padding-bottom: 27px;
+  font-size: 55px;
 }
 
 .edit {
@@ -50,13 +70,6 @@ input {
   grid-template-rows: auto auto auto auto auto;
 }
 
-.goalie {
-  width: 50%;
-  height: 42px;
-  margin-left: 25%;
-  font-size: 30px;
-}
-
 .row-grid {
   display: grid;
   grid-template-columns: auto auto auto auto auto;
@@ -66,11 +79,9 @@ input {
 
 .center-grid {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 5fr 2fr 5fr;
   text-align: center;
   font-size: 30px;
-  padding-left: 30%;
-  padding-right: 30%;
 }
 
 .place {

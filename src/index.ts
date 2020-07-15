@@ -243,6 +243,7 @@ const updateEntry = (
   // update all elements in entry
   let newEntry = true;
   storedEntry.elements = storedEntry.elements.map(
+
     (storedElement: HTMLElement) => {
       setValue(storedElement, currentValue);
       if (storedElement.id === element.id) {

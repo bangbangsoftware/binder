@@ -54,7 +54,7 @@ export const takeRow = (name, index) => {
         return;
     }
     const tableData = tables.get(name);
-    if (tableData != undefined && tableData.mapList.length - 1 > index) {
+    if (tableData != undefined && tableData.mapList.length > index) {
         delete tableData.mapList[index];
         processData(tableData);
     }
@@ -121,23 +121,65 @@ const processData = (data) => {
         populateTemplate(data.name, mess, data.div, data.save);
     };
 };
+export const toggleClass = (name, row, classname) => {
+    const keysJSON = binder.getByName(name + "-table-keys");
+    if (!keysJSON) {
+        return;
+    }
+    const keys = JSON.parse(keysJSON);
+    const classesJSON = binder.getByName(name + "-table-classes");
+    const classes = classesJSON
+        ? JSON.parse(classesJSON).filter((rc) => rc.row != row)
+        : new Array();
+    classes.push({ row, classname });
+    binder.setByName(name + "-table-classes", JSON.stringify(classes));
+    setClass(name, row, classname, keys);
+};
+const setClass = (name, row, classname, keys) => {
+    keys.forEach((key) => {
+        var _a, _b, _c;
+        const id = name + "-" + key + "-" + row;
+        const element = document.getElementById(id);
+        if ((_a = element) === null || _a === void 0 ? void 0 : _a.classList.contains(classname)) {
+            (_b = element) === null || _b === void 0 ? void 0 : _b.classList.remove(classname);
+        }
+        else {
+            (_c = element) === null || _c === void 0 ? void 0 : _c.classList.add(classname);
+        }
+    });
+};
+const reclass = (name) => {
+    const keysJSON = binder.getByName(name + "-table-keys");
+    if (!keysJSON) {
+        return;
+    }
+    const keys = JSON.parse(keysJSON);
+    const classesJSON = binder.getByName(name + "-table-classes");
+    if (!classesJSON) {
+        return;
+    }
+    const classes = JSON.parse(classesJSON);
+    classes.forEach((cr) => setClass(name, cr.row, cr.classname, keys));
+};
 const populateTemplate = (name, workerData, div, save) => {
     const html = workerData.data.html;
     const returnData = workerData.data.data;
     const generated = new DOMParser().parseFromString(html, "text/html");
     const body = generated.getElementsByTagName("BODY")[0];
-    div.innerHTML = "";
     const children = Array.prototype.slice.call(body.children);
     const keys = new Set();
-    const datas = children.map((child) => {
-        const id = child.id + "";
+    div.innerHTML = "";
+    const datas = children.map((child, index) => {
+        const id = child.id;
         const data = returnData[id];
         const end = id.lastIndexOf("-");
         const key = id.substring(name.length + 1, end);
-        if (key.indexOf("$index") === -1) {
+        if (key.indexOf("$index") === -1 && data) {
             keys.add(key);
         }
-        child.innerText = data;
+        if (data) {
+            child.innerText = data;
+        }
         div.appendChild(child);
         return data;
     });
@@ -147,5 +189,6 @@ const populateTemplate = (name, workerData, div, save) => {
         const length = datas.length / keys.size;
         binder.setByName(name + "-table-length", length + "");
     }
+    reclass(name);
 };
 //# sourceMappingURL=tablePlugin.js.map

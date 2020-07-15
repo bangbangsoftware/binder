@@ -70,7 +70,7 @@ export const takeRow = (name: string, index: number) => {
     return;
   }
   const tableData: TableData | undefined = tables.get(name);
-  if (tableData != undefined && tableData.mapList.length - 1 > index) {
+  if (tableData != undefined && tableData.mapList.length > index) {
     delete tableData.mapList[index];
     processData(tableData);
   }
@@ -152,6 +152,52 @@ const processData = (data: TableData) => {
   };
 };
 
+export const toggleClass = (name: string, row: number, classname: string) => {
+  const keysJSON = binder.getByName(name + "-table-keys");
+  if (!keysJSON) {
+    return;
+  }
+  const keys = <Array<any>>JSON.parse(keysJSON);
+  const classesJSON = binder.getByName(name + "-table-classes");
+  const classes: Array<any> = classesJSON
+    ? JSON.parse(classesJSON).filter((rc) => rc.row != row)
+    : new Array();
+  classes.push({ row, classname });
+  binder.setByName(name + "-table-classes", JSON.stringify(classes));
+  setClass(name, row, classname, keys);
+};
+
+const setClass = (
+  name: string,
+  row: number,
+  classname: string,
+  keys: Array<any>
+) => {
+  keys.forEach((key) => {
+    const id = name + "-" + key + "-" + row;
+    const element = document.getElementById(id);
+    if (element?.classList.contains(classname)) {
+      element?.classList.remove(classname);
+    } else {
+      element?.classList.add(classname);
+    }
+  });
+};
+
+const reclass = (name: string) => {
+  const keysJSON = binder.getByName(name + "-table-keys");
+  if (!keysJSON) {
+    return;
+  }
+  const keys = <Array<any>>JSON.parse(keysJSON);
+  const classesJSON = binder.getByName(name + "-table-classes");
+  if (!classesJSON) {
+    return;
+  }
+  const classes: Array<any> = JSON.parse(classesJSON);
+  classes.forEach((cr) => setClass(name, cr.row, cr.classname, keys));
+};
+
 const populateTemplate = (
   name: string,
   workerData,
@@ -163,18 +209,20 @@ const populateTemplate = (
 
   const generated = new DOMParser().parseFromString(html, "text/html");
   const body = generated.getElementsByTagName("BODY")[0];
-  div.innerHTML = "";
   const children = Array.prototype.slice.call(body.children);
   const keys = new Set<String>();
-  const datas = children.map((child) => {
-    const id = child.id + "";
+  div.innerHTML = "";
+  const datas = children.map((child, index) => {
+    const id = child.id;
     const data = returnData[id];
     const end = id.lastIndexOf("-");
     const key = id.substring(name.length + 1, end);
-    if (key.indexOf("$index") === -1) {
+    if (key.indexOf("$index") === -1 && data) {
       keys.add(key);
     }
-    child.innerText = data;
+    if (data) {
+      child.innerText = data;
+    }
     div.appendChild(child);
     return data;
   });
@@ -185,4 +233,6 @@ const populateTemplate = (
     const length = datas.length / keys.size;
     binder.setByName(name + "-table-length", length + "");
   }
+
+  reclass(name);
 };
