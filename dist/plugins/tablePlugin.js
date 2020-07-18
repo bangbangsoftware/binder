@@ -125,11 +125,11 @@ export const toggleClass = (name, row, classname) => {
         return;
     }
     const keys = JSON.parse(keysJSON);
-    const classes = adjustClasses(row, classname);
+    const classes = adjustClasses(name, row, classname);
     binder.setByName(name + "-table-classes", JSON.stringify(classes));
     setClass(name, row, classname, keys);
 };
-const adjustClasses = (row, classname) => {
+const adjustClasses = (name, row, classname) => {
     const classesJSON = binder.getByName(name + "-table-classes");
     if (!classesJSON) {
         return [{ row, classname }];
