@@ -2,13 +2,9 @@ import {
   addClickFunction,
   go,
   getByName,
-  put,
-  get,
   setValue,
 } from "./dist/index.js";
 import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
-
-let mode = "edit"; // two modes 'edit' or 'display'
 
 import { positionIds } from "./tutorial-setup-4-posrow.js";
 import { benchIds } from "./tutorial-setup-4-posbench.js";
@@ -16,6 +12,8 @@ import { goalieIds } from "./tutorial-setup-4-posgoal.js";
 import "./tutorial-setup-4-formationedit.js";
 import "./tutorial-setup-4-teamnames.js";
 import "./tutorial-setup-4-eventslist.js";
+
+let mode = "edit"; // two modes 'edit' or 'display'
 
 // Register a function for toggleEdit to use with "click" in mark up
 addClickFunction("toggleEdit", (e) => {
