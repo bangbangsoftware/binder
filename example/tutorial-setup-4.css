@@ -14,6 +14,11 @@ button {
   min-height: 100px;
   max-width: 90%;
   font-size: 32px;
+  border-radius: 25px;
+}
+
+button:focus {
+  outline: 0;
 }
 
 body {
@@ -28,17 +33,22 @@ input {
   margin-bottom: 30px;
 }
 
+.event-button {
+  min-height: 100px;
+}
+
 .crossout {
   text-decoration: line-through;
 }
 
 .events-grid {
   display: grid;
-  grid-template-columns: 1fr 9fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 9fr 1fr;
 }
 
 .event-text {
   font-size: 30px;
+  align-self: center;
 }
 
 .action {

@@ -88,15 +88,56 @@ addClickFunction("publish", () => {
   addRow("events", ent);
 });
 
-addClickFunction("undo", (e) => {
+const getRow = (e) => {
   const clicked = e.target;
-  const row = clicked.getAttribute("row");
+  return clicked.getAttribute("row");
+};
+
+addClickFunction("undo", (e) => {
+  const row = getRow(e);
   if (!row) {
     return;
   }
   const ok = document.getElementById("events-ok-" + row);
   setValue(ok, "X");
   toggleClass("events", row, "crossout");
+});
+
+addClickFunction("send", async (e) => {
+  const row = getRow(e);
+  if (!row) {
+    return;
+  }
+  const title = "Footswell";
+  const text = document.getElementById("events-event-" + row).innerText;
+  const url = window.location.href;
+  //  you could..... const number = telephoneNumber;
+
+  if (!navigator.share) {
+    console.error("web share not supported");
+    return;
+  }
+
+  try {
+    await navigator.share({
+      title,
+      text,
+      url,
+    });
+    console.log("Thanks for sharing!");
+  } catch (err) {
+    console.log(`Couldn't share because of`, err.message);
+  }
+  /** 
+    
+   Straight to WhatsApp?
+
+    const  message =  encodeURIComponent(yourMessage);
+    
+    console.log("https://api.whatsapp.com/send?phone=" + number + "&text=%20" + message);
+    return fetch("https://api.whatsapp.com/send?phone=" + number + "&text=%20" + message);
+  
+  */
 });
 
 go();
