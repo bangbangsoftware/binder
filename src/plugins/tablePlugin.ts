@@ -172,7 +172,7 @@ const adjustClasses = (name: string, row: number, classname: string) => {
   );
   if (alreadyHas) {
     // toggle out
-    return classes.filter((rc) => rc.row === row && rc.classname === classname);
+    return classes.filter((rc) => rc.row !== row || rc.classname !== classname);
   }
   // Over write or insert
   const newClasses = classes.filter((rc) => rc.row != row);

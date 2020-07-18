@@ -94,29 +94,9 @@ addClickFunction("undo", (e) => {
   if (!row) {
     return;
   }
-  //crossout("events-time-", row);
-  //crossout("events-event-", row);
-  toggleLabel(clicked);
   const ok = document.getElementById("events-ok-" + row);
   setValue(ok, "X");
   toggleClass("events", row, "crossout");
-
-  //  const crossouts = get("crossouts") ? get("crossouts") : [];
-  //  put("crossouts", crossouts);
-  // do we need to store outher stuff?
 });
-
-const crossout = (prefix, row) => {
-  const id = prefix + row;
-  const element = document.getElementById(id);
-  if (element.classList.contains("crossout")) {
-    element.classList.remove("crossout");
-  } else {
-    element.classList.add("crossout");
-  }
-};
-
-const toggleLabel = (clicked) =>
-  (clicked.innerText = clicked.innerText === "Undo" ? "Redo" : "Undo");
 
 go();

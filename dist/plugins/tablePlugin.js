@@ -138,7 +138,7 @@ const adjustClasses = (name, row, classname) => {
     const alreadyHas = classes.find((rc) => rc.row === row && rc.classname === classname);
     if (alreadyHas) {
         // toggle out
-        return classes.filter((rc) => rc.row === row && rc.classname === classname);
+        return classes.filter((rc) => rc.row !== row || rc.classname !== classname);
     }
     // Over write or insert
     const newClasses = classes.filter((rc) => rc.row != row);
