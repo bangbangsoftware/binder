@@ -14,10 +14,6 @@ interface TableData {
   save: boolean;
 }
 
-const next = (name: string, keys: Array<string>, row: number) => {
-  return name + "-" + keys[0] + "-" + row;
-};
-
 const getStoredData = (name: string, binder: BinderTools): Array<any> => {
   const keysJSON = binder.getByName(name + "-table-keys");
   if (!keysJSON) {
@@ -28,16 +24,17 @@ const getStoredData = (name: string, binder: BinderTools): Array<any> => {
   if (!length) {
     return [];
   }
+  const data = keys.map((key) => binder.getStartsWith(name + "-" + key));
+
   const dataMap = Array<any>();
-  let rowInt = 0;
-  while (binder.getByName(next(name, keys, rowInt))) {
-    const row = {};
-    keys.forEach((key) => {
-      row[key] = binder.getByName(name + "-" + key + "-" + rowInt);
+  keys.forEach((key, index) => {
+    const fieldArray = data[index];
+    fieldArray.forEach((field, fieldIndex) => {
+      const row = dataMap[fieldIndex] ? dataMap[fieldIndex] : {};
+      row[key] = field;
+      dataMap[fieldIndex] = row;
     });
-    dataMap.push(row);
-    rowInt++;
-  }
+  });
   return dataMap;
 };
 
@@ -61,6 +58,7 @@ export const addRow = (name: string, rowData: any[]) => {
   const tableData: TableData | undefined = tables.get(name);
   if (tableData != undefined) {
     tableData.mapList.push(rowData);
+    tableData.save = true;
     processData(tableData);
   }
 };

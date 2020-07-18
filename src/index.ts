@@ -42,6 +42,11 @@ const isInput = (element: Element) =>
 
 export const registry: { [key: string]: RegEntry } = {};
 export const get = (key: string): RegEntry => registry[key];
+export const getStartsWith = (key: string): Array<string> =>
+  Object.keys(registry)
+    .filter((name) => name.startsWith(key))
+    .map((name) => registry[name].currentValue);
+
 export const getByName = (key: string): string => {
   const regEntry: RegEntry = get(key);
   return regEntry == null ? "" : regEntry.currentValue;
@@ -243,7 +248,6 @@ const updateEntry = (
   // update all elements in entry
   let newEntry = true;
   storedEntry.elements = storedEntry.elements.map(
-
     (storedElement: HTMLElement) => {
       setValue(storedElement, currentValue);
       if (storedElement.id === element.id) {
@@ -334,6 +338,7 @@ export const tools: BinderTools = {
   putElements,
   get,
   getValue,
+  getStartsWith,
   setValue,
   setByName,
   getByName,

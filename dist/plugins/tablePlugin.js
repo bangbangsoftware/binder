@@ -2,9 +2,6 @@ let binder;
 const done = Array();
 const sortFuncs = new Map();
 const tables = new Map();
-const next = (name, keys, row) => {
-    return name + "-" + keys[0] + "-" + row;
-};
 const getStoredData = (name, binder) => {
     const keysJSON = binder.getByName(name + "-table-keys");
     if (!keysJSON) {
@@ -15,16 +12,16 @@ const getStoredData = (name, binder) => {
     if (!length) {
         return [];
     }
+    const data = keys.map((key) => binder.getStartsWith(name + "-" + key));
     const dataMap = Array();
-    let rowInt = 0;
-    while (binder.getByName(next(name, keys, rowInt))) {
-        const row = {};
-        keys.forEach((key) => {
-            row[key] = binder.getByName(name + "-" + key + "-" + rowInt);
+    keys.forEach((key, index) => {
+        const fieldArray = data[index];
+        fieldArray.forEach((field, fieldIndex) => {
+            const row = dataMap[fieldIndex] ? dataMap[fieldIndex] : {};
+            row[key] = field;
+            dataMap[fieldIndex] = row;
         });
-        dataMap.push(row);
-        rowInt++;
-    }
+    });
     return dataMap;
 };
 export const addSetup = (name, setupData) => {
@@ -46,6 +43,7 @@ export const addRow = (name, rowData) => {
     const tableData = tables.get(name);
     if (tableData != undefined) {
         tableData.mapList.push(rowData);
+        tableData.save = true;
         processData(tableData);
     }
 };
@@ -127,13 +125,25 @@ export const toggleClass = (name, row, classname) => {
         return;
     }
     const keys = JSON.parse(keysJSON);
-    const classesJSON = binder.getByName(name + "-table-classes");
-    const classes = classesJSON
-        ? JSON.parse(classesJSON).filter((rc) => rc.row != row)
-        : new Array();
-    classes.push({ row, classname });
+    const classes = adjustClasses(row, classname);
     binder.setByName(name + "-table-classes", JSON.stringify(classes));
     setClass(name, row, classname, keys);
+};
+const adjustClasses = (row, classname) => {
+    const classesJSON = binder.getByName(name + "-table-classes");
+    if (!classesJSON) {
+        return [{ row, classname }];
+    }
+    const classes = JSON.parse(classesJSON);
+    const alreadyHas = classes.find((rc) => rc.row === row && rc.classname === classname);
+    if (alreadyHas) {
+        // toggle out
+        return classes.filter((rc) => rc.row === row && rc.classname === classname);
+    }
+    // Over write or insert
+    const newClasses = classes.filter((rc) => rc.row != row);
+    newClasses.push({ row, classname });
+    return newClasses;
 };
 const setClass = (name, row, classname, keys) => {
     keys.forEach((key) => {

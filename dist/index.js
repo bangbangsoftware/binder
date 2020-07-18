@@ -29,6 +29,9 @@ export const setDocument = (d) => (doc = d);
 const isInput = (element) => element != null && element.localName != null && element.localName === "input";
 export const registry = {};
 export const get = (key) => registry[key];
+export const getStartsWith = (key) => Object.keys(registry)
+    .filter((name) => name.startsWith(key))
+    .map((name) => registry[name].currentValue);
 export const getByName = (key) => {
     const regEntry = get(key);
     return regEntry == null ? "" : regEntry.currentValue;
@@ -256,6 +259,7 @@ export const tools = {
     putElements,
     get,
     getValue,
+    getStartsWith,
     setValue,
     setByName,
     getByName,

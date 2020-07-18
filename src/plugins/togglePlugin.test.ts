@@ -17,6 +17,7 @@ describe("togglePlugin.test", () => {
       const blank = { currentValue: "", elements: Array<Element>() };
       return blank;
     },
+    getStartsWith: (key) => [key],
     setValue: (el: Element, value: string) => {
       mockElement.innerText = value;
     },

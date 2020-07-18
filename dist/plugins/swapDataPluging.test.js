@@ -36,6 +36,7 @@ const binder = {
         const blank = { currentValue: "", elements: Array() };
         return blank;
     },
+    getStartsWith: (key) => [key],
     setValue: (el, value) => {
         doc.getElementById(el.id).innerText = value;
     },
