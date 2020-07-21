@@ -1,9 +1,4 @@
-import {
-  addClickFunction,
-  go,
-  getByName,
-  setValue,
-} from "./dist/index.js";
+import { addClickFunction, go, getByName, setValue } from "./dist/index.js";
 import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
 
 import { positionIds } from "./tutorial-setup-4-posrow.js";
@@ -90,6 +85,10 @@ const getRow = (e) => {
   const clicked = e.target;
   return clicked.getAttribute("row");
 };
+
+addClickFunction("kickoff", (e) => {
+  window.location.href = "tutorial-kickoff-1.html";
+});
 
 addClickFunction("undo", (e) => {
   const row = getRow(e);
