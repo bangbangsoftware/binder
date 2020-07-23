@@ -163,7 +163,7 @@ const generateRunner = (name: string) => (ev: Event) => {
   console.error("No click function for " + name);
   console.error("Need to add some code like:");
   console.error(
-    '%c import { go, tools, addClickFunction } from "./dist/index.js"; ',
+    '%c import { go, tools, addClickFunction } from "./dist/binder.js"; ',
     "background: #222; color: #bada55"
   );
   console.error("");

@@ -1,4 +1,4 @@
-import { go, tools } from "./dist/index.js";
+import { go, tools } from "./dist/binder.js";
 
 import { clickPlugin, addClickFunction } from "./dist/plugins/clickPlugin.js";
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";

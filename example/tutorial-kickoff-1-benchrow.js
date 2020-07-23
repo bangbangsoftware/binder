@@ -1,4 +1,4 @@
-import { getByName } from "./dist/index.js";
+import { getByName } from "./dist/binder.js";
 
 class PlayerBench extends HTMLElement {
   start = -1;

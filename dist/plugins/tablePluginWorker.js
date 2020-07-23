@@ -23,7 +23,6 @@ const go = (e) => {
         html = html + rowTemplate;
     });
     const results = { html, data };
-    console.log("results ", results);
     if (post) {
         postMessage(results);
     }

@@ -148,7 +148,7 @@
               <h3>Code - tutorial-setup-2.js</h3>
 <pre class="drawing">
 
-  import { addClickFunction, go } from "./dist/index.js";
+  import { addClickFunction, go } from "./dist/binder.js";
 
   let mode = "edit"; // two modes 'edit' or 'display'
 
@@ -327,7 +327,7 @@
               <h3>Code - tutorial-setup-3.js</h3>
               <pre class="drawing">
 
-  import { addClickFunction, go } from "./dist/index.js";
+  import { addClickFunction, go } from "./dist/binder.js";
 
   let mode = "edit"; // two modes 'edit' or 'display'
   
@@ -599,7 +599,7 @@
       go,
       getByName,
       setValue,
-    } from "./dist/index.js";
+    } from "./dist/binder.js";
     import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
     
     import { positionIds } from "./tutorial-setup-4-posrow.js";
@@ -891,26 +891,35 @@
        <div class="sketch">
         <h3>Code - tutorial-teamnames.js</h3>
         <pre class="drawing"> 
+    import { getByName } from "./dist/binder.js";
+
     class TeamNames extends HTMLElement {
       constructor() {
         super();
+        this.mode = this.getAttribute("mode");
       }
     
       connectedCallback() {
-        this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
-                            &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">&lt;/input>
+        const labelClasses =
+          this.mode === "play" ? "center-grid" : "center-grid hide";
+        const inputClasses =
+          this.mode !== "play" ? "center-grid" : "center-grid hide";
+        const teamName = getByName("teamName");
+        const opponentName = getByName("opponentName");
+        this.innerHTML = `&lt;div class="${inputClasses}" id="namesInputMode">
+                            &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">${teamName}&lt;/input>
                             &lt;div class="vrs"> VRS &lt;/div>
-                            &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">&lt;/input>
+                            &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">${opponentName}&lt;/input>
                           &lt;/div>  
-                          &lt;div class="hide center-grid" id="namesDisplayMode">
-                            &lt;label class="teamName" id="teamNameLabel" name="teamName" >&lt;/label>
+                          &lt;div class="${labelClasses}" id="namesDisplayMode">
+                            &lt;label class="teamName" id="teamNameLabel" name="teamName" >${teamName}&lt;/label>
                             &lt;div class="vrs">- VRS -&lt;/div>
-                            &lt;label class="teamName" id="opponentLabel" name="opponentName" >&lt;/label>
+                            &lt;label class="teamName" id="opponentLabel" name="opponentName" >${opponentName}&lt;/label>
                           &lt;/div>`;
       }
     }
     customElements.define("team-names", TeamNames);
-          
+                              
         </pre>  
        </div>
 
@@ -971,7 +980,7 @@
               >
               </div>
             <div class="sketch">
-              <h3>Css</h3>
+              <h3 id="tutorial-setup-4.css">Css</h3>
               
               <pre class="drawing">
 
@@ -1008,6 +1017,12 @@
         min-width: 10px;
         margin-top: 30px;
         margin-bottom: 30px;
+      }
+      
+      .whistle-button {
+        margin: 0px;
+        max-width: 100%;
+        width: 100%;
       }
       
       .event-button {
@@ -1082,7 +1097,7 @@
         display: grid;
         grid-template-columns: auto auto auto;
       }
-                                </pre
+                                                </pre
               >
             </div>
 

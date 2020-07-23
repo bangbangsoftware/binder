@@ -1,4 +1,4 @@
-import { getByName } from "./dist/index.js";
+import { getByName } from "./dist/binder.js";
 
 class PlayerRow extends HTMLElement {
   start = -1;

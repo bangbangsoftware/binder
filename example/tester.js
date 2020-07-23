@@ -1,11 +1,11 @@
-import { bagItAndTagIt, put, setMode, tools } from "./dist/index.js";
+import { bagItAndTagIt, put, setMode, tools } from "./dist/binder.js";
 import { swapperPlugin } from "./dist/plugins/swapperPlugin.js";
 import { togglePlugin } from "./dist/plugins/togglePlugin.js";
 import { showHidePlugin, showHideSwap } from "./dist/plugins/showhidePlugin.js";
 import {
   moverPlugin,
   moverValue,
-  moverCallback
+  moverCallback,
 } from "./dist/plugins/moverPlugin.js";
 import { ifPlugin } from "./dist/plugins/ifPlugin.js";
 import { swapPlugin, actionMover } from "./dist/plugins/swapPlugin.js";
@@ -32,13 +32,13 @@ bagItAndTagIt([
   moverPlugin,
   ifPlugin,
   swapPlugin,
-  clickPlugin
+  clickPlugin,
 ]);
 
 const clearSport = (tools, ev) => {
-  tools.setByName("sport","");
-}
-addClickFunction("clearSport",clearSport);
+  tools.setByName("sport", "");
+};
+addClickFunction("clearSport", clearSport);
 
 const titleClicked = (tools, ev) => {
   alert(" boomer " + ev + tools);
@@ -69,7 +69,7 @@ const increment = () => {
   seconds.innerText = secs < 10 ? `0${secs}` : secs;
 };
 
-const zeroFill = i => {
+const zeroFill = (i) => {
   if (i < 10) {
     return "0" + i;
   }
@@ -99,7 +99,7 @@ tools.clickListener(modeButt, () => {
   console.log("mode is " + mode);
 });
 
-const results = what => {
+const results = (what) => {
   const time = document.createElement("div");
   time.innerText = what.time;
   const event = document.createElement("div");
@@ -114,7 +114,7 @@ const results = what => {
 
 const kickoff = document.getElementById("kickoff");
 let running;
-tools.clickListener(kickoff, e => {
+tools.clickListener(kickoff, (e) => {
   e.target.style.display = "none";
   document.getElementById("playing").classList.remove("hide");
   document.getElementById("bench").classList.add("hide");
@@ -130,7 +130,7 @@ tools.clickListener(kickoff, e => {
 });
 
 const state = document.getElementById("state");
-tools.clickListener(state, e => {
+tools.clickListener(state, (e) => {
   const pause = e.target.innerText === "Play On";
   if (pause) {
     document.getElementById("playing").classList.add("hide");
@@ -144,7 +144,7 @@ tools.clickListener(state, e => {
 });
 
 const concede = document.getElementById("vrsScore");
-tools.clickListener("click", e => {
+tools.clickListener("click", (e) => {
   const el = e.target;
   el.innerText = parseInt(el.innerText) + 1;
   const time = timeFormat();
@@ -155,11 +155,11 @@ tools.clickListener("click", e => {
 for (let n = 1; n < 17; n++) {
   const el = document.getElementById("position" + n);
   if (el) {
-    el.addEventListener("click", e => playerScored(e));
+    el.addEventListener("click", (e) => playerScored(e));
   }
 }
 
-const playerScored = e => {
+const playerScored = (e) => {
   console.log(e.target.innerText + " scored!");
   const who = e.target.innerText;
   if (!who) {

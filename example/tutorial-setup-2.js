@@ -1,4 +1,4 @@
-import { addClickFunction, go } from "./dist/index.js";
+import { addClickFunction, go } from "./dist/binder.js";
 
 let mode = "edit"; // two modes 'edit' or 'display'
 

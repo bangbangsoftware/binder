@@ -219,7 +219,7 @@
   &lt;/body>
   
   &lt;script type='module'>
-      import { go, tools, addClickFunction } from "./dist/index.js";
+      import { go, tools, addClickFunction } from "./dist/binder.js";
       go();
 
       tools.setByName("danceFor", 0);
@@ -271,7 +271,7 @@
 
 &lt;script type='module'>
 
-    import { go, tools } from "./dist/index.js";
+    import { go, tools } from "./dist/binder.js";
     import { tablePlugin, addSetup } from './dist/plugins/tablePlugin.js';
     import data from "./data.js";
 

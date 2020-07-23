@@ -1,4 +1,4 @@
-import { addClickFunction, go, getByName, setValue } from "./dist/index.js";
+import { addClickFunction, go, getByName, setValue } from "./dist/binder.js";
 import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
 
 import { positionIds } from "./tutorial-setup-4-posrow.js";

@@ -7,7 +7,7 @@ import {
   get,
   registry,
   getValue
-} from "./index";
+} from "./binder";
 
 const mockElement: HTMLElement = document.createElement("div");
 mockElement.innerText = "bivouac";

@@ -1,4 +1,4 @@
-import { setStorage, setDocument, clear, bagItAndTagIt, put, get } from "./index";
+import { setStorage, setDocument, clear, bagItAndTagIt, put, get } from "./binder";
 const mockElement = document.createElement("div");
 mockElement.innerText = "bivouac";
 mockElement.setAttribute("name", "placeToStay");

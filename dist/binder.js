@@ -125,7 +125,7 @@ const generateRunner = (name) => (ev) => {
     }
     console.error("No click function for " + name);
     console.error("Need to add some code like:");
-    console.error('%c import { go, tools, addClickFunction } from "./dist/index.js"; ', "background: #222; color: #bada55");
+    console.error('%c import { go, tools, addClickFunction } from "./dist/binder.js"; ', "background: #222; color: #bada55");
     console.error("");
     console.error('%c addClickFunction("' + name + '", (event) => { ', "background: #222; color: #bada55");
     console.error('%c       alert("BOOOOM!"); ', "background: #222; color: #bada55");
@@ -457,4 +457,4 @@ const addToRegister = (element, fieldname) => {
     setValue(element, currentValue);
     put(element);
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=binder.js.map

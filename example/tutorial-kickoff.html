@@ -51,80 +51,47 @@
               <h3>Code  - tutorial-kickoff-1.js</h3>
               <pre class="drawing">
 
- import "./";
+  import "./tutorial-setup-4.js";
                 </pre
               >
             </div>
             <div class="sketch">
-              <h3>Mark up</h3>
+              <h3 id="markup">Mark up</h3>
               <pre>
 
-    &lt;html>
-
-    &lt;head>
-      &lt;link rel="stylesheet" type="text/css" href="tutorial-kickoff-1.css" />
-      &lt;title>Footswell&lt;/title>
-    &lt;/head>
-
-    &lt;body class="fade-in">
-      &lt;main>
-
-        &lt;header>
-
-          &lt;h1> F O O T S W E L L &lt;/h1>
-
-        &lt;/header>
-
-        &lt;section>
-  
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
-  
-              &lt;team-names mode="edit">&lt;/team-names>
-  
-              &lt;nav class="nav" >
-                  &lt;Button id="EditBut">Edit&lt;/Button> 
-                  &lt;Button id="PublishBut">Publish&lt;/button> 
-                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
-              &lt;/nav>
-  
-              &lt;formation-edit mode="move">&lt;formation-edit>
-  
-              &lt;events-list>&lt;events-list>
-  
-        &lt;/section>
-     
-      &lt;/main>
-    &lt;/body>
-
-    &lt;script type="module" src="tutorial-kickoff-1.js">&lt;/script>
-
+      &lt;html>
+      &lt;head>
+        &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-4.css" />
+        &lt;title>Footswell&lt;/title>
+      &lt;/head>
+      &lt;body class="fade-in">
+        &lt;main>
+          &lt;header>
+            &lt;h1>F O O T S W E L L&lt;/h1>
+          &lt;/header>
+          &lt;section id="size">
+    
+            &lt;team-names mode="play">&lt;/team-names>
+      
+            &lt;score-clock>&lt;/score-clock>
+      
+            &lt;nav class="butBar">
+                  &lt;button class="whistle-button" click="whistle" id="WhistleBut">Whistle blown&lt;/button> 
+            &lt;/nav>
+      
+            &lt;players-formation>&lt;/players-formation>
+      
+            &lt;events-list>/&lt;events-list>
+      
+          &lt;/section>
+        &lt;/main>
+      &lt;/body>
+      &lt;script type="module" src="tutorial-kickoff-1.js">&lt;/script>
     &lt;/html>
-                          </pre
-              >
+                                        </pre>
               </div>
             <div class="sketch">
-              <h3>Css</h3>
-              <pre class="drawing">
-
-    h1 {
-      text-align: center;
-      background-color: green;
-      color: white;
-    }
-
-    .place {
-      width: 50%;
-      height: 42px;
-      margin-left: 25%;
-      font-size: 30px;
-    }
-
-    .nav {
-      display: none;
-    }
-
-                </pre
-              >
+              <h3>Css - see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
             </div>
 
           </div>
@@ -133,178 +100,21 @@
         <br />
         <br />
 
-        <article id="team-input">
+        <article id="score-clock">
           <h2>2. Score Clock</h2>
           <div class="repeatgrid">
             <div class="left-text">
               Name edit component takes one prop mode for edit or display
               <br />
               <br />
-              <a target="_blank" href="tutorial-kickoff-2.html">Go to running site</a>
-            </div>
-            <div class="sketch">
+              <a target="_blank" href="tutorial-kickoff-3.html">Go to running site</a>
               <h3>Code - tutorial-kickoff-2.js</h3>
 <pre class="drawing">
 
-  import { addClickFunction, go } from "./dist/index.js";
-
-  let mode = "edit"; // two modes 'edit' or 'display'
-
-  // Define custom element
-  class TeamNames extends HTMLElement {
-    constructor() {
-      super();
-      mode = this.getAttribute("mode");
-    }
-
-    connectedCallback() {
-      this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
-                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">
-                          &lt;/input>
-                          VRS
-                          &lt;input id="opponentInput" name="opponentName" 
-                          Placeholder="Opponent Name">&lt;/input>
-                        &lt;/div>  
-                        &lt;div class="hide center-grid" id="namesDisplayMode">
-                          &lt;label id="teamNameLabel" name="teamName" >&lt;/label>
-                          - VRS -
-                          &lt;label id="opponentLabel" name="opponentName" >&lt;/label>
-                        &lt;/div>`;
-    }
-  }
-  customElements.define("team-names", TeamNames);
-
-  // Register a function for toggleEdit to use with "click" in mark up
-  addClickFunction("toggleEdit", (e) => {
-    const editNow = mode === "display"; // toggle mode
-
-    toggleClass("namesInputMode", editNow); // hide or show
-    toggleClass("namesDisplayMode", !editNow); // hide or show
-    toggleClass(e.target.id, !editNow, "edit"); // Button press display
-
-    mode = editNow ? "edit" : "display"; // set new mode
-  });
-
-  //helper function for toggling mode
-  const toggleClass = (id, show, className = "hide") => {
-    const element = document.getElementById(id);
-    if (show) {
-      element.classList.remove(className);
-    } else {
-      element.classList.add(className);
-    }
-  };
-
-  go();
-                                </pre
-              >
+</pre>
             </div>
             <div class="sketch">
-              <h3>Mark up</h3>
-              <pre>
-
- &lt;html>
-  &lt;head>
-    &lt;link rel="stylesheet" type="text/css" href="tutorial-kickoff-2.css" />
-    &lt;title>Footswell&lt;/title>
-  &lt;/head>
-  &lt;body class="fade-in">
-    &lt;main>
-      &lt;header>
-        &lt;h1>F O O T S W E L L&lt;/h1>
-      &lt;/header>
-      &lt;section>
-        &lt;article id="components">
-
-            &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
-
-            &lt;team-names id="teamNames" mode="edit">&lt;/team-names>
-
-            &lt;nav class="nav">
-                &lt;button class="edit" click="toggleEdit">Edit&lt;/button> 
-                &lt;button class="hide">Publish&lt;/button> 
-                &lt;button class="hide">Kick Off&lt;/button>   
-            &lt;/nav>
-
-            &lt;formation-edit mode="move">&lt;formation-edit>
-
-            &lt;events-list>&lt;events-list>
-
-        &lt;/section>
-    &lt;/main>
-  &lt;/body>
-  &lt;script type="module" src="tutorial-kickoff-2.js">&lt;/script>
- &lt;/html>
-                          </pre
-              >
-              </div>
-            <div class="sketch">
-              <h3>Css</h3>
-              <pre class="drawing">
-
-    h1 {
-      text-align: center;
-      background-color: green;
-      color: white;
-    }
-    
-    button {
-      margin: 5px;
-    }
-    
-    body {
-      background-color: #78c278;
-    }
-    
-    input {
-      background-color: #ffeb3b;
-    }
-    
-    .edit {
-      background-color: green;
-      color: white;
-    }
-    
-    .center-grid {
-      display: grid;
-      grid-template-columns: auto auto auto;
-      text-align: center;
-      font-size: 30px;
-      padding-left: 30%;
-      padding-right: 30%;
-    }
-    
-    .place {
-      width: 50%;
-      height: 42px;
-      margin-left: 25%;
-      font-size: 30px;
-    }
-    
-    .nav {
-      display: grid;
-      grid-template-columns: auto auto auto;
-    }
-                
-                </pre
-              >
-            </div>
-
-          </div>
-          
-        </article>
-        <br />
-        <br />
-
-        <article id="button-bar">
-          <h2>3. Button Bar</h2>
-          <div class="repeatgrid">
-            <div class="left-text">
-              "Edit" on the button bar is done, so that leaves "Publish" and "Kick Off". 
-              Kick off is just a link to the kickoff screen and publish cannot be done until formation and event list is done. 
-              <br />
-              <br />
-            </div>
+              <h3><b>Mark up</b> see <a href="#markup">above</a> and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
           </div>
           
         </article>
@@ -312,778 +122,41 @@
         <br />
 
         <article id="formation">
-          <h2>4. Formation</h2>
+          <h2>3. Formation</h2>
           <div class="repeatgrid">
             <div class="left-text">
-              Formation is a complex component, that has two modes - edit and move. After doing this, it looking like
-              a refactor is in order as the script is getting a little long.
+              Name edit component takes one prop mode for edit or display
               <br />
               <br />
-              <a target="_blank" href="tutorial-kickoff-3.html">Go to running site</a>
-            </div>
-            <div class="sketch">
+              <a target="_blank" href="tutorial-kickoff-4.html">Go to running site</a>
               <h3>Code - tutorial-kickoff-3.js</h3>
-              <pre class="drawing">
+<pre class="drawing">
 
-  import { addClickFunction, go } from "./dist/index.js";
-
-  let mode = "edit"; // two modes 'edit' or 'display'
-  
-  const posId = [];
-  
-  class PosRow extends HTMLElement {
-    start = -1;
-    constructor() {
-      super();
-      this.start = parseInt(this.getAttribute("start"));
-    }
-  
-    connectedCallback() {
-      const buttonclass = this.mode === "edit" ? "" : "hide";
-      const inputclass = this.mode === "edit" ? "hide" : "";
-      for (let x = 0; x < 5; x++) {
-        const id = this.start + x;
-        const html =
-          `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
-          `&lt;input class="${inputclass}" name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
-        this.innerHTML = this.innerHTML + html;
-        posId.push("pos-input-" + id);
-        posId.push("pos-button-" + id);
-      }
-      this.innerHTML = `&lt;span class="row-grid">` + this.innerHTML + `&lt;/span>`;
-    }
-  }
-  
-  customElements.define("pos-row", PosRow);
-  
-  // Define custom element
-  class FormationEdit extends HTMLElement {
-    constructor() {
-      super();
-      mode = this.getAttribute("mode");
-    }
-  
-    connectedCallback() {
-      this.innerHTML = `&lt;div class="format-grid" id="formation">
-                          &lt;pos-row start=1  > &lt;/pos-row>
-                          &lt;pos-row start=6  >&lt;/pos-row>
-                          &lt;pos-row start=11 >&lt;/pos-row>
-                          &lt;pos-row start=16 >&lt;/pos-row>
-                          &lt;pos-goal>&lt;/pos-goal>
-                          &lt;pos-bench>&lt;/pos-bench>
-                        &lt;/div>`;
-    }
-  }
-  customElements.define("formation-edit", FormationEdit);
-  
-  // Define custom element
-  class TeamNames extends HTMLElement {
-    constructor() {
-      super();
-      mode = this.getAttribute("mode");
-    }
-  
-    connectedCallback() {
-      this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
-                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">&Lt;/input>
-                          &lt;div class="vrs"> VRS &Lt;/div>
-                          &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">&Lt;/input>
-                          &lt;/div>  
-                          &lt;div class="hide center-grid" id="namesDisplayMode">
-                          &lt;label class="teamName" id="teamNameLabel" name="teamName" >&Lt;/label>
-                          &lt;div class="vrs">- VRS -&Lt;/div>
-                          &lt;label class="teamName" id="opponentLabel" name="opponentName" >&Lt;/label>
-                        &lt;/div>`;
-    }
-  }
-  customElements.define("team-names", TeamNames);
-  
-  // Register a function for toggleEdit to use with "click" in mark up
-  addClickFunction("toggleEdit", (e) => {
-    const editNow = mode === "display"; // toggle mode
-  
-    toggleHide("namesInputMode");
-    toggleHide("namesDisplayMode");
-    changeClass(e.target.id, editNow); // Button press display
-  
-    posId.forEach((id) => toggleHide(id));
-  
-    mode = editNow ? "edit" : "display"; // set new mode
-  });
-  
-  const toggleHide = (id, className = "hide") => {
-    const element = document.getElementById(id);
-    const hiding = element.classList.contains(className);
-    if (hiding) {
-      element.classList.remove(className);
-    } else {
-      element.classList.add(className);
-    }
-  };
-  
-  //helper function for changing class
-  const changeClass = (id, show, className = "edit") => {
-    const element = document.getElementById(id);
-    if (show) {
-      element.classList.remove(className);
-    } else {
-      element.classList.add(className);
-    }
-  };
-  
-  go();
-                
-                </pre
-              >
+</pre>
             </div>
-            <div class="sketch">              
-              <h3>Mark up</h3>
-              <pre>
-
-    &lt;html>
-
-    &lt;head>
-      &lt;link rel="stylesheet" type="text/css" href="tutorial-kickoff-3.css" />
-      &lt;title>Footswell&lt;/title>
-    &lt;/head>
-
-    &lt;body class="fade-in">
-      &lt;main>
-
-        &lt;header>
-
-          &lt;h1> F O O T S W E L L &lt;/h1>
-
-        &lt;/header>
-
-        &lt;section>
-  
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
-  
-              &lt;team-names mode="edit">&lt;/team-names>
-  
-              &lt;nav class="nav" >
-                  &lt;Button id="EditBut">Edit&lt;/Button> 
-                  &lt;Button id="PublishBut">Publish&lt;/button> 
-                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
-              &lt;/nav>
-  
-              &lt;formation-edit mode="move">&lt;formation-edit>
-  
-              &lt;events-list>&lt;events-list>
-  
-        &lt;/section>
-     
-      &lt;/main>
-    &lt;/body>
-
-    &lt;script type="module" src="tutorial-kickoff-3.js">&lt;/script>
-
-    &lt;/html>
-                          </pre
-              >
-              </div>
             <div class="sketch">
-              <h3>Css</h3>
-              
-              <pre class="drawing">
-
-    h1 {
-      text-align: center;
-      background-color: green;
-      color: white;
-    }
-    
-    button {
-      margin: 5px;
-      min-height: 100px;
-      max-width: 90%;
-      font-size: 32px;
-    }
-    
-    body {
-      background-color: #78c278;
-    }
-    
-    input {
-      background-color: #ffeb3b;
-      min-height: 100px;
-      font-size: 42px;
-      min-width: 10px;
-    }
-    
-    .action {
-      min-height: 12px;
-      font-size: 32px;
-    }
-    
-    .vrs {
-      padding-top: 27px;
-    }
-    
-    .teamName {
-      padding-top: 27px;
-      padding-bottom: 27px;
-    }
-    
-    .edit {
-      background-color: green;
-      color: white;
-    }
-    
-    .swap-data-selected {
-      background-color: green;
-    }
-    
-    .format-grid {
-      display: grid;
-      grid-template-rows: auto auto auto auto auto;
-    }
-    
-    .row-grid {
-      display: grid;
-      grid-template-columns: auto auto auto auto auto;
-      grid-gap: 5px;
-      margin: 10px;
-    }
-    
-    .center-grid {
-      display: grid;
-      grid-template-columns: auto auto auto;
-      text-align: center;
-      font-size: 30px;
-      padding-left: 30%;
-      padding-right: 30%;
-    }
-    
-    .place {
-      width: 50%;
-      height: 42px;
-      margin-left: 25%;
-      font-size: 30px;
-    }
-    
-    .nav {
-      display: grid;
-      grid-template-columns: auto auto auto;
-    }
-                                </pre
-              >
-            </div>
-
+              <h3><b>Mark up</b> see <a href="#markup">above</a> and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
           </div>
           
         </article>
         <br />
         <br />
 
-
-
         <article id="event-list">
-          <h2>5. Event List</h2>
+          <h2>4. Event List</h2>
           <div class="repeatgrid">
             <div class="left-text">
-              Event list is a mainly linked to the publication button and might as well put the kick off button in to effect
-              at the same time, but first refactor
+              Name edit component takes one prop mode for edit or display
               <br />
               <br />
               <a target="_blank" href="tutorial-kickoff-4.html">Go to running site</a>
-            </div>
-            <div class="sketch">
               <h3>Code - tutorial-kickoff-4.js</h3>
-              <pre class="drawing">                
-    import {
-      addClickFunction,
-      go,
-      getByName,
-      setValue,
-    } from "./dist/index.js";
-    import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
-    
-    import { positionIds } from "./tutorial-kickoff-4-posrow.js";
-    import { benchIds } from "./tutorial-kickoff-4-posbench.js";
-    import { goalieIds } from "./tutorial-kickoff-4-posgoal.js";
-    import "./tutorial-kickoff-4-formationedit.js";
-    import "./tutorial-kickoff-4-teamnames.js";
-    import "./tutorial-kickoff-4-eventslist.js";
-    
-    let mode = "edit"; // two modes 'edit' or 'display'
-    
-    // Register a function for toggleEdit to use with "click" in mark up
-    addClickFunction("toggleEdit", (e) => {
-      const editNow = mode === "display"; // toggle mode
-    
-      toggleHide("namesInputMode");
-      toggleHide("namesDisplayMode");
-      changeClass(e.target.id, editNow); // Button press display
-    
-      positionIds.forEach((id) => toggleHide(id));
-      benchIds.forEach((id) => toggleHide(id));
-      goalieIds.forEach((id) => toggleHide(id));
-    
-      mode = editNow ? "edit" : "display"; // set new mode
-    });
-    
-    const toggleHide = (id, className = "hide") => {
-      const element = document.getElementById(id);
-      const hiding = element.classList.contains(className);
-      if (hiding) {
-        element.classList.remove(className);
-      } else {
-        element.classList.add(className);
-      }
-    };
-    
-    //helper function for changing class
-    const changeClass = (id, show, className = "edit") => {
-      const element = document.getElementById(id);
-      if (show) {
-        element.classList.remove(className);
-      } else {
-        element.classList.add(className);
-      }
-    };
-    
-    const zeroPad = (n) => (n > 9 ? n : "0" + n);
-    
-    const formation = (prefix = "pos-") => {
-      let list = "";
-      for (let x = 1; x < 21; x++) {
-        const value = getByName(prefix + x);
-        const display = list.length == 0 ? value : ", " + value;
-        const displayValue = value ? display : "";
-        list = list + displayValue;
-      }
-      return list;
-    };
-    
-    const bench = () => {
-      const value = formation("pos-bench-");
-      return value ? ". On the Bench: " + value : "";
-    };
-    
-    const goalie = () => {
-      const value = getByName("pos-goal");
-      return value ? ". Goalie: " + value : "";
-    };
-    
-    addClickFunction("publish", () => {
-      const date = new Date();
-      const hh = zeroPad(date.getHours());
-      const mm = zeroPad(date.getMinutes());
-      const ss = zeroPad(date.getSeconds());
-      const ent = {
-        ok: ">",
-        time: hh + ":" + mm + ":" + ss,
-        event: "Formation: " + formation() + goalie() + bench(),
-      };
-      addRow("events", ent);
-    });
-    
-    const getRow = (e) => {
-      const clicked = e.target;
-      return clicked.getAttribute("row");
-    };
-    
-    addClickFunction("undo", (e) => {
-      const row = getRow(e);
-      if (!row) {
-        return;
-      }
-      const ok = document.getElementById("events-ok-" + row);
-      setValue(ok, "X");
-      toggleClass("events", row, "crossout");
-    });
-    
-    addClickFunction("send", async (e) => {
-      const row = getRow(e);
-      if (!row) {
-        return;
-      }
-      const title = "Footswell";
-      const text = document.getElementById("events-event-" + row).innerText;
-      const url = window.location.href;
-      //  you could..... const number = telephoneNumber;
-    
-      if (!navigator.share) {
-        console.error("web share not supported");
-        return;
-      }
-    
-      try {
-        await navigator.share({
-          title,
-          text,
-          url,
-        });
-        console.log("Thanks for sharing!");
-      } catch (err) {
-        console.log(`Couldn't share because of`, err.message);
-      }
-      /** 
-        
-        Straight to WhatsApp?
-    
-        const  message =  encodeURIComponent(yourMessage);
-        
-        console.log("https://api.whatsapp.com/send?phone=" + number + "&text=%20" + message);
-        return fetch("https://api.whatsapp.com/send?phone=" + number + "&text=%20" + message);
-      
-      */
-    });
-    
-    go();
-                
-              </pre>
+<pre class="drawing">
+
+</pre>
             </div>
             <div class="sketch">
-            <h3>Code - tutorial-eventslist.js</h3>
-          <pre class="drawing"> 
-    class EventsList extends HTMLElement {
-      constructor() {
-        super();
-      }
-    
-      connectedCallback() {
-        this.innerHTML = `&lt;div class="events-grid" id="formation">
-                            &lt;h2>Fix&lt;/h2>
-                            &lt;h2>Time&lt;/h2>
-                            &lt;h2>Event&lt;/h2>
-                            &lt;h2>Send&lt;/h2>
-                          &lt;/div>
-                          &lt;div class="events-grid" table="events">
-                            &lt;button class="event-button" click="undo">Undo&lt;/button>
-                            &lt;div class="event-text" place="time">&lt;/div>
-                            &lt;div class="event-text" place="event">&lt;/div>
-                            &lt;button class="event-button" click="send">send&lt;/div>
-                            &lt;/div>`;
-      }
-    }
-    customElements.define("events-list", EventsList);
-    console.log("events-list defined");
-            </pre>  
-            </div>
-
-          <div class="sketch">
-            <h3>Code - tutorial-formationedit.js</h3>
-            <pre class="drawing"> 
-    class FormationEdit extends HTMLElement {
-      constructor() {
-        super();
-      }
-    
-      connectedCallback() {
-        this.innerHTML = `&lt;div class="format-grid" id="formation">
-                            &lt;pos-row start=1  > &lt;/pos-row>
-                            &lt;pos-row start=6  >&lt;/pos-row>
-                            &lt;pos-row start=11 >&lt;/pos-row>
-                            &lt;pos-row start=16 >&lt;/pos-row>
-                            &lt;pos-goal>&lt;/pos-goal>
-                            &lt;pos-bench>&lt;/pos-bench>
-                          &lt;/div>`;
-      }
-    }
-
-    customElements.define("formation-edit", FormationEdit);          
-          </pre>  
-        </div>
-
-
-        <div class="sketch">
-          <h3>Code - tutorial-posbench.js</h3>
-          <pre class="drawing">
-
-    export const benchIds = [];
-
-    class PosBench extends HTMLElement {
-      start = -1;
-      constructor() {
-        super();
-        this.start = parseInt(this.getAttribute("start"));
-      }
-    
-      connectedCallback() {
-        const buttonclass = this.mode === "edit" ? "" : "hide";
-        const inputclass = this.mode === "edit" ? "hide" : "";
-        for (let x = 1; x &lt; 6; x++) {
-          const id = x;
-          const html =
-            `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-bench-${id}" id="pos-bench-button-${id}">&lt;/button>` +
-            `&lt;input placeholder="Bench #${id}" class="${inputclass}" name="pos-bench-${id}" id="pos-bench-input-${id}">&lt;/input>`;
-          this.innerHTML = this.innerHTML + html;
-          benchIds.push("pos-bench-input-" + id);
-          benchIds.push("pos-bench-button-" + id);
-        }
-        this.innerHTML = `&lt;span class="row-grid">` + this.innerHTML + `&lt;/span>`;
-      }
-    }
-
-    customElements.define("pos-bench", PosBench);
-          </pre>  
-       </div>
-
-
-       <div class="sketch">
-        <h3>Code - tutorial-posgoal.js</h3>
-        <pre class="drawing"> 
-    export const goalieIds = [];
-
-    class PosGoal extends HTMLElement {
-      start = -1;
-      constructor() {
-        super();
-        this.start = parseInt(this.getAttribute("start"));
-      }
-
-      connectedCallback() {
-        const buttonclass = this.mode === "edit" ? "" : "hide";
-        const inputclass = this.mode === "edit" ? "hide" : "";
-        const html =
-          `&lt;button swap-data="pswap" class="place ${buttonclass}" name="pos-goal" id="pos-goal-button">&lt;/button>` +
-          `&lt;input placeholder="Goalie" class="place ${inputclass}" name="pos-goal" id="pos-goal-input">&lt;/input>`;
-        this.innerHTML = this.innerHTML + html;
-        goalieIds.push("pos-goal-input");
-        goalieIds.push("pos-goal-button");
-        this.innerHTML = `&lt;span>` + this.innerHTML + `&lt;/span>`;
-      }
-    }
-
-    customElements.define("pos-goal", PosGoal);
-        </pre>  
-       </div>
-
-
-       <div class="sketch">
-        <h3>Code - tutorial-posrow.js</h3>
-        <pre class="drawing"> 
-      export const positionIds = [];
-
-      class PosRow extends HTMLElement {
-        start = -1;
-        constructor() {
-          super();
-          this.start = parseInt(this.getAttribute("start"));
-        }
-      
-        connectedCallback() {
-          const buttonclass = this.mode === "edit" ? "" : "hide";
-          const inputclass = this.mode === "edit" ? "hide" : "";
-          for (let x = 0; x &lt; 5; x++) {
-            const id = this.start + x;
-            const html =
-              `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
-              `&lt;input class="${inputclass}" name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
-            this.innerHTML = this.innerHTML + html;
-            positionIds.push("pos-input-" + id);
-            positionIds.push("pos-button-" + id);
-          }
-          this.innerHTML = `&lt;span class="row-grid">` + this.innerHTML + `&lt;/span>`;
-        }
-      }
-      
-      customElements.define("pos-row", PosRow);
-          
-        </pre>  
-       </div>
-
-       <div class="sketch">
-        <h3>Code - tutorial-teamnames.js</h3>
-        <pre class="drawing"> 
-    class TeamNames extends HTMLElement {
-      constructor() {
-        super();
-      }
-    
-      connectedCallback() {
-        this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
-                            &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">&lt;/input>
-                            &lt;div class="vrs"> VRS &lt;/div>
-                            &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">&lt;/input>
-                          &lt;/div>  
-                          &lt;div class="hide center-grid" id="namesDisplayMode">
-                            &lt;label class="teamName" id="teamNameLabel" name="teamName" >&lt;/label>
-                            &lt;div class="vrs">- VRS -&lt;/div>
-                            &lt;label class="teamName" id="opponentLabel" name="opponentName" >&lt;/label>
-                          &lt;/div>`;
-      }
-    }
-    customElements.define("team-names", TeamNames);
-          
-        </pre>  
-       </div>
-
-
-
-
-
-
-
-
-
-
-            <div class="sketch">
-              <h3>Mark up</h3>
-              <pre>
-
-    &lt;html>
-
-    &lt;head>
-      &lt;link rel="stylesheet" type="text/css" href="tutorial-kickoff-4.css" />
-      &lt;title>Footswell&lt;/title>
-    &lt;/head>
-
-    &lt;body class="fade-in">
-      &lt;main>
-
-        &lt;header>
-
-          &lt;h1> F O O T S W E L L &lt;/h1>
-
-        &lt;/header>
-
-        &lt;section>
-  
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
-  
-              &lt;team-names mode="edit">&lt;/team-names>
-  
-              &lt;nav class="nav" >
-                  &lt;Button id="EditBut">Edit&lt;/Button> 
-                  &lt;Button id="PublishBut">Publish&lt;/button> 
-                  &lt;Button id="KickoffBut">Kick Off&lt;/button>   
-              &lt;/nav>
-  
-              &lt;formation-edit mode="move">&lt;formation-edit>
-  
-              &lt;events-list>&lt;events-list>
-  
-        &lt;/section>
-     
-      &lt;/main>
-    &lt;/body>
-
-    &lt;script type="module" src="tutorial-kickoff-4.js">&lt;/script>
-
-    &lt;/html>
-                          </pre
-              >
-              </div>
-            <div class="sketch">
-              <h3>Css</h3>
-              
-              <pre class="drawing">
-
-      h1 {
-        text-align: center;
-        background-color: green;
-        color: white;
-      }
-      
-      h2 {
-        background-color: green;
-        color: white;
-      }
-      
-      button {
-        margin: 5px;
-        min-height: 100px;
-        max-width: 90%;
-        font-size: 32px;
-        border-radius: 25px;
-      }
-      
-      button:focus {
-        outline: 0;
-      }
-      
-      body {
-        background-color: #78c278;
-      }
-      
-      input {
-        background-color: #f1e78c;
-        font-size: 42px;
-        min-width: 10px;
-        margin-top: 30px;
-        margin-bottom: 30px;
-      }
-      
-      .event-button {
-        min-height: 100px;
-      }
-      
-      .crossout {
-        text-decoration: line-through;
-      }
-      
-      .events-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 9fr 1fr;
-      }
-      
-      .event-text {
-        font-size: 30px;
-        align-self: center;
-      }
-      
-      .action {
-        min-height: 12px;
-        font-size: 32px;
-      }
-      
-      .vrs {
-        padding-top: 50px;
-      }
-      
-      .teamName {
-        padding-top: 27px;
-        padding-bottom: 27px;
-        font-size: 55px;
-      }
-      
-      .edit {
-        background-color: green;
-        color: white;
-      }
-      
-      .swap-data-selected {
-        background-color: green;
-      }
-      
-      .format-grid {
-        display: grid;
-        grid-template-rows: auto auto auto auto auto;
-      }
-      
-      .row-grid {
-        display: grid;
-        grid-template-columns: auto auto auto auto auto;
-        grid-gap: 5px;
-        margin: 10px;
-      }
-      
-      .center-grid {
-        display: grid;
-        grid-template-columns: 5fr 2fr 5fr;
-        text-align: center;
-        font-size: 30px;
-      }
-      
-      .place {
-        width: 50%;
-        height: 42px;
-        margin-left: 25%;
-        font-size: 30px;
-      }
-      
-      .nav {
-        display: grid;
-        grid-template-columns: auto auto auto;
-      }
-                                </pre
-              >
-            </div>
-
+              <h3><b>Mark up</b> see <a href="#markup">above</a> and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
           </div>
           
         </article>

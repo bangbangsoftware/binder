@@ -1,4 +1,4 @@
-import { bagItAndTagIt, tools} from "./dist/index.js";
+import { bagItAndTagIt, tools} from "./dist/binder.js";
 import { swapperPlugin } from './dist/plugins/swapperPlugin.js'
 import { repeaterPlugin, addSetup, addRow, addSort } from './dist/plugins/repeaterPlugin.js';
 

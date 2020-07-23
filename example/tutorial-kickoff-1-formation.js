@@ -1,6 +1,6 @@
 import "./tutorial-kickoff-1-posrow.js";
 import "./tutorial-kickoff-1-benchrow.js";
-import { getByName } from "./dist/index.js";
+import { getByName } from "./dist/binder.js";
 
 class Formation extends HTMLElement {
   constructor() {
