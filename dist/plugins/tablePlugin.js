@@ -117,6 +117,7 @@ const processData = (data) => {
     tableWorker.postMessage(workerData);
     tableWorker.onmessage = (mess) => {
         populateTemplate(data.name, mess, data.div, data.save);
+        tableWorker.terminate();
     };
 };
 export const toggleClass = (name, row, classname) => {

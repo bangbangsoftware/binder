@@ -52,26 +52,48 @@
               <pre class="drawing">
 
   import "./tutorial-setup-4.js";
-                </pre
-              >
+  import "./tutorial-kickoff-1-teamplay.js";
+              </pre>
             </div>
+
             <div class="sketch">
-              <h3 id="markup">Mark up</h3>
+              <h3>Code  - tutorial-kickoff-1-teamplay.js</h3>
+              <pre class="drawing">
+
+  class TeamPlay extends HTMLElement {
+    constructor() {
+      super();
+    }
+  
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="center-grid" id="namesDisplayMode">
+                          &lt;button click="scored" class="teamName" id="teamNameLabel" name="teamName" >&lt;/button>
+                          &lt;div class="vrs">- VRS -&lt;/div>
+                          &lt;button click="opponentScored" class="teamName" id="opponentLabel" name="opponentName" >&lt;/button>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("team-play", TeamPlay);
+              </pre>
+            </div>
+
+            <div class="sketch">
+              <h3 id="markup">Mark up - tutorial-kickoff-1.html</h3>
               <pre>
 
-      &lt;html>
-      &lt;head>
-        &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-4.css" />
-        &lt;title>Footswell&lt;/title>
-      &lt;/head>
-      &lt;body class="fade-in">
+    &lt;html>
+    &lt;head>
+      &lt;link rel="stylesheet" type="text/css" href="tutorial-setup-4.css" />
+      &lt;title>Footswell&lt;/title>
+    &lt;/head>
+    &lt;body class="fade-in">
         &lt;main>
           &lt;header>
             &lt;h1>F O O T S W E L L&lt;/h1>
           &lt;/header>
           &lt;section id="size">
     
-            &lt;team-names mode="play">&lt;/team-names>
+            &lt;team-play >&lt;/team-play>
       
             &lt;score-clock>&lt;/score-clock>
       
@@ -86,10 +108,19 @@
           &lt;/section>
         &lt;/main>
       &lt;/body>
+
       &lt;script type="module" src="tutorial-kickoff-1.js">&lt;/script>
+
+      &lt;script type="module">
+        // Taken out go from the tutorial-kickoff-1.js script as it's 
+        // going to be used in the next stage
+        import { go } from "./dist/binder.js";
+        go();
+      &lt;/script>
+
     &lt;/html>
-                                        </pre>
-              </div>
+              </pre>
+            </div>
             <div class="sketch">
               <h3>Css - see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
             </div>
@@ -107,16 +138,105 @@
               Name edit component takes one prop mode for edit or display
               <br />
               <br />
-              <a target="_blank" href="tutorial-kickoff-3.html">Go to running site</a>
+              <a target="_blank" href="tutorial-kickoff-2.html">Go to running site</a>
               <h3>Code - tutorial-kickoff-2.js</h3>
 <pre class="drawing">
+  
+  import { getByName, setByName, addClickFunction } from "./dist/binder.js";
+  import { addRow } from "./dist/plugins/tablePlugin.js";
+  
+  import "./tutorial-setup-4.js";
+  import "./tutorial-kickoff-1-teamplay.js";
+  import "./tutorial-kickoff-2-scoreclock.js";
+  
+  const getZeroValue = (name) => {
+    const stored = getByName(name);
+    return stored ? parseInt(stored) : 0;
+  };
+  
+  addClickFunction("scored", () => {
+    const teamName = getByName("teamName");
+    const currentScore = getZeroValue("score");
+    const score = currentScore + 1;
+    setByName("score", score);
+    console.log(teamName + " scored! Now have " + score + " goals in this game");
+    scored("!!! " + teamName + " have scored !!!");
+    publish(teamName + " have scored!");
+  });
+  
+  const scored = (text) => {
+    setByName("scored", text);
+    document.getElementById("scored").classList.remove("hide");
+    setTimeout(
+      () => document.getElementById("scored").classList.add("hide"),
+      3000
+    );
+  };
+  
+  addClickFunction("opponentScored", () => {
+    const teamName = getByName("teamName");
+    const opponentName = getByName("opponentName");
+    const currentScore = getZeroValue("opponentScore");
+    const score = currentScore + 1;
+    setByName("opponentScore", score);
+    console.log(
+      opponentName + " have scored. Now have " + score + " goals in this game"
+    );
+    publish(teamName + " have conceded a goal. :(");
+  });
+  
+  const zeroPad = (n) => (n > 9 ? n : "0" + n);
+  
+  const clock = setInterval(() => {
+    const seconds = getZeroValue("secs");
+    const mins = getZeroValue("mins");
+    const nextSec = seconds + 1;
+    const updateMin = nextSec > 59 ? mins + 1 : mins;
+    const updateSec = nextSec > 59 ? 0 : nextSec;
+    setByName("secs", zeroPad(updateSec));
+    setByName("mins", zeroPad(updateMin));
+  }, 1000);
+  
+  addClickFunction("whistle", clearInterval(clock));
+  
+  const publish = (event) => {
+    const date = new Date();
+    const hh = zeroPad(date.getHours());
+    const mm = zeroPad(date.getMinutes());
+    const ss = zeroPad(date.getSeconds());
+    const ent = {
+      time: hh + ":" + mm + ":" + ss,
+      event,
+    };
+    addRow("events", ent);
+  };
 
 </pre>
             </div>
             <div class="sketch">
-              <h3><b>Mark up</b> see <a href="#markup">above</a> and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
+              <h3><b>Mark up</b> see <a href="#markup">above</a> (change the script ref) and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
           </div>
-          
+          <div class="sketch">
+            <h3>Extra CSS</h3>
+ <pre class="drawing">
+
+  .clock-grid {
+    display: grid;
+    grid-template-columns: 4fr 0.5fr 4fr;
+    text-align: center;
+    font-size: 30px;
+  }
+  
+  .clock {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    font-size: 30px;
+    max-width: 10%;
+  }  
+ </pre>
+        </div>
+        
         </article>
         <br />
         <br />

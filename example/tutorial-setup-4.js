@@ -1,4 +1,4 @@
-import { addClickFunction, go, getByName, setValue } from "./dist/binder.js";
+import { addClickFunction, getByName } from "./dist/binder.js";
 import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
 
 import { positionIds } from "./tutorial-setup-4-posrow.js";
@@ -69,6 +69,10 @@ const goalie = () => {
 };
 
 addClickFunction("publish", () => {
+  publish("Formation: " + formation() + goalie() + bench());
+});
+
+const publish = (event) => {
   const date = new Date();
   const hh = zeroPad(date.getHours());
   const mm = zeroPad(date.getMinutes());
@@ -76,10 +80,10 @@ addClickFunction("publish", () => {
   const ent = {
     ok: ">",
     time: hh + ":" + mm + ":" + ss,
-    event: "Formation: " + formation() + goalie() + bench(),
+    event,
   };
   addRow("events", ent);
-});
+};
 
 const getRow = (e) => {
   const clicked = e.target;
@@ -95,8 +99,6 @@ addClickFunction("undo", (e) => {
   if (!row) {
     return;
   }
-  const ok = document.getElementById("events-ok-" + row);
-  setValue(ok, "X");
   toggleClass("events", row, "crossout");
 });
 
@@ -136,5 +138,3 @@ addClickFunction("send", async (e) => {
   
   */
 });
-
-go();

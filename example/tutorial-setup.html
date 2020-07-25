@@ -598,7 +598,6 @@
       addClickFunction,
       go,
       getByName,
-      setValue,
     } from "./dist/binder.js";
     import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
     
@@ -692,8 +691,6 @@
       if (!row) {
         return;
       }
-      const ok = document.getElementById("events-ok-" + row);
-      setValue(ok, "X");
       toggleClass("events", row, "crossout");
     });
     
@@ -974,6 +971,12 @@
     &lt;/body>
 
     &lt;script type="module" src="tutorial-setup-4.js">&lt;/script>
+    &lt;script type="module">
+      // Taken out go from the tutorial-setup-4.js script as it's 
+      // going to be used in the next stage
+      import { go } from "./dist/binder.js";
+      go();
+    &lt;/script>
 
     &lt;/html>
                           </pre

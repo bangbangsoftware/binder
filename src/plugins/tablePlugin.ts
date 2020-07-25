@@ -147,6 +147,7 @@ const processData = (data: TableData) => {
 
   tableWorker.onmessage = (mess) => {
     populateTemplate(data.name, mess, data.div, data.save);
+    tableWorker.terminate();
   };
 };
 

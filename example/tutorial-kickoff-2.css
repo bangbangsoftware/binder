@@ -1,0 +1,21 @@
+.clock-grid {
+  display: grid;
+  grid-template-columns: 4fr 0.5fr 4fr;
+  text-align: center;
+  font-size: 30px;
+}
+
+.clock {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  font-size: 30px;
+  max-width: 10%;
+}
+
+.goal {
+  color: red;
+  font-size: 100px;
+  text-align: center;
+  display: grid;
+}

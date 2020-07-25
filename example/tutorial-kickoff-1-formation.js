@@ -1,6 +1,5 @@
 import "./tutorial-kickoff-1-posrow.js";
 import "./tutorial-kickoff-1-benchrow.js";
-import { getByName } from "./dist/binder.js";
 
 class Formation extends HTMLElement {
   constructor() {
@@ -14,7 +13,7 @@ class Formation extends HTMLElement {
                         <player-row start=6  ></player-row>
                         <player-row start=11 ></player-row>
                         <player-row start=16 ></player-row>
-                        <button name="pos-goal" id="player-goal-button">${goalie}</button>
+                        <button name="pos-goal" id="player-goal-button"></button>
                         <player-bench></player-bench>
                       </div>`;
   }
