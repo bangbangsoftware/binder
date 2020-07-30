@@ -18,8 +18,7 @@ const nameClickers = new Map();
 let plugins = new Array();
 const hide = (element) => (element.style.display = "none");
 const show = (element) => (element.style.display = "block");
-// Dodgy mutable variables.... maybe need to be put in local storage?  "Yes! I'm not." Cory 2020
-let dataKey = "reg";
+//  "Yes! I'm not." Cory 2020
 // More dodgy mutable variables, but used for testing
 let storage = window.localStorage;
 let doc = document;
@@ -32,6 +31,16 @@ export const get = (key) => registry[key];
 export const getStartsWith = (key) => Object.keys(registry)
     .filter((name) => name.startsWith(key))
     .map((name) => registry[name].currentValue);
+export const removeStartsWith = (key) => {
+    const names = Object.keys(registry)
+        .filter((name) => name.startsWith(key))
+        .map((name) => {
+        console.log("Removing " + name);
+        return name;
+    });
+    names.forEach((name) => delete registry[name]);
+    storeRegistry(registry);
+};
 export const getByName = (key) => {
     const regEntry = get(key);
     return regEntry == null ? "" : regEntry.currentValue;
@@ -100,12 +109,7 @@ export const setByName = (fieldname, value) => {
         return element;
     });
     registry[fieldname] = data;
-    const keyvalue = {};
-    Object.keys(registry).forEach((key) => {
-        keyvalue[key] = registry[key].currentValue;
-    });
-    const reg = JSON.stringify(keyvalue);
-    storage.setItem(dataKey, reg);
+    storeRegistry();
 };
 export const addClickFunction = (name, fn) => {
     console.log("Added click for ", name);
@@ -153,13 +157,7 @@ export function putElements(elements, values) {
             console.error(error);
         }
     });
-    // Store registry
-    const keyvalue = {};
-    Object.keys(registry).forEach((key) => {
-        keyvalue[key] = registry[key].currentValue;
-    });
-    const reg = JSON.stringify(keyvalue);
-    storage.setItem(dataKey, reg);
+    storeRegistry();
 }
 const putElement = (element, currentValue = getValue(element)) => {
     const fieldname = getName(element);
@@ -197,22 +195,25 @@ const updateEntry = (fieldname, element, currentValue) => {
 };
 export function put(element) {
     putElement(element);
-    // Store registry
-    const keyvalue = {};
-    Object.keys(registry).forEach((key) => {
-        keyvalue[key] = registry[key].currentValue;
-    });
-    const reg = JSON.stringify(keyvalue);
-    storage.setItem(dataKey, reg);
-    return registry;
+    return storeRegistry();
 }
-export function clear() {
-    storage.setItem(dataKey, "{}");
+// Store registry
+const storeRegistry = (reg = registry) => {
+    const keyvalue = {};
+    Object.keys(reg).forEach((key) => {
+        storage.setItem(key, reg[key].currentValue);
+    });
+    return reg;
+};
+export function clear(reg = registry) {
+    Object.keys(reg).forEach((key) => {
+        storage.removeItem(key);
+    });
     for (const field in registry)
         delete registry[field];
+    storeRegistry();
 }
-export function bagItAndTagIt(plugs = Array(), key = "reg") {
-    dataKey = key;
+export function bagItAndTagIt(plugs = Array()) {
     hide(doc.getElementsByTagName("BODY")[0]);
     for (const field in registry)
         delete registry[field];
@@ -260,6 +261,7 @@ export const tools = {
     get,
     getValue,
     getStartsWith,
+    removeStartsWith,
     setValue,
     setByName,
     getByName,
@@ -269,22 +271,21 @@ export const tools = {
 };
 export const go = (plugs = standardPlugins) => bagItAndTagIt(plugs);
 const setup = () => {
-    console.log("Binder getting data from '" + dataKey + "' in local storage");
-    const regString = storage.getItem(dataKey);
+    console.log("Binder getting data from local storage");
     setupListener();
-    if (!regString) {
-        return;
-    }
-    try {
-        const reg = JSON.parse(regString);
-        Object.keys(reg).forEach((key) => (registry[key] = { currentValue: reg[key], elements: [] }));
-        console.log(registry);
-    }
-    catch (er) {
-        console.error("cannot parse", regString);
-        console.error(typeof regString);
-        console.error(er);
-    }
+    // try {
+    //   // @TODO @TODO @TODO This works, but really should only get the items defined in page
+    //   Object.keys(storage).forEach((key) => {
+    //     const regItem: RegEntry = {
+    //       currentValue: "" + localStorage.getItem(key),
+    //       elements: Array<Element>(),
+    //     };
+    //     registry[key] = regItem;
+    //   });
+    //   console.log(registry);
+    // } catch (er) {
+    //   console.error(er);
+    // }
 };
 const reactAll = (e, mapper) => {
     if (e.target == null) {
@@ -453,8 +454,10 @@ const addToRegister = (element, fieldname) => {
     const data = get(fieldname);
     const elements = data ? data.elements : [];
     elements.push(element);
-    const currentValue = data ? data.currentValue : getValue(element);
+    const value = getCurrentValue(fieldname, data);
+    const currentValue = value ? value : getValue(element);
     setValue(element, currentValue);
     put(element);
 };
+const getCurrentValue = (key, data) => data == null ? storage.getItem(key) : data.currentValue;
 //# sourceMappingURL=binder.js.map

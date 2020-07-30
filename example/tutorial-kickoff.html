@@ -11,10 +11,10 @@
       <section>
         <nav>
           <a href="#components">Components</a>, 
-          <a href="#place-toggle">Team names</a>
+          <a href="#team-names">Team names</a>
           <a target="_blank" href="tutorial-kickoff-1.html">(site)</a>,
 
-          <a href="#team-input">Score Clock</a>
+          <a href="#score-clock">Score Clock</a>
           <a target="_blank" href="tutorial-kickoff-2.html">(site)</a>,
           
           <a href="#formation">Formation</a>
@@ -38,7 +38,7 @@
         <br />
         <br />
 
-        <article id="place-toggle">
+        <article id="team-names">
           <h2>1. Team names</h2>
           <div class="repeatgrid">
             <div class="left-text">
@@ -67,9 +67,13 @@
   
     connectedCallback() {
       this.innerHTML = `&lt;div class="center-grid" id="namesDisplayMode">
-                          &lt;button click="scored" class="teamName" id="teamNameLabel" name="teamName" >&lt;/button>
+                          &lt;button click="scored" class="teamName" 
+                             id="teamNameLabel" name="teamName" >&lt;/button>
+
                           &lt;div class="vrs">- VRS -&lt;/div>
-                          &lt;button click="opponentScored" class="teamName" id="opponentLabel" name="opponentName" >&lt;/button>
+                          
+                          &lt;button click="opponentScored" class="teamName" 
+                             id="opponentLabel" name="opponentName" >&lt;/button>
                         &lt;/div>`;
     }
   }
@@ -96,9 +100,13 @@
             &lt;team-play >&lt;/team-play>
       
             &lt;score-clock>&lt;/score-clock>
-      
+
+            &lt;label class="hide goal" id="scored" name="scored">&lt;/label>
+
             &lt;nav class="butBar">
-                  &lt;button class="whistle-button" click="whistle" id="WhistleBut">Whistle blown&lt;/button> 
+                  &lt;button class="whistle-button" 
+                     click="whistle" id="WhistleBut">Whistle blown
+                  &lt;/button> 
             &lt;/nav>
       
             &lt;players-formation>&lt;/players-formation>
@@ -135,14 +143,19 @@
           <h2>2. Score Clock</h2>
           <div class="repeatgrid">
             <div class="left-text">
-              Name edit component takes one prop mode for edit or display
+              Implement a clock ticking, scoring buttons for the team and the opponent and scoring message 
               <br />
               <br />
               <a target="_blank" href="tutorial-kickoff-2.html">Go to running site</a>
               <h3>Code - tutorial-kickoff-2.js</h3>
 <pre class="drawing">
   
-  import { getByName, setByName, addClickFunction } from "./dist/binder.js";
+  import {
+    getByName,
+    setByName,
+    addClickFunction,
+    getValue,
+  } from "./dist/binder.js";
   import { addRow } from "./dist/plugins/tablePlugin.js";
   
   import "./tutorial-setup-4.js";
@@ -154,14 +167,14 @@
     return stored ? parseInt(stored) : 0;
   };
   
-  addClickFunction("scored", () => {
-    const teamName = getByName("teamName");
+  addClickFunction("scored", (event) => {
+    const scorer = getValue(event.target);
     const currentScore = getZeroValue("score");
     const score = currentScore + 1;
     setByName("score", score);
-    console.log(teamName + " scored! Now have " + score + " goals in this game");
-    scored("!!! " + teamName + " have scored !!!");
-    publish(teamName + " have scored!");
+    console.log(scorer + " scored! Now have " + score + " goals in this game");
+    scored("!!! " + scorer + " scored !!!");
+    publish(scorer + " scored!");
   });
   
   const scored = (text) => {
@@ -182,7 +195,7 @@
     console.log(
       opponentName + " have scored. Now have " + score + " goals in this game"
     );
-    publish(teamName + " have conceded a goal. :(");
+    publish(teamName + " have conceded a goal.");
   });
   
   const zeroPad = (n) => (n > 9 ? n : "0" + n);
@@ -197,7 +210,11 @@
     setByName("mins", zeroPad(updateMin));
   }, 1000);
   
-  addClickFunction("whistle", clearInterval(clock));
+  addClickFunction("whistle", () => {
+    clearInterval(clock);
+    publish(" Whistle blown");
+    document.location.href = "./tutorial-whistle-1.html";
+  });
   
   const publish = (event) => {
     const date = new Date();
@@ -210,14 +227,14 @@
     };
     addRow("events", ent);
   };
-
+  
 </pre>
             </div>
-            <div class="sketch">
+            <div id="extracss" class="sketch">
               <h3><b>Mark up</b> see <a href="#markup">above</a> (change the script ref) and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
           </div>
           <div class="sketch">
-            <h3>Extra CSS</h3>
+            <h3 >Extra CSS</h3>
  <pre class="drawing">
 
   .clock-grid {
@@ -233,7 +250,22 @@
     text-align: center;
     font-size: 30px;
     max-width: 10%;
-  }  
+  } 
+  
+  .player-but {
+    margin: 5px;
+    min-height: 100px;
+    font-size: 32px;
+    border-radius: 25px;
+    width: 100%;
+  }
+  
+  .play-grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
+    grid-gap: 5px;
+    margin: 10px;
+  }
  </pre>
         </div>
         
@@ -248,14 +280,112 @@
               Name edit component takes one prop mode for edit or display
               <br />
               <br />
-              <a target="_blank" href="tutorial-kickoff-4.html">Go to running site</a>
+              <a target="_blank" href="tutorial-kickoff-3.html">Go to running site</a>
               <h3>Code - tutorial-kickoff-3.js</h3>
 <pre class="drawing">
 
+  import "./tutorial-kickoff-2.js";
+  import "./tutorial-kickoff-3-formation.js";
+
 </pre>
-            </div>
+<h3>Code - tutorial-kickoff-3-formation.js</h3>
+<pre class="drawing">
+
+  import "./tutorial-kickoff-3-posrow.js";
+  import "./tutorial-kickoff-3-benchrow.js";
+  
+  class Formation extends HTMLElement {
+    constructor() {
+      super();
+    }
+  
+    connectedCallback() {
+      this.innerHTML = `&lt;div class="format-grid" id="formation">
+                          &lt;player-row start=1  >&lt;/player-row>
+                          &lt;player-row start=6  >&lt;/player-row>
+                          &lt;player-row start=11 >&lt;/player-row>
+                          &lt;player-row start=16 >&lt;/player-row>
+                          &lt;span class="play-grid">
+                            &lt;div class="player">&lt;/div>
+                            &lt;div class="player">&lt;/div>
+                            &lt;button click="scored" class="player-but" 
+                            name="pos-goal" id="player-goal-button">&lt;/button>
+                            &lt;div>&lt;/div>
+                            &lt;div>&lt;/div>
+                          &lt;/span>
+                          &lt;player-bench>&lt;/player-bench>
+                        &lt;/div>`;
+    }
+  }
+  customElements.define("players-formation", Formation);
+  
+</pre>
+<h3>Code - tutorial-kickoff-3-posrow.js</h3>
+<pre class="drawing">
+
+  import { getByName } from "./dist/binder.js";
+
+  class PlayerRow extends HTMLElement {
+    start = -1;
+    constructor() {
+      super();
+      this.start = parseInt(this.getAttribute("start"));
+    }
+
+    connectedCallback() {
+      for (let x = 0; x &lt; 6; x++) {
+        const id = this.start + x;
+        const html = `&lt;div class="player">
+                        &lt;button if="pos-${id}" class="hide player-but" 
+                          click="scored" name="pos-${id}" 
+                          id="player-button-${id}">&lt;/button>
+                      &lt;/div>`;
+        this.innerHTML = this.innerHTML + html;
+      }
+      this.innerHTML = `&lt;span class="play-grid">` + this.innerHTML + `&lt;/span>`;
+    }
+  }
+
+  customElements.define("player-row", PlayerRow);
+
+  
+</pre>
+
+</pre>
+<h3>Code - tutorial-kickoff-3-benchrow.js</h3>
+<pre class="drawing">
+
+  import { getByName } from "./dist/binder.js";
+
+  class PlayerBench extends HTMLElement {
+    start = -1;
+    constructor() {
+      super();
+      this.start = parseInt(this.getAttribute("start"));
+    }
+  
+    connectedCallback() {
+      for (let id = 1; id &lt; 6; id++) {
+        const html = `&lt;div class="player">
+                        &lt;button if="pos-bench-${id}" 
+                          name="pos-bench-${id}" id="bench-button-${id}"
+                          class="player-but" click="scored" >&lt;/button>
+                      &lt;/div>`;
+        this.innerHTML = this.innerHTML + html;
+      }
+      this.innerHTML = `&lt;span class="row-grid">` + this.innerHTML + `&lt;/span>`;
+    }
+  }
+  
+  customElements.define("player-bench", PlayerBench);
+    
+</pre>
+
+
+
+</div>
             <div class="sketch">
-              <h3><b>Mark up</b> see <a href="#markup">above</a> and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
+              <h3><b>Mark up</b> see <a href="#markup">above</a> (change the script ref) and for <b>css</b> see <a href="#extracss">Extra CSS above</a></h3>
           </div>
           
         </article>
@@ -276,7 +406,7 @@
 </pre>
             </div>
             <div class="sketch">
-              <h3><b>Mark up</b> see <a href="#markup">above</a> and for <b>css</b> see <a href="./tutorial-setup.html#tutorial-setup-4.css">tutorial-setup-4.css</a></h3>
+              <h3><b>Mark up</b> see <a href="#markup">above</a> (change the script ref) and for <b>css</b> see <a href="#extracss">Extra CSS above</a></h3>
           </div>
           
         </article>

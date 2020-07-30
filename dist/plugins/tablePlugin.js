@@ -24,6 +24,21 @@ const getStoredData = (name, binder) => {
     });
     return dataMap;
 };
+export const clearTable = (name, bdr = binder) => {
+    //  const keysJSON = bdr.getByName(name + "-table-keys");
+    //  if (!keysJSON) {
+    //    return [];
+    //  }
+    //  const keys = <Array<any>>JSON.parse(keysJSON);
+    // const length = parseInt(bdr.getByName(name + "-table-length"));
+    //  if (!length) {
+    //    return [];
+    //  }
+    //  keys.forEach((key) => {
+    //    bdr.removeStartsWith(name + "-" + key);
+    //  });
+    bdr.removeStartsWith(name + "-");
+};
 export const addSetup = (name, setupData) => {
     if (setupData == undefined) {
         return;

@@ -19,3 +19,18 @@
   text-align: center;
   display: grid;
 }
+
+.player-but {
+  margin: 5px;
+  min-height: 100px;
+  font-size: 32px;
+  border-radius: 25px;
+  width: 100%;
+}
+
+.play-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
+  grid-gap: 5px;
+  margin: 10px;
+}

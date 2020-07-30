@@ -10,6 +10,10 @@ export interface ValuesGet {
   (key: string): Array<string>;
 }
 
+export interface Do {
+  (key: string);
+}
+
 export interface Get {
   (): string;
 }
@@ -60,6 +64,7 @@ export interface BinderTools {
   get: ToolGet;
   getValue: ToolGetValue;
   getStartsWith: ValuesGet;
+  removeStartsWith: Do;
   setValue: ToolSetValue;
   setByName: ToolSetName;
   clickListener: ClickListener;

@@ -2,6 +2,8 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="tutorial-setup-4.css" />
+    <link rel="stylesheet" type="text/css" href="tutorial-kickoff-2.css" />
+
     <title>Footswell</title>
   </head>
   <body class="fade-in">
@@ -11,9 +13,11 @@
       </header>
       <section id="size">
 
-        <team-play></team-play>
+        <team-play mode="play"></team-play>
   
         <score-clock></score-clock>
+
+        <label class="hide goal" id="scored" name="scored"></label>
   
         <nav class="butBar">
               <button class="whistle-button" click="whistle" id="WhistleBut">Whistle blown</button> 
@@ -26,11 +30,12 @@
       </section>
     </main>
   </body>
-  <script type="module" src="tutorial-kickoff-1.js"></script>
+  <script type="module" src="tutorial-kickoff-3.js"></script>
   <script type="module">
-    // Taken out go from the tutorial-kickoff-1.js script as it's 
+    // Taken out go from the tutorial-kickoff-2.js script as it's 
     // going to be used in the next stage
     import { go } from "./dist/binder.js";
     go();
   </script>
+
 </html>

@@ -1,4 +1,9 @@
-import { getByName, setByName, addClickFunction } from "./dist/binder.js";
+import {
+  getByName,
+  setByName,
+  addClickFunction,
+  getValue,
+} from "./dist/binder.js";
 import { addRow } from "./dist/plugins/tablePlugin.js";
 
 import "./tutorial-setup-4.js";
@@ -10,14 +15,14 @@ const getZeroValue = (name) => {
   return stored ? parseInt(stored) : 0;
 };
 
-addClickFunction("scored", () => {
-  const teamName = getByName("teamName");
+addClickFunction("scored", (event) => {
+  const scorer = getValue(event.target);
   const currentScore = getZeroValue("score");
   const score = currentScore + 1;
   setByName("score", score);
-  console.log(teamName + " scored! Now have " + score + " goals in this game");
-  scored("!!! " + teamName + " have scored !!!");
-  publish(teamName + " have scored!");
+  console.log(scorer + " scored! Now have " + score + " goals in this game");
+  scored("!!! " + scorer + " scored !!!");
+  publish(scorer + " scored!");
 });
 
 const scored = (text) => {
@@ -38,7 +43,7 @@ addClickFunction("opponentScored", () => {
   console.log(
     opponentName + " have scored. Now have " + score + " goals in this game"
   );
-  publish(teamName + " have conceded a goal. :(");
+  publish(teamName + " have conceded a goal.");
 });
 
 const zeroPad = (n) => (n > 9 ? n : "0" + n);
@@ -53,7 +58,11 @@ const clock = setInterval(() => {
   setByName("mins", zeroPad(updateMin));
 }, 1000);
 
-addClickFunction("whistle", clearInterval(clock));
+addClickFunction("whistle", () => {
+  clearInterval(clock);
+  publish(" Whistle blown");
+  document.location.href = "./tutorial-whistle-1.html";
+});
 
 const publish = (event) => {
   const date = new Date();

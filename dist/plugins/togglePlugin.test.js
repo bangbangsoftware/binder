@@ -15,6 +15,7 @@ describe("togglePlugin.test", () => {
             return blank;
         },
         getStartsWith: (key) => [key],
+        removeStartsWith: (key) => { },
         setValue: (el, value) => {
             mockElement.innerText = value;
         },
