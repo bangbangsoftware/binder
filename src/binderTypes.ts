@@ -1,5 +1,5 @@
 export interface ToolGet {
-  (key: string): RegEntry;
+  (key: string): RegEntry | undefined;
 }
 
 export interface ValueGet {
@@ -64,6 +64,7 @@ export interface BinderTools {
   get: ToolGet;
   getValue: ToolGetValue;
   getStartsWith: ValuesGet;
+  populateStartsWith: Do;
   removeStartsWith: Do;
   setValue: ToolSetValue;
   setByName: ToolSetName;

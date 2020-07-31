@@ -1,4 +1,4 @@
-import { setStorage, setDocument, clear, bagItAndTagIt, put, get } from "./binder";
+import { setStorage, setDocument, clear, bagItAndTagIt, put, get, } from "./binder";
 const mockElement = document.createElement("div");
 mockElement.innerText = "bivouac";
 mockElement.setAttribute("name", "placeToStay");
@@ -10,12 +10,12 @@ mockElement2.setAttribute("id", "place2");
 mockElement.appendChild(mockElement2);
 const testElements = [mockElement];
 const mocDoc = {
-    getElementsByTagName: tagName => {
+    getElementsByTagName: (tagName) => {
         if (tagName === "BODY") {
             return [
                 {
-                    style: { display: "block" }
-                }
+                    style: { display: "block" },
+                },
             ];
         }
     },
@@ -25,14 +25,14 @@ const mocDoc = {
     },
     querySelectorAll: () => {
         return testElements;
-    }
+    },
 };
 const store = { reg: { bingo: "no" } };
 const mockStore = {
     setItem: (k, v) => {
         store[k] = v;
     },
-    getItem: (k) => JSON.stringify(store[k])
+    getItem: (k) => JSON.stringify(store[k]),
 };
 describe("The binder", () => {
     beforeAll(() => {
@@ -56,8 +56,13 @@ describe("The binder", () => {
         const reg2 = put(mockElement4);
         console.log("reg2", reg2);
         const what = get("placeToStay");
-        console.log("current Value", what.currentValue);
-        expect(what.currentValue).toBe("caravan");
+        if (what == null) {
+            expect(what).toBeDefined;
+        }
+        else {
+            console.log("current Value", what.currentValue);
+            expect(what.currentValue).toBe("caravan");
+        }
         expect(mockElement.innerText).toBe("caravan");
         expect(mockElement2.value).toBe("caravan");
         expect(mockElement3.innerText).toBe("caravan");
@@ -67,4 +72,4 @@ describe("The binder", () => {
         expect(andNow).toBeUndefined();
     });
 });
-//# sourceMappingURL=index.test.js.map
+//# sourceMappingURL=binder.test.js.map

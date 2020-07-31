@@ -115,6 +115,7 @@ const generateData = (binder, name, div) => {
     const children = Array.prototype.slice.call(div.children);
     const templateRows = children.map((child) => child.outerHTML);
     const template = templateRows.join("\n");
+    binder.populateStartsWith(name + "-");
     const storedData = getStoredData(name, binder);
     const mapList = storedData.length > 0 ? storedData : [];
     const save = storedData.length === 0;
@@ -212,7 +213,7 @@ const populateTemplate = (name, workerData, div, save) => {
     if (save) {
         binder.putElements(children, datas);
         binder.setByName(name + "-table-keys", JSON.stringify([...keys]));
-        const length = datas.length / keys.size;
+        const length = keys.size === 0 ? 0 : datas.length / keys.size;
         binder.setByName(name + "-table-length", length + "");
     }
     reclass(name);

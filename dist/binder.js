@@ -27,7 +27,31 @@ export const setStorage = (s) => (storage = s);
 export const setDocument = (d) => (doc = d);
 const isInput = (element) => element != null && element.localName != null && element.localName === "input";
 export const registry = {};
-export const get = (key) => registry[key];
+export const get = (key) => {
+    const data = registry[key];
+    if (data != null) {
+        return data;
+    }
+    const currentValue = storage.getItem(key);
+    if (currentValue == null) {
+        return undefined;
+    }
+    return {
+        currentValue,
+        elements: [],
+    };
+};
+export const populateStartsWith = (starts) => {
+    Object.keys(storage)
+        .filter((key) => key.startsWith(starts))
+        .forEach((key) => {
+        const regItem = {
+            currentValue: "" + localStorage.getItem(key),
+            elements: Array(),
+        };
+        registry[key] = regItem;
+    });
+};
 export const getStartsWith = (key) => Object.keys(registry)
     .filter((name) => name.startsWith(key))
     .map((name) => registry[name].currentValue);
@@ -261,6 +285,7 @@ export const tools = {
     get,
     getValue,
     getStartsWith,
+    populateStartsWith,
     removeStartsWith,
     setValue,
     setByName,
@@ -459,5 +484,5 @@ const addToRegister = (element, fieldname) => {
     setValue(element, currentValue);
     put(element);
 };
-const getCurrentValue = (key, data) => data == null ? storage.getItem(key) : data.currentValue;
+const getCurrentValue = (key, data) => (data == null ? storage.getItem(key) : data.currentValue);
 //# sourceMappingURL=binder.js.map

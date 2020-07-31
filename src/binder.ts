@@ -41,7 +41,33 @@ const isInput = (element: Element) =>
   element != null && element.localName != null && element.localName === "input";
 
 export const registry: { [key: string]: RegEntry } = {};
-export const get = (key: string): RegEntry => registry[key];
+export const get = (key: string): RegEntry | undefined => {
+  const data = registry[key];
+  if (data != null) {
+    return data;
+  }
+  const currentValue = storage.getItem(key);
+  if (currentValue == null) {
+    return undefined;
+  }
+  return {
+    currentValue,
+    elements: [],
+  };
+};
+
+export const populateStartsWith = (starts: string) => {
+  Object.keys(storage)
+    .filter((key) => key.startsWith(starts))
+    .forEach((key) => {
+      const regItem: RegEntry = {
+        currentValue: "" + localStorage.getItem(key),
+        elements: Array<Element>(),
+      };
+      registry[key] = regItem;
+    });
+};
+
 export const getStartsWith = (key: string): Array<string> =>
   Object.keys(registry)
     .filter((name) => name.startsWith(key))
@@ -59,7 +85,7 @@ export const removeStartsWith = (key: string) => {
 };
 
 export const getByName = (key: string): string => {
-  const regEntry: RegEntry = get(key);
+  const regEntry = get(key);
   return regEntry == null ? "" : regEntry.currentValue;
 };
 
@@ -342,6 +368,7 @@ export const tools: BinderTools = {
   get,
   getValue,
   getStartsWith,
+  populateStartsWith,
   removeStartsWith,
   setValue,
   setByName,
@@ -586,5 +613,7 @@ const addToRegister = (element: HTMLElement, fieldname: string) => {
   put(element);
 };
 
-const getCurrentValue = (key: string, data: RegEntry | null): string | null =>
-  data == null ? storage.getItem(key) : data.currentValue;
+const getCurrentValue = (
+  key: string,
+  data: RegEntry | undefined
+): string | null => (data == null ? storage.getItem(key) : data.currentValue);
