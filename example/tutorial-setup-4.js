@@ -91,7 +91,7 @@ const getRow = (e) => {
 };
 
 addClickFunction("kickoff", (e) => {
-  window.location.href = "tutorial-kickoff-1.html";
+  window.location.href = "tutorial-kickoff-4.html";
 });
 
 addClickFunction("undo", (e) => {
