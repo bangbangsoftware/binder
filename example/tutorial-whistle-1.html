@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="tutorial-setup-4.css" />
+    <link rel="stylesheet" type="text/css" href="tutorial-kickoff-2.css" />
+    <title>Footswell</title>
+  </head>
+  <body class="fade-in">
+    <main>
+      <header>
+        <h1>F O O T S W E L L</h1>
+      </header>
+      <section>
+        <article id="components">
+
+            <button class="place action" toggle="HOME,AWAY" id="place-toggle" name="place">HOME</button>   
+
+            <team-names id="teamNames" mode="play"></team-names>
+
+            <button class="place action" click="finalWhistle" id="final-whistle">Final Whistle</button>   
+
+            <score-clock></score-clock>
+            
+
+            <nav class="nav4">
+                <button class="action" click="toggleEdit">Edit</button> 
+                <button class="action" click="reset">Reset time</button> 
+                <button click="publish" class="action">Publish</button> 
+                <button click="kickoff" class="action">Kick Off</button>   
+            </nav>
+
+            <formation-edit mode="display"></formation-edit>
+
+            <events-list></events-list>
+
+        </section>
+    </main>
+  </body>
+  <script type="module" src="./tutorial-whistle-1.js"></script>
+  <script type="module">
+      import { go } from "./dist/binder.js";
+      go();
+  </script>
+</html>

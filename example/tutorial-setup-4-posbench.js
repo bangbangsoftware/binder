@@ -2,14 +2,16 @@ export const benchIds = [];
 
 class PosBench extends HTMLElement {
   start = -1;
+  mode = "edit";
   constructor() {
     super();
+    this.mode = this.getAttribute("mode");
     this.start = parseInt(this.getAttribute("start"));
   }
 
   connectedCallback() {
-    const buttonclass = this.mode === "edit" ? "" : "hide";
-    const inputclass = this.mode === "edit" ? "hide" : "";
+    const buttonclass = this.mode === "display" ? "" : "hide";
+    const inputclass = this.mode === "edit" ? "" : "hide";
     for (let x = 1; x < 6; x++) {
       const id = x;
       const html =

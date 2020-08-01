@@ -15,14 +15,22 @@ const getZeroValue = (name) => {
   return stored ? parseInt(stored) : 0;
 };
 
+export const currentScore = () => {
+  const name = getByName("teamName");
+  const opponent = getByName("opponentName");
+  const oppScore = getByName("opponentScore");
+  const score = getByName("score");
+  return name + " " + score + " vrs " + opponent + " " + oppScore;
+};
+
 addClickFunction("scored", (event) => {
   const scorer = getValue(event.target);
-  const currentScore = getZeroValue("score");
-  const score = currentScore + 1;
+  const current = getZeroValue("score");
+  const score = current + 1;
   setByName("score", score);
   console.log(scorer + " scored! Now have " + score + " goals in this game");
   scored("!!! " + scorer + " scored !!!");
-  publish(scorer + " scored!");
+  publish(scorer + " scored! " + currentScore());
 });
 
 const scored = (text) => {
@@ -37,34 +45,40 @@ const scored = (text) => {
 addClickFunction("opponentScored", () => {
   const teamName = getByName("teamName");
   const opponentName = getByName("opponentName");
-  const currentScore = getZeroValue("opponentScore");
-  const score = currentScore + 1;
+  const current = getZeroValue("opponentScore");
+  const score = current + 1;
   setByName("opponentScore", score);
   console.log(
     opponentName + " have scored. Now have " + score + " goals in this game"
   );
-  publish(teamName + " have conceded a goal.");
+  publish(teamName + " have conceded a goal. " + currentScore());
 });
 
 const zeroPad = (n) => (n > 9 ? n : "0" + n);
 
-const clock = setInterval(() => {
-  const seconds = getZeroValue("secs");
-  const mins = getZeroValue("mins");
-  const nextSec = seconds + 1;
-  const updateMin = nextSec > 59 ? mins + 1 : mins;
-  const updateSec = nextSec > 59 ? 0 : nextSec;
-  setByName("secs", zeroPad(updateSec));
-  setByName("mins", zeroPad(updateMin));
-}, 1000);
+let clock;
+
+export const startClock = () => {
+  clock = setInterval(() => {
+    const seconds = getZeroValue("secs");
+    const mins = getZeroValue("mins");
+    const nextSec = seconds + 1;
+    const updateMin = nextSec > 59 ? mins + 1 : mins;
+    const updateSec = nextSec > 59 ? 0 : nextSec;
+    setByName("secs", zeroPad(updateSec));
+    setByName("mins", zeroPad(updateMin));
+  }, 1000);
+};
 
 addClickFunction("whistle", () => {
-  clearInterval(clock);
+  if (clock) {
+    clearInterval(clock);
+  }
   publish(" Whistle blown");
   document.location.href = "./tutorial-whistle-1.html";
 });
 
-const publish = (event) => {
+export const publish = (event) => {
   const date = new Date();
   const hh = zeroPad(date.getHours());
   const mm = zeroPad(date.getMinutes());

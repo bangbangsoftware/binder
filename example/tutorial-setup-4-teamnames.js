@@ -10,18 +10,16 @@ class TeamNames extends HTMLElement {
     const labelClasses =
       this.mode === "play" ? "center-grid" : "center-grid hide";
     const inputClasses =
-      this.mode !== "play" ? "center-grid" : "center-grid hide";
-    const teamName = getByName("teamName");
-    const opponentName = getByName("opponentName");
+      this.mode === "edit" ? "center-grid" : "center-grid hide";
     this.innerHTML = `<div class="${inputClasses}" id="namesInputMode">
-                        <input id="teamNameInput" name="teamName" Placeholder="Team Name">${teamName}</input>
+                        <input id="teamNameInput" name="teamName" Placeholder="Team Name"></input>
                         <div class="vrs"> VRS </div>
-                        <input id="opponentInput" name="opponentName" Placeholder="Opponent Name">${opponentName}</input>
+                        <input id="opponentInput" name="opponentName" Placeholder="Opponent Name"></input>
                       </div>  
                       <div class="${labelClasses}" id="namesDisplayMode">
-                        <label class="teamName" id="teamNameLabel" name="teamName" >${teamName}</label>
+                        <label class="teamName" id="teamNameLabel" name="teamName" ></label>
                         <div class="vrs">- VRS -</div>
-                        <label class="teamName" id="opponentLabel" name="opponentName" >${opponentName}</label>
+                        <label class="teamName" id="opponentLabel" name="opponentName" ></label>
                       </div>`;
   }
 }
