@@ -594,12 +594,9 @@
             <div class="sketch">
               <h3>Code - tutorial-setup-4.js</h3>
               <pre class="drawing">                
-    import {
-      addClickFunction,
-      go,
-      getByName,
-    } from "./dist/binder.js";
-    import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
+
+    import { addClickFunction, getByName, setByName } from "./dist/binder.js";
+    import { addRow, toggleClass, clearTable } from "./dist/plugins/tablePlugin.js";
     
     import { positionIds } from "./tutorial-setup-4-posrow.js";
     import { benchIds } from "./tutorial-setup-4-posbench.js";
@@ -669,6 +666,10 @@
     };
     
     addClickFunction("publish", () => {
+      publish("Formation: " + formation() + goalie() + bench());
+    });
+    
+    const publish = (event) => {
       const date = new Date();
       const hh = zeroPad(date.getHours());
       const mm = zeroPad(date.getMinutes());
@@ -676,15 +677,19 @@
       const ent = {
         ok: ">",
         time: hh + ":" + mm + ":" + ss,
-        event: "Formation: " + formation() + goalie() + bench(),
+        event,
       };
       addRow("events", ent);
-    });
+    };
     
     const getRow = (e) => {
       const clicked = e.target;
       return clicked.getAttribute("row");
     };
+    
+    addClickFunction("kickoff", (e) => {
+      window.location.href = "tutorial-kickoff-4.html";
+    });
     
     addClickFunction("undo", (e) => {
       const row = getRow(e);
@@ -693,6 +698,15 @@
       }
       toggleClass("events", row, "crossout");
     });
+    
+    export const reset = () => {
+      clearTable("events");
+      setByName("mins", "00");
+      setByName("secs", "00");
+      setByName("oppenentName", "");
+      setByName("opponentScore", "0");
+      setByName("score", "0");
+    };
     
     addClickFunction("send", async (e) => {
       const row = getRow(e);
@@ -730,9 +744,7 @@
       
       */
     });
-    
-    go();
-                
+                             
               </pre>
             </div>
             <div class="sketch">
@@ -921,14 +933,6 @@
        </div>
 
 
-
-
-
-
-
-
-
-
             <div class="sketch">
               <h3>Mark up</h3>
               <pre>
@@ -976,6 +980,9 @@
       // going to be used in the next stage
       import { go } from "./dist/binder.js";
       go();
+
+      import { reset } from "./tutorial-setup-4.js";
+      reset();
     &lt;/script>
 
     &lt;/html>
