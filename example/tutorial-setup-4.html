@@ -16,21 +16,24 @@
             <team-names id="teamNames" mode="edit"></team-names>
 
             <nav class="nav">
-                <button class="action" click="toggleEdit">Edit</button> 
+                <button class="action edit" click="toggleEdit">Edit</button> 
                 <button click="publish" class="action">Publish</button> 
                 <button click="kickoff" class="action">Kick Off</button>   
             </nav>
 
-            <formation-edit mode="move"></formation-edit>
+            <formation-edit mode="edit"></formation-edit>
 
             <events-list></events-list>
 
         </section>
     </main>
   </body>
-  <script type="module" src="tutorial-setup-4.js"></script>
+  <script type="module" src="./tutorial-setup-4.js"></script>
   <script type="module">
       import { go } from "./dist/binder.js";
       go();
+
+      import { reset } from "./tutorial-setup-4.js";
+      reset();
   </script>
 </html>

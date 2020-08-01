@@ -1,5 +1,5 @@
-import { addClickFunction, getByName } from "./dist/binder.js";
-import { addRow, toggleClass } from "./dist/plugins/tablePlugin.js";
+import { addClickFunction, getByName, setByName } from "./dist/binder.js";
+import { addRow, toggleClass, clearTable } from "./dist/plugins/tablePlugin.js";
 
 import { positionIds } from "./tutorial-setup-4-posrow.js";
 import { benchIds } from "./tutorial-setup-4-posbench.js";
@@ -101,6 +101,15 @@ addClickFunction("undo", (e) => {
   }
   toggleClass("events", row, "crossout");
 });
+
+export const reset = () => {
+  clearTable("events");
+  setByName("mins", "00");
+  setByName("secs", "00");
+  setByName("oppenentName", "");
+  setByName("opponentScore", "0");
+  setByName("score", "0");
+};
 
 addClickFunction("send", async (e) => {
   const row = getRow(e);

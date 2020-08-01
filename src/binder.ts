@@ -73,14 +73,17 @@ export const getStartsWith = (key: string): Array<string> =>
     .filter((name) => name.startsWith(key))
     .map((name) => registry[name].currentValue);
 
-export const removeStartsWith = (key: string) => {
+export const removeStartsWith = (starts: string) => {
   const names = Object.keys(registry)
-    .filter((name) => name.startsWith(key))
+    .filter((name) => name.startsWith(starts))
     .map((name) => {
       console.log("Removing " + name);
       return name;
     });
   names.forEach((name) => delete registry[name]);
+  Object.keys(storage)
+    .filter((key) => key.startsWith(starts))
+    .forEach((key) => storage.removeItem(key));
   storeRegistry(registry);
 };
 
