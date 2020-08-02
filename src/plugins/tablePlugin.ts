@@ -179,6 +179,19 @@ export const toggleClass = (name: string, row: number, classname: string) => {
   setClass(name, row, classname, keys);
 };
 
+export const rowsWithoutClass = (name: string, classname: string) => {
+  const data = getStoredData(name, binder);
+  const classesJSON = binder.getByName(name + "-table-classes");
+  if (!classesJSON) {
+    return data;
+  }
+  const classes: Array<any> = JSON.parse(classesJSON);
+  classes.forEach((cl) => {
+    delete data[cl.row];
+  });
+  return data;
+};
+
 const adjustClasses = (name: string, row: number, classname: string) => {
   const classesJSON = binder.getByName(name + "-table-classes");
   if (!classesJSON) {

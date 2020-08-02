@@ -30,7 +30,7 @@ addClickFunction("scored", (event) => {
   setByName("score", score);
   console.log(scorer + " scored! Now have " + score + " goals in this game");
   scored("!!! " + scorer + " scored !!!");
-  publish(scorer + " scored! " + currentScore());
+  publish(scorer + " scored!, " + currentScore());
 });
 
 const scored = (text) => {
@@ -51,7 +51,7 @@ addClickFunction("opponentScored", () => {
   console.log(
     opponentName + " have scored. Now have " + score + " goals in this game"
   );
-  publish(teamName + " have conceded a goal. " + currentScore());
+  publish(teamName + " have conceded a goal, " + currentScore());
 });
 
 const zeroPad = (n) => (n > 9 ? n : "0" + n);
@@ -78,14 +78,14 @@ addClickFunction("whistle", () => {
   document.location.href = "./tutorial-whistle-1.html";
 });
 
-export const publish = (event) => {
+export const publish = (details) => {
   const date = new Date();
   const hh = zeroPad(date.getHours());
   const mm = zeroPad(date.getMinutes());
   const ss = zeroPad(date.getSeconds());
   const ent = {
     time: hh + ":" + mm + ":" + ss,
-    event,
+    details,
   };
   addRow("events", ent);
 };

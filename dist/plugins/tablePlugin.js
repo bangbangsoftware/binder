@@ -146,6 +146,18 @@ export const toggleClass = (name, row, classname) => {
     binder.setByName(name + "-table-classes", JSON.stringify(classes));
     setClass(name, row, classname, keys);
 };
+export const rowsWithoutClass = (name, classname) => {
+    const data = getStoredData(name, binder);
+    const classesJSON = binder.getByName(name + "-table-classes");
+    if (!classesJSON) {
+        return data;
+    }
+    const classes = JSON.parse(classesJSON);
+    classes.forEach((cl) => {
+        delete data[cl.row];
+    });
+    return data;
+};
 const adjustClasses = (name, row, classname) => {
     const classesJSON = binder.getByName(name + "-table-classes");
     if (!classesJSON) {

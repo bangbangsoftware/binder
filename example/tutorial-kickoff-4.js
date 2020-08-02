@@ -10,7 +10,7 @@ import {
 // Add an extra listener to change score based on undo....
 addClickFunction("undo", (e) => {
   const row = e.target.getAttribute("row");
-  const event = document.getElementById("events-event-" + row);
+  const event = document.getElementById("events-details-" + row);
   const eventText = getValue(event);
   const scored = eventText.indexOf("scored") > -1;
   const conceded = eventText.indexOf("conceded") > -1;

@@ -51,7 +51,7 @@ const formation = (prefix = "pos-") => {
   let list = "";
   for (let x = 1; x < 21; x++) {
     const value = getByName(prefix + x);
-    const display = list.length == 0 ? value : ", " + value;
+    const display = list.length == 0 ? value : ". " + value;
     const displayValue = value ? display : "";
     list = list + displayValue;
   }
@@ -68,11 +68,16 @@ const goalie = () => {
   return value ? ". Goalie: " + value : "";
 };
 
+const location = () => {
+  const place = getByName("place");
+  return (" at " + place).toLowerCase();
+};
+
 addClickFunction("publish", () => {
-  publish("Formation: " + formation() + goalie() + bench());
+  publish("Formation: " + formation() + goalie() + bench() + location());
 });
 
-const publish = (event) => {
+const publish = (details) => {
   const date = new Date();
   const hh = zeroPad(date.getHours());
   const mm = zeroPad(date.getMinutes());
@@ -80,7 +85,7 @@ const publish = (event) => {
   const ent = {
     ok: ">",
     time: hh + ":" + mm + ":" + ss,
-    event,
+    details,
   };
   addRow("events", ent);
 };

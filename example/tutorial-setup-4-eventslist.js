@@ -13,7 +13,7 @@ class EventsList extends HTMLElement {
                       <div class="events-grid" table="events">
                         <button class="event-button" click="undo">Undo</button>
                         <div class="event-text" place="time"></div>
-                        <div class="event-text" place="event"></div>
+                        <div class="event-text" place="details"></div>
                         <button class="event-button" click="send">send</div>
                       </div>`;
   }
