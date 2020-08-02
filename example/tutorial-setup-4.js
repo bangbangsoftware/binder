@@ -70,7 +70,7 @@ const goalie = () => {
 
 const location = () => {
   const place = getByName("place");
-  return (" at " + place).toLowerCase();
+  return (" (" + place).toLowerCase() + ").";
 };
 
 addClickFunction("publish", () => {

@@ -9,12 +9,9 @@ addClickFunction("reset", () => {
 });
 
 addClickFunction("finalWhistle", () => {
-  const place = getByName("place");
   const score = currentScore();
   // publish
-  publish(
-    "The final whistle has blown! " + "At " + place.toLowerCase() + " " + score
-  );
+  publish("The final whistle has blown!, " + score);
   // csv
   download();
 });
