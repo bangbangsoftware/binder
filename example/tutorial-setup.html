@@ -82,7 +82,8 @@
 
         &lt;section>
   
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+              &lt;button class="place" toggle="HOME,AWAY" 
+                 id="place-toggle" name="place">HOME&lt;/button>   
   
               &lt;team-names mode="edit">&lt;/team-names>
   
@@ -164,7 +165,8 @@
 
     connectedCallback() {
       this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
-                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">
+                          &lt;input id="teamNameInput" name="teamName" 
+                              Placeholder="Team Name">
                           &lt;/input>
                           VRS
                           &lt;input id="opponentInput" name="opponentName" 
@@ -221,7 +223,8 @@
       &lt;section>
         &lt;article id="components">
 
-            &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+            &lt;button class="place" toggle="HOME,AWAY" 
+                id="place-toggle" name="place">HOME&lt;/button>   
 
             &lt;team-names id="teamNames" mode="edit">&lt;/team-names>
 
@@ -349,8 +352,11 @@
       for (let x = 0; x < 5; x++) {
         const id = this.start + x;
         const html =
-          `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
-          `&lt;input class="${inputclass}" name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
+          `&lt;button swap-data="pswap" 
+               class="${buttonclass}" name="pos-${id}" 
+               id="pos-button-${id}">&lt;/button>` +
+          `&lt;input class="${inputclass}" name="pos-${id}" 
+               id="pos-input-${id}">&lt;/input>`;
         this.innerHTML = this.innerHTML + html;
         posId.push("pos-input-" + id);
         posId.push("pos-button-" + id);
@@ -390,14 +396,18 @@
   
     connectedCallback() {
       this.innerHTML = `&lt;div class="center-grid" id="namesInputMode">
-                          &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">&Lt;/input>
+                          &lt;input id="teamNameInput" 
+                              name="teamName" Placeholder="Team Name">&Lt;/input>
                           &lt;div class="vrs"> VRS &Lt;/div>
-                          &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">&Lt;/input>
+                          &lt;input id="opponentInput" 
+                              name="opponentName" Placeholder="Opponent Name">&Lt;/input>
                           &lt;/div>  
                           &lt;div class="hide center-grid" id="namesDisplayMode">
-                          &lt;label class="teamName" id="teamNameLabel" name="teamName" >&Lt;/label>
+                          &lt;label class="teamName" 
+                              id="teamNameLabel" name="teamName" >&Lt;/label>
                           &lt;div class="vrs">- VRS -&Lt;/div>
-                          &lt;label class="teamName" id="opponentLabel" name="opponentName" >&Lt;/label>
+                          &lt;label class="teamName" 
+                              id="opponentLabel" name="opponentName" >&Lt;/label>
                         &lt;/div>`;
     }
   }
@@ -463,7 +473,8 @@
 
         &lt;section>
   
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+              &lt;button class="place" toggle="HOME,AWAY" 
+                  id="place-toggle" name="place">HOME&lt;/button>   
   
               &lt;team-names mode="edit">&lt;/team-names>
   
@@ -742,8 +753,10 @@
     
         const  message =  encodeURIComponent(yourMessage);
         
-        console.log("https://api.whatsapp.com/send?phone=" + number + "&text=%20" + message);
-        return fetch("https://api.whatsapp.com/send?phone=" + number + "&text=%20" + message);
+        console.log("https://api.whatsapp.com/send?phone=" 
+            + number + "&text=%20" + message);
+        return fetch("https://api.whatsapp.com/send?phone=" 
+            + number + "&text=%20" + message);
       
       */
     });
@@ -822,8 +835,10 @@
         for (let x = 1; x &lt; 6; x++) {
           const id = x;
           const html =
-            `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-bench-${id}" id="pos-bench-button-${id}">&lt;/button>` +
-            `&lt;input placeholder="Bench #${id}" class="${inputclass}" name="pos-bench-${id}" id="pos-bench-input-${id}">&lt;/input>`;
+            `&lt;button swap-data="pswap" class="${buttonclass}" 
+                name="pos-bench-${id}" id="pos-bench-button-${id}">&lt;/button>` +
+            `&lt;input placeholder="Bench #${id}" class="${inputclass}" 
+                name="pos-bench-${id}" id="pos-bench-input-${id}">&lt;/input>`;
           this.innerHTML = this.innerHTML + html;
           benchIds.push("pos-bench-input-" + id);
           benchIds.push("pos-bench-button-" + id);
@@ -853,8 +868,10 @@
         const buttonclass = this.mode === "edit" ? "" : "hide";
         const inputclass = this.mode === "edit" ? "hide" : "";
         const html =
-          `&lt;button swap-data="pswap" class="place ${buttonclass}" name="pos-goal" id="pos-goal-button">&lt;/button>` +
-          `&lt;input placeholder="Goalie" class="place ${inputclass}" name="pos-goal" id="pos-goal-input">&lt;/input>`;
+          `&lt;button swap-data="pswap" class="place ${buttonclass}" 
+               name="pos-goal" id="pos-goal-button">&lt;/button>` +
+          `&lt;input placeholder="Goalie" class="place ${inputclass}" 
+               name="pos-goal" id="pos-goal-input">&lt;/input>`;
         this.innerHTML = this.innerHTML + html;
         goalieIds.push("pos-goal-input");
         goalieIds.push("pos-goal-button");
@@ -885,8 +902,10 @@
           for (let x = 0; x &lt; 5; x++) {
             const id = this.start + x;
             const html =
-              `&lt;button swap-data="pswap" class="${buttonclass}" name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
-              `&lt;input class="${inputclass}" name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
+              `&lt;button swap-data="pswap" class="${buttonclass}" 
+                   name="pos-${id}" id="pos-button-${id}">&lt;/button>` +
+              `&lt;input class="${inputclass}" 
+                   name="pos-${id}" id="pos-input-${id}">&lt;/input>`;
             this.innerHTML = this.innerHTML + html;
             positionIds.push("pos-input-" + id);
             positionIds.push("pos-button-" + id);
@@ -919,14 +938,19 @@
         const teamName = getByName("teamName");
         const opponentName = getByName("opponentName");
         this.innerHTML = `&lt;div class="${inputClasses}" id="namesInputMode">
-                            &lt;input id="teamNameInput" name="teamName" Placeholder="Team Name">${teamName}&lt;/input>
+                            &lt;input id="teamNameInput" 
+                                name="teamName" 
+                                Placeholder="Team Name">${teamName}&lt;/input>
                             &lt;div class="vrs"> VRS &lt;/div>
-                            &lt;input id="opponentInput" name="opponentName" Placeholder="Opponent Name">${opponentName}&lt;/input>
+                            &lt;input id="opponentInput" name="opponentName" 
+                                Placeholder="Opponent Name">${opponentName}&lt;/input>
                           &lt;/div>  
                           &lt;div class="${labelClasses}" id="namesDisplayMode">
-                            &lt;label class="teamName" id="teamNameLabel" name="teamName" >${teamName}&lt;/label>
+                            &lt;label class="teamName" id="teamNameLabel" 
+                                name="teamName" >${teamName}&lt;/label>
                             &lt;div class="vrs">- VRS -&lt;/div>
-                            &lt;label class="teamName" id="opponentLabel" name="opponentName" >${opponentName}&lt;/label>
+                            &lt;label class="teamName" id="opponentLabel" 
+                                name="opponentName" >${opponentName}&lt;/label>
                           &lt;/div>`;
       }
     }
@@ -958,7 +982,8 @@
 
         &lt;section>
   
-              &lt;button class="place" toggle="HOME,AWAY" id="place-toggle" name="place">HOME&lt;/button>   
+              &lt;button class="place" toggle="HOME,AWAY" 
+                  id="place-toggle" name="place">HOME&lt;/button>   
   
               &lt;team-names mode="edit">&lt;/team-names>
   
