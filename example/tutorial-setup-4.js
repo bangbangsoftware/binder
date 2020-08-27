@@ -140,7 +140,7 @@ addClickFunction("send", async (e) => {
     return;
   }
   const title = "Footswell";
-  const text = document.getElementById("events-event-" + row).innerText;
+  const text = document.getElementById("events-details-" + row).innerText;
   const url = window.location.href;
   //  you could..... const number = telephoneNumber;
 
