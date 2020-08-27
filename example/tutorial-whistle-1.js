@@ -12,9 +12,36 @@ addClickFunction("finalWhistle", () => {
   const score = currentScore();
   // publish
   publish("The final whistle has blown!, " + score);
+  const scorers = getPlayersScores();
+  if (scorers) {
+    publish("Our goals scored -  " + scorers);
+  }
   // csv
   download();
 });
+
+const getPlayersScores = (pos = 1, scorers = "") => {
+  if (pos > 22) {
+    return scorers;
+  }
+  const playerScore = getPlayerScore(pos);
+  const div = scorers.length > 0 ? ", " : "";
+  const newScores = playerScore ? scorers + div + playerScore : scorers;
+  return getPlayersScores(pos + 1, newScores);
+};
+
+const getPlayerScore = (pos) => {
+  const player = getByName("pos-" + pos);
+  if (!player) {
+    return;
+  }
+  const scorer = player + "-scored";
+  const score = parseInt(getByName(scorer));
+  if (!score) {
+    return;
+  }
+  return player + ": " + score;
+};
 
 addClickFunction("newGame", () => {
   window.location = "./tutorial-setup-4.html";

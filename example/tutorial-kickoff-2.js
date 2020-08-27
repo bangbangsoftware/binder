@@ -25,6 +25,11 @@ export const currentScore = () => {
 
 addClickFunction("scored", (event) => {
   const scorer = getValue(event.target);
+  const name = scorer + "-scored";
+  const goals = getByName(name);
+  const currentGoals = goals ? parseInt(goals) + 1 : 1;
+  setByName(name, currentGoals);
+
   const current = getZeroValue("score");
   const score = current + 1;
   setByName("score", score);

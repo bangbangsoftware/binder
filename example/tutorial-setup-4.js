@@ -114,6 +114,24 @@ export const reset = () => {
   setByName("oppenentName", "");
   setByName("opponentScore", "0");
   setByName("score", "0");
+  zeroPlayersScores();
+};
+
+const zeroPlayersScores = (pos = 1) => {
+  if (pos > 22) {
+    return;
+  }
+  zeroPlayerScore(pos);
+  zeroPlayersScores(pos + 1);
+};
+
+const zeroPlayerScore = (pos) => {
+  const name = getByName("pos-" + pos);
+  if (!name) {
+    return;
+  }
+  const scorer = name + "-scored";
+  setByName(scorer, 0);
 };
 
 addClickFunction("send", async (e) => {

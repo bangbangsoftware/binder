@@ -10,8 +10,8 @@ class Formation extends HTMLElement {
     this.innerHTML = `<div class="format-grid" id="formation">
                         <player-row start=1  ></player-row>
                         <player-row start=6  ></player-row>
-                        <player-row start=11 ></player-row>
-                        <player-row start=16 ></player-row>
+                        <player-row start=12 ></player-row>
+                        <player-row start=18 ></player-row>
                         <span class="play-grid">
                           <div class="player"></div>
                           <div class="player"></div>
