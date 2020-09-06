@@ -51,7 +51,9 @@ const download = () => {
   const date = new Date();
 
   let data = "";
-  const rows = rowsWithoutClass("events", "crossout");
+  const rows = rowsWithoutClass("events", "crossout").sort((a, b) =>
+    a.time > b.time ? 1 : a.time < b.time ? -1 : 0
+  );
   rows.forEach((evt) => {
     data = data + evt.time + ", " + evt.details + "\n";
   });

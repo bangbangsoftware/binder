@@ -12,20 +12,22 @@
       <section>
         <article id="components">
 
-            <button class="place action" toggle="HOME,AWAY" id="place-toggle" name="place">HOME</button>   
+            <span class="nav2">
+              <button class="final action" click="finalWhistle" id="final-whistle">Final Whistle</button>   
+              <button class="final action" toggle="HOME,AWAY" id="place-toggle" name="place">HOME</button>   
+            </span>
 
             <team-names id="teamNames" mode="play"></team-names>
 
-            <button class="place action" click="finalWhistle" id="final-whistle">Final Whistle</button>   
 
+            <button class="place action" click="kickoff">Kick Off</button>   
             <score-clock></score-clock>
             
 
-            <nav class="nav4">
+            <nav class="nav">
                 <button class="action" click="toggleEdit">Edit</button> 
                 <button class="action" click="reset">Reset time</button> 
                 <button click="publish" class="action">Publish</button> 
-                <button click="kickoff" class="action">Kick Off</button>   
             </nav>
 
             <formation-edit mode="display"></formation-edit>

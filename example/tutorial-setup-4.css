@@ -108,9 +108,19 @@ input {
   font-size: 30px;
 }
 
+.final {
+  height: 42px;
+  font-size: 30px;
+}
+
 .nav {
   display: grid;
   grid-template-columns: auto auto auto;
+}
+
+.nav2 {
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 .nav4 {
