@@ -2,6 +2,7 @@ import "./tutorial-kickoff-4.js";
 import { publish, currentScore } from "./tutorial-kickoff-2.js";
 import { addClickFunction, setByName, getByName } from "./dist/binder.js";
 import { rowsWithoutClass } from "./dist/plugins/tablePlugin.js";
+import { reset } from "./tutorial-setup-4.js";
 
 addClickFunction("reset", () => {
   setByName("mins", "00");
@@ -44,6 +45,7 @@ const getPlayerScore = (pos) => {
 };
 
 addClickFunction("newGame", () => {
+  reset();
   window.location = "./tutorial-setup-4.html";
 });
 
