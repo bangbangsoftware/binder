@@ -96,6 +96,7 @@ const getRow = (e) => {
 };
 
 addClickFunction("kickoff", (e) => {
+  setByName("lastUpdate", new Date().getTime()); // reset for pause
   window.location.href = "tutorial-kickoff-4.html";
 });
 

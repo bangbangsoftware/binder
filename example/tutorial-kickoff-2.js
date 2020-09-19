@@ -10,6 +10,8 @@ import "./tutorial-setup-4.js";
 import "./tutorial-kickoff-1-teamplay.js";
 import "./tutorial-kickoff-2-scoreclock.js";
 
+import { timer } from "./time.js";
+
 const getZeroValue = (name) => {
   const stored = getByName(name);
   return stored ? parseInt(stored) : 0;
@@ -61,23 +63,37 @@ addClickFunction("opponentScored", () => {
 
 const zeroPad = (n) => (n > 9 ? n : "0" + n);
 
-let clock;
+let running;
+export const clock = timer("mins", "secs");
 
+const log = (message) => {
+  const dateString = df();
+  console.log(dateString + " - " + message);
+};
+
+const df = (date = new Date()) => {
+  const options = {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
+  return new Intl.DateTimeFormat("default", options).format(date);
+};
 export const startClock = () => {
-  clock = setInterval(() => {
-    const seconds = getZeroValue("secs");
-    const mins = getZeroValue("mins");
-    const nextSec = seconds + 1;
-    const updateMin = nextSec > 59 ? mins + 1 : mins;
-    const updateSec = nextSec > 59 ? 0 : nextSec;
-    setByName("secs", zeroPad(updateSec));
-    setByName("mins", zeroPad(updateMin));
+  const lastUpdateString = parseInt(getByName("lastUpdate"));
+  let lastUpdate = lastUpdateString ? new Date(lastUpdateString) : new Date();
+  running = setInterval(() => {
+    lastUpdate = clock.adjust(lastUpdate);
+    setByName("lastUpdate", lastUpdate.getTime());
   }, 1000);
 };
 
 addClickFunction("whistle", () => {
   if (clock) {
-    clearInterval(clock);
+    clearInterval(running);
   }
   publish(" Whistle blown");
   document.location.href = "./tutorial-whistle-1.html";
