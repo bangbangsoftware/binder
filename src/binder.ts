@@ -172,6 +172,42 @@ export const setByName = (fieldname: string, value: string) => {
   storeRegistry();
 };
 
+export const addClassByName = (fieldname: string, cssClass: string) => {
+  const currentData = get(fieldname);
+  if (!currentData) {
+    console.warn(
+      "Setting " +
+        cssClass +
+        " for " +
+        fieldname +
+        ", however its not in the mark up."
+    );
+    return;
+  }
+
+  currentData.elements.map((element: HTMLElement) => {
+    element.classList.add(cssClass);
+  });
+};
+
+export const removeClassByName = (fieldname: string, cssClass: string) => {
+  const currentData = get(fieldname);
+  if (!currentData) {
+    console.warn(
+      "Setting " +
+        cssClass +
+        " for " +
+        fieldname +
+        ", however its not in the mark up."
+    );
+    return;
+  }
+
+  currentData.elements.map((element: HTMLElement) => {
+    element.classList.remove(cssClass);
+  });
+};
+
 export const addClickFunction = (name: string, fn: ClickFunction) => {
   console.log("Added click for ", name);
   setMap(nameClickers, name, fn);

@@ -138,6 +138,34 @@ export const setByName = (fieldname, value) => {
     registry[fieldname] = data;
     storeRegistry();
 };
+export const addClassByName = (fieldname, cssClass) => {
+    const currentData = get(fieldname);
+    if (!currentData) {
+        console.warn("Setting " +
+            cssClass +
+            " for " +
+            fieldname +
+            ", however its not in the mark up.");
+        return;
+    }
+    currentData.elements.map((element) => {
+        element.classList.add(cssClass);
+    });
+};
+export const removeClassByName = (fieldname, cssClass) => {
+    const currentData = get(fieldname);
+    if (!currentData) {
+        console.warn("Setting " +
+            cssClass +
+            " for " +
+            fieldname +
+            ", however its not in the mark up.");
+        return;
+    }
+    currentData.elements.map((element) => {
+        element.classList.remove(cssClass);
+    });
+};
 export const addClickFunction = (name, fn) => {
     console.log("Added click for ", name);
     setMap(nameClickers, name, fn);
