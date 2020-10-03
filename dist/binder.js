@@ -136,7 +136,7 @@ export const setByName = (fieldname, value) => {
         return element;
     });
     registry[fieldname] = data;
-    storeRegistry();
+    storage.setItem(fieldname, value);
 };
 export const addClassByName = (fieldname, cssClass) => {
     const currentData = get(fieldname);
@@ -212,13 +212,14 @@ export function putElements(elements, values) {
             console.error(error);
         }
     });
-    storeRegistry();
 }
 const putElement = (element, currentValue = getValue(element)) => {
     const fieldname = getName(element);
     const data = updateEntry(fieldname, element, currentValue);
     // update memory registory
     registry[fieldname] = data;
+    storage.setItem(fieldname, currentValue);
+    return { fieldname: data };
 };
 const updateEntry = (fieldname, element, currentValue) => {
     // get registry entry and update
@@ -249,8 +250,7 @@ const updateEntry = (fieldname, element, currentValue) => {
     return storedEntry;
 };
 export function put(element) {
-    putElement(element);
-    return storeRegistry();
+    return putElement(element);
 }
 // Store registry
 const storeRegistry = (reg = registry) => {

@@ -105,6 +105,7 @@ export const publish = (details) => {
   const mm = zeroPad(date.getMinutes());
   const ss = zeroPad(date.getSeconds());
   const ent = {
+    date,
     time: hh + ":" + mm + ":" + ss,
     details,
   };

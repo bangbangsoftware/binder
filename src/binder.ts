@@ -169,7 +169,7 @@ export const setByName = (fieldname: string, value: string) => {
     return element;
   });
   registry[fieldname] = data;
-  storeRegistry();
+  storage.setItem(fieldname, value);
 };
 
 export const addClassByName = (fieldname: string, cssClass: string) => {
@@ -279,15 +279,19 @@ export function putElements(
       console.error(error);
     }
   });
-  storeRegistry();
 }
 
-const putElement = (element: HTMLElement, currentValue = getValue(element)) => {
+const putElement = (
+  element: HTMLElement,
+  currentValue = getValue(element)
+): { [key: string]: RegEntry } => {
   const fieldname = getName(element);
   const data = updateEntry(fieldname, element, currentValue);
 
   // update memory registory
   registry[fieldname] = data;
+  storage.setItem(fieldname, currentValue);
+  return { fieldname: data };
 };
 
 const updateEntry = (
@@ -328,8 +332,7 @@ const updateEntry = (
 };
 
 export function put(element: HTMLElement): { [key: string]: RegEntry } {
-  putElement(element);
-  return storeRegistry();
+  return putElement(element);
 }
 // Store registry
 
