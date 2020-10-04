@@ -1,5 +1,6 @@
 import { BinderTools, BinderPlugin } from "../binderTypes";
 import data from "../data";
+import worker from "./tablePluginWorker";
 
 let binder: BinderTools;
 const done = Array<String>();
@@ -20,10 +21,6 @@ const getStoredData = (name: string, binder: BinderTools): Array<any> => {
     return [];
   }
   const keys = <Array<any>>JSON.parse(keysJSON);
-  const length = parseInt(binder.getByName(name + "-table-length"));
-  if (!length) {
-    return [];
-  }
   const data = keys.map((key) => binder.getStartsWith(name + "-" + key));
 
   const dataMap = Array<any>();
@@ -154,7 +151,16 @@ const processData = (data: TableData) => {
   //const tableWorker = new Worker("./tablePluginWorker.js");
   const sortFn = sortFuncs.get(data.name);
   if (sortFn) {
-    data.mapList = data.mapList.sort((a, b) => sortFn(a, b));
+    const sorted = data.mapList.sort((a, b) => sortFn(a, b));
+    data.mapList = sorted.map((item, index) => {
+      item.index = index;
+      if (item.updates) {
+        item.updates.push(new Date());
+      } else {
+        item.updates = [new Date()];
+      }
+      return item;
+    });
   }
 
   tables.set(data.name, data);

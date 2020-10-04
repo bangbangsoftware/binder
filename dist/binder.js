@@ -54,6 +54,7 @@ export const populateStartsWith = (starts) => {
 };
 export const getStartsWith = (key) => Object.keys(registry)
     .filter((name) => name.startsWith(key))
+    .sort()
     .map((name) => registry[name].currentValue);
 export const removeStartsWith = (starts) => {
     const names = Object.keys(registry)

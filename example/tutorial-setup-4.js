@@ -1,5 +1,10 @@
 import { addClickFunction, getByName, setByName } from "./dist/binder.js";
-import { addRow, toggleClass, clearTable } from "./dist/plugins/tablePlugin.js";
+import {
+  addRow,
+  toggleClass,
+  clearTable,
+  addSort,
+} from "./dist/plugins/tablePlugin.js";
 
 import { positionIds } from "./tutorial-setup-4-posrow.js";
 import { benchIds } from "./tutorial-setup-4-posbench.js";
@@ -98,6 +103,13 @@ const getRow = (e) => {
 addClickFunction("kickoff", (e) => {
   setByName("lastUpdate", new Date().getTime()); // reset for pause
   window.location.href = "tutorial-kickoff-4.html";
+});
+
+addSort("events", (a, b) => {
+  const timeA = parseInt(a.time.replaceAll(":", ""));
+  const timeB = parseInt(b.time.replaceAll(":", ""));
+  const result = timeA > timeB ? 1 : timeA < timeB ? -1 : 0;
+  return result;
 });
 
 addClickFunction("undo", (e) => {

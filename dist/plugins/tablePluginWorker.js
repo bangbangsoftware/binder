@@ -14,6 +14,7 @@ const go = (e) => {
         rowTemplate = replaceToken(rowTemplate, key, token, index);
         rowTemplate = rowToClick(rowTemplate, index);
         Object.keys(fields).map((fieldName) => {
+            console.log("TABLE: " + index + " " + fieldName + " ", fields);
             const key = name + "-" + fieldName + "-";
             const token = key + index;
             addData(rowTemplate, token, fields[fieldName], fieldName, data);
