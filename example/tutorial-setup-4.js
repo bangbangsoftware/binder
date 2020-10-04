@@ -132,19 +132,33 @@ export const reset = () => {
 
 const zeroPlayersScores = (pos = 1) => {
   if (pos > 22) {
+    zeroOthers();
     return;
   }
-  zeroPlayerScore(pos);
+  zeroPlayerScore("pos-" + pos);
   zeroPlayersScores(pos + 1);
 };
 
-const zeroPlayerScore = (pos) => {
-  const name = getByName("pos-" + pos);
+const zeroPlayerScore = (label) => {
+  const name = getByName(label);
   if (!name) {
     return;
   }
   const scorer = name + "-scored";
   setByName(scorer, 0);
+};
+
+const zeroOthers = () => {
+  zeroPlayerScore("pos-goal");
+  clearBench();
+};
+
+const clearBench = (pos = 1) => {
+  if (pos > 5) {
+    return;
+  }
+  zeroPlayerScore("pos-bench-" + pos);
+  clearBench(pos + 1);
 };
 
 addClickFunction("send", async (e) => {

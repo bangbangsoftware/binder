@@ -24,16 +24,21 @@ addClickFunction("finalWhistle", () => {
 
 const getPlayersScores = (pos = 1, scorers = "") => {
   if (pos > 22) {
-    return scorers;
+    return getOtherScores(scorers);
   }
-  const playerScore = getPlayerScore(pos);
-  const div = scorers.length > 0 ? ", " : "";
-  const newScores = playerScore ? scorers + div + playerScore : scorers;
+  const playerScore = getPlayerScore("pos-" + pos);
+  const newScores = addScorer(playerScore, scorers);
   return getPlayersScores(pos + 1, newScores);
 };
 
-const getPlayerScore = (pos) => {
-  const player = getByName("pos-" + pos);
+const addScorer = (playerScore, scorers) => {
+  const div = scorers.length > 0 ? ", " : "";
+  const newScores = playerScore ? scorers + div + playerScore : scorers;
+  return newScores;
+};
+
+const getPlayerScore = (label) => {
+  const player = getByName(label);
   if (!player) {
     return;
   }
@@ -43,6 +48,24 @@ const getPlayerScore = (pos) => {
     return;
   }
   return player + ": " + score;
+};
+
+const getOtherScores = (scorers) => {
+  const newScore = addScore("pos-goal", scorers);
+  return getBenchScores(newScore);
+};
+
+const addScore = (label, scorers) => {
+  const playerScore = getPlayerScore(label);
+  return addScorer(playerScore, scorers);
+};
+
+const getBenchScores = (scorers, pos = 1) => {
+  if (pos > 5) {
+    return scorers;
+  }
+  const newScores = addScore("pos-bench-" + pos, scorers);
+  return getBenchScores(newScores, pos + 1);
 };
 
 addClickFunction("newGame", () => {
