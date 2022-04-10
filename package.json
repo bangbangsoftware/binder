@@ -43,7 +43,7 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
 
-    "minimist": ">=1.2.3",
+    "minimist": ">=1.2.6",
     "acorn": ">=5.7.4",
     "kind-of": ">=6.0.3"
   }
